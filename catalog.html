@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АвтоЗапчасти - Каталог</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo fade-in">
+            <img src="images/photo_2025-04-02_00-16-38.jpg" alt="Auto Parts Logo" class="logo-img">
+        </div>
+        <nav class="nav-links slide-in">
+            <a href="index.html">Главная</a>
+            <a href="catalog.html" class="active">Каталог</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="about.html">О нас</a>
+        </nav>
+        <div class="contact-info fade-in">
+            <p><i class="fas fa-phone"></i> <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
+            <p><i class="fas fa-envelope"></i> <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a></p>
+        </div>
+    </header>
+
+    <main class="catalog-page">
+        <aside class="sidebar fade-in">
+            <h2>Категории</h2>
+            <ul class="category-list">
+                <li><a href="#" class="category-link" data-category="tires">Шины</a></li>
+                <li><a href="#" class="category-link" data-category="oils">Масла</a></li>
+                <li><a href="#" class="category-link" data-category="brakes">Тормозные колодки</a></li>
+                <li><a href="#" class="category-link" data-category="filters">Фильтры</a></li>
+                <li><a href="#" class="category-link" data-category="batteries">Аккумуляторы</a></li>
+            </ul>
+        </aside>
+
+        <section class="products-section">
+            <div class="search-bar fade-in">
+                <input type="text" placeholder="Поиск товаров...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="product-grid">
+                <div class="product-card fade-in">
+                    <img src="images/tire1.jpg" alt="Tire">
+                    <h3>Летние шины</h3>
+                    <p>Высококачественные летние шины для легковых автомобилей</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+                <div class="product-card fade-in">
+                    <img src="images/tire2.jpg" alt="Tire">
+                    <h3>Зимние шины</h3>
+                    <p>Надежные зимние шины для безопасного вождения</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+                <div class="product-card fade-in">
+                    <img src="images/oil1.jpg" alt="Oil">
+                    <h3>Моторное масло</h3>
+                    <p>Синтетическое моторное масло премиум-класса</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+                <div class="product-card fade-in">
+                    <img src="images/oil2.jpg" alt="Oil">
+                    <h3>Трансмиссионное масло</h3>
+                    <p>Качественное масло для коробки передач</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальные окна для категорий -->
+    <div class="modal" id="tiresModal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="modal-title">Шины</h2>
+            <div class="modal-products">
+                <div class="product-card">
+                    <img src="images/tire1.jpg" alt="Летние шины">
+                    <h3>Летние шины</h3>
+                    <p>Высококачественные летние шины для легковых автомобилей</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+                <div class="product-card">
+                    <img src="images/tire2.jpg" alt="Зимние шины">
+                    <h3>Зимние шины</h3>
+                    <p>Надежные зимние шины для безопасного вождения</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="oilsModal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="modal-title">Масла</h2>
+            <div class="modal-products">
+                <div class="product-card">
+                    <img src="images/oil1.jpg" alt="Моторное масло">
+                    <h3>Моторное масло</h3>
+                    <p>Синтетическое моторное масло премиум-класса</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+                <div class="product-card">
+                    <img src="images/oil2.jpg" alt="Трансмиссионное масло">
+                    <h3>Трансмиссионное масло</h3>
+                    <p>Качественное масло для коробки передач</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="brakesModal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="modal-title">Тормозные колодки</h2>
+            <div class="modal-products">
+                <div class="product-card">
+                    <img src="images/brake1.jpg" alt="Тормозные колодки">
+                    <h3>Тормозные колодки</h3>
+                    <p>Надежные тормозные колодки для безопасного торможения</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="filtersModal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="modal-title">Фильтры</h2>
+            <div class="modal-products">
+                <div class="product-card">
+                    <img src="images/filter1.jpg" alt="Масляный фильтр">
+                    <h3>Масляный фильтр</h3>
+                    <p>Качественный масляный фильтр для двигателя</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="batteriesModal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="modal-title">Аккумуляторы</h2>
+            <div class="modal-products">
+                <div class="product-card">
+                    <img src="images/battery1.jpg" alt="Аккумулятор">
+                    <h3>Автомобильный аккумулятор</h3>
+                    <p>Надежный аккумулятор для вашего автомобиля</p>
+                    <button class="add-to-cart">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer fade-in">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>г. Минск, станция метро Малиновка</p>
+                <p>Телефон: <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
+                <p>Email: sos2223kj@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Социальные сети</h3>
+                <div class="social-links">
+                    <a href="#" class="scale-in"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="scale-in"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="scale-in"><i class="fab fa-vk"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Auto Parts. Все права защищены.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html> 
