@@ -60,7 +60,7 @@ header {
 }
 
 .contact-info a {
-    color: #666;
+    color: inherit;
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s ease;
@@ -549,6 +549,16 @@ footer {
 
 .footer-section p {
     margin-bottom: 10px;
+}
+
+.footer-section a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: #007bff;
 }
 
 .social-links {
