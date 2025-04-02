@@ -1245,4 +1245,14 @@ body.dark-theme .theme-switch i {
 
 body.dark-theme .notification {
     box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.featured-products .product-card {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featured-products .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 } 

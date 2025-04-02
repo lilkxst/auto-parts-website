@@ -328,4 +328,32 @@ function showNotification(message, type) {
             notification.remove();
         }, 300);
     }, 3000);
-} 
+}
+
+// Добавляем обработчик для карточек популярных товаров
+document.querySelectorAll('.featured-products .product-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const category = card.getAttribute('data-category');
+        // Сохраняем категорию в localStorage
+        localStorage.setItem('selectedCategory', category);
+        // Переходим на страницу каталога
+        window.location.href = 'catalog.html';
+    });
+
+    // Добавляем стиль курсора, чтобы показать что карточка кликабельна
+    card.style.cursor = 'pointer';
+});
+
+// Проверяем при загрузке страницы каталога, есть ли выбранная категория
+document.addEventListener('DOMContentLoaded', () => {
+    const selectedCategory = localStorage.getItem('selectedCategory');
+    if (selectedCategory && window.location.pathname.includes('catalog.html')) {
+        // Находим соответствующую категорию и открываем её
+        const categoryLink = document.querySelector(`.category-link[data-category="${selectedCategory}"]`);
+        if (categoryLink) {
+            categoryLink.click();
+        }
+        // Очищаем сохраненную категорию
+        localStorage.removeItem('selectedCategory');
+    }
+}); 
