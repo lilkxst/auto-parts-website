@@ -26,3 +26,4 @@
 
 - GitHub репозиторий: [https://github.com/Triganus/auto-parts-website](https://github.com/Triganus/auto-parts-website)
 
+- GitHub Pages: [https://triganus.github.io/auto-parts-website/](https://triganus.github.io/auto-parts-website/)
