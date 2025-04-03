@@ -232,8 +232,24 @@ const searchInput = document.querySelector('.search-bar input');
 const productCards = document.querySelectorAll('.product-card');
 
 if (searchInput) {
-    searchInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
+    // Проверяем, существует ли элемент для сообщения о ненайденных товарах
+    let noResultsElement = document.querySelector('.no-results');
+    
+    // Если элемент не существует, создаем его
+    if (!noResultsElement) {
+        noResultsElement = document.createElement('div');
+        noResultsElement.className = 'no-results';
+        noResultsElement.innerHTML = '<p>Товары не найдены</p>';
+        const productGrid = document.querySelector('.product-grid');
+        if (productGrid) {
+            productGrid.parentNode.insertBefore(noResultsElement, productGrid.nextSibling);
+        }
+    }
+    
+    // Функция для обновления отображения товаров
+    const updateProductDisplay = () => {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        let hasVisibleCards = false;
         
         productCards.forEach(card => {
             const title = card.querySelector('h3').textContent.toLowerCase();
@@ -241,26 +257,38 @@ if (searchInput) {
             
             if (title.includes(searchTerm) || description.includes(searchTerm)) {
                 card.style.display = 'block';
+                hasVisibleCards = true;
             } else {
                 card.style.display = 'none';
             }
         });
-
-        // Показываем сообщение, если ничего не найдено
-        const visibleCards = document.querySelectorAll('.product-card[style="display: block;"]');
-        const noResultsMessage = document.querySelector('.no-results');
         
-        if (visibleCards.length === 0) {
-            if (!noResultsMessage) {
-                const message = document.createElement('div');
-                message.className = 'no-results';
-                message.textContent = 'Товары не найдены';
-                document.querySelector('.product-grid').appendChild(message);
-            }
-        } else if (noResultsMessage) {
-            noResultsMessage.remove();
+        // Показываем сообщение, если ничего не найдено
+        if (hasVisibleCards) {
+            noResultsElement.style.display = 'none';
+        } else if (searchTerm !== '') {
+            noResultsElement.style.display = 'block';
+        } else {
+            // Если поле поиска пустое, скрываем сообщение
+            noResultsElement.style.display = 'none';
+            // И показываем все карточки
+            productCards.forEach(card => {
+                card.style.display = 'block';
+            });
         }
-    });
+    };
+    
+    // Слушаем изменения в поле поиска
+    searchInput.addEventListener('input', updateProductDisplay);
+    
+    // Добавляем кнопку очистки
+    const searchButton = document.querySelector('.search-bar button');
+    if (searchButton) {
+        searchButton.addEventListener('click', function() {
+            searchInput.value = '';
+            updateProductDisplay();
+        });
+    }
 }
 
 // Обработка формы обратной связи
