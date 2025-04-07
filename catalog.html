@@ -27,11 +27,15 @@
         <a href="about.html">О нас</a>
       </nav>
       <div class="contact-info fade-in">
-        <p><i class="fas fa-phone"></i> +375 (29) 123-45-67</p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
         <p>
           <i class="fas fa-envelope"></i>
           <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a>
         </p>
+        <a href="cart.html" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
       </div>
     </header>
 
@@ -70,45 +74,61 @@
         </div>
 
         <div class="product-grid">
-          <div class="product-card fade-in">
+          <div class="product-card fade-in" data-id="1" data-category="tires">
             <img src="images/Continental-VancoFourSeason-500.png" alt="Летние шины Continental" />
             <h3>Летние шины Continental</h3>
             <p>Высококачественные шины для легковых автомобилей, размер 205/55 R16</p>
+            <div class="product-price">180.00 BYN</div>
+            <button class="add-to-cart-btn">Добавить в корзину</button>
           </div>
-          <div class="product-card fade-in">
+          <div class="product-card fade-in" data-id="2" data-category="tires">
             <img src="images/Continental-VancoFourSeason-500.png" alt="Зимние шины Continental" />
             <h3>Зимние шины Continental</h3>
             <p>Надежные зимние шины для безопасного вождения, размер 205/55 R16</p>
+            <div class="product-price">200.00 BYN</div>
+            <button class="add-to-cart-btn">Добавить в корзину</button>
           </div>
-          <div class="product-card fade-in">
+          <div class="product-card fade-in" data-id="3" data-category="tires">
             <img src="images/Continental-VancoFourSeason-500.png" alt="Всесезонные шины Michelin" />
             <h3>Всесезонные шины Michelin</h3>
             <p>Универсальные всесезонные шины для комфортной езды, размер 215/65 R16</p>
+            <div class="product-price">220.00 BYN</div>
+            <button class="add-to-cart-btn">Добавить в корзину</button>
           </div>
-          <div class="product-card fade-in">
+          <div class="product-card fade-in" data-id="4" data-category="tires">
             <img src="images/Continental-VancoFourSeason-500.png" alt="Спортивные шины Pirelli" />
             <h3>Спортивные шины Pirelli</h3>
             <p>Спортивные шины для высокой производительности, размер 225/45 R17</p>
+            <div class="product-price">250.00 BYN</div>
+            <button class="add-to-cart-btn">Добавить в корзину</button>
           </div>
-          <div class="product-card fade-in">
+          <div class="product-card fade-in" data-id="5" data-category="oils">
             <img src="images/optimize.jpg" alt="Моторное масло Castrol" />
             <h3>Моторное масло Castrol 5W-30</h3>
             <p>Синтетическое моторное масло премиум-класса, 4л</p>
+            <div class="product-price">85.00 BYN</div>
+            <button class="add-to-cart-btn">Добавить в корзину</button>
           </div>
-          <div class="product-card fade-in">
+          <div class="product-card fade-in" data-id="6" data-category="oils">
             <img src="images/optimize.jpg" alt="Трансмиссионное масло Shell" />
             <h3>Трансмиссионное масло Shell 75W-90</h3>
             <p>Качественное масло для механических коробок передач, 1л</p>
+            <div class="product-price">45.00 BYN</div>
+            <button class="add-to-cart-btn">Добавить в корзину</button>
           </div>
-          <div class="product-card fade-in">
+          <div class="product-card fade-in" data-id="7" data-category="oils">
             <img src="images/optimize.jpg" alt="Моторное масло Mobil" />
             <h3>Моторное масло Mobil 1 0W-40</h3>
             <p>Полностью синтетическое масло для экстремальных температур, 4л</p>
+            <div class="product-price">95.00 BYN</div>
+            <button class="add-to-cart-btn">Добавить в корзину</button>
           </div>
-          <div class="product-card fade-in">
+          <div class="product-card fade-in" data-id="8" data-category="oils">
             <img src="images/optimize.jpg" alt="Масло для АКПП" />
             <h3>Масло для АКПП Dexron VI</h3>
             <p>Трансмиссионное масло для автоматических коробок передач, 1л</p>
+            <div class="product-price">50.00 BYN</div>
+            <button class="add-to-cart-btn">Добавить в корзину</button>
           </div>
         </div>
       </section>
@@ -310,15 +330,16 @@
         <div class="footer-section">
           <h3>Контакты</h3>
           <p>г. Минск, станция метро Малиновка</p>
-          <p>Телефон: +375 (29) 123-45-67</p>
-          <p>Email: sos2223kj@gmail.com</p>
+          <p>Телефон: <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
+          <p>Email: <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a></p>
         </div>
         <div class="footer-section">
           <h3>Социальные сети</h3>
           <div class="social-links">
-            <a href="#" class="scale-in"><i class="fab fa-facebook"></i></a>
-            <a href="#" class="scale-in"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="scale-in"><i class="fab fa-vk"></i></a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+            <a href="https://t.me/share/url?url=https://autozapchasti.by" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
           </div>
         </div>
       </div>

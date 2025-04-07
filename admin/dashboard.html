@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АвтоЗапчасти - Админ-панель</title>
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Боковое меню -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../images/photo_2025-04-02_00-16-38.jpg" alt="Лого" class="sidebar-logo">
+                <h3>АвтоЗапчасти</h3>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Панель управления</a>
+                    </li>
+                    <li>
+                        <a href="#products"><i class="fas fa-boxes"></i> Товары</a>
+                    </li>
+                    <li>
+                        <a href="#orders"><i class="fas fa-shopping-cart"></i> Заказы</a>
+                    </li>
+                    <li>
+                        <a href="#customers"><i class="fas fa-users"></i> Клиенты</a>
+                    </li>
+                    <li>
+                        <a href="#feedback"><i class="fas fa-comments"></i> Отзывы</a>
+                    </li>
+                    <li>
+                        <a href="#settings"><i class="fas fa-cog"></i> Настройки</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="../index.html" class="view-site"><i class="fas fa-external-link-alt"></i> Просмотр сайта</a>
+                <a href="login.html" class="logout"><i class="fas fa-sign-out-alt"></i> Выход</a>
+            </div>
+        </aside>
+        
+        <!-- Основной контент -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-search">
+                    <form>
+                        <input type="text" placeholder="Поиск...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                
+                <div class="header-right">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <div class="admin-profile">
+                        <img src="images/avatar.jpg" alt="Admin" class="avatar">
+                        <span>Администратор</span>
+                    </div>
+                    <button class="logout-button">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="d-none d-md-inline">Выход</span>
+                    </button>
+                </div>
+            </header>
+            
+            <div id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>Панель управления</h2>
+                    <p>Обзор вашего магазина</p>
+                </div>
+                
+                <div class="stat-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+                        <div class="stat-info">
+                            <h3>24</h3>
+                            <p>Заказы</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <h3>145</h3>
+                            <p>Клиенты</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-boxes"></i></div>
+                        <div class="stat-info">
+                            <h3>32</h3>
+                            <p>Товары</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="stat-info">
+                            <h3>5200₽</h3>
+                            <p>Доход</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-sections">
+                    <div class="recent-orders">
+                        <div class="section-header">
+                            <h3>Последние заказы</h3>
+                            <a href="#orders" class="view-all">Все заказы</a>
+                        </div>
+                        
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Клиент</th>
+                                    <th>Статус</th>
+                                    <th>Дата</th>
+                                    <th>Сумма</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1205</td>
+                                    <td>Иванов И.И.</td>
+                                    <td><span class="status completed">Выполнен</span></td>
+                                    <td>05.04.2025</td>
+                                    <td>2500₽</td>
+                                </tr>
+                                <tr>
+                                    <td>#1204</td>
+                                    <td>Петров П.П.</td>
+                                    <td><span class="status pending">В обработке</span></td>
+                                    <td>04.04.2025</td>
+                                    <td>1800₽</td>
+                                </tr>
+                                <tr>
+                                    <td>#1203</td>
+                                    <td>Сидоров С.С.</td>
+                                    <td><span class="status shipped">Отправлен</span></td>
+                                    <td>03.04.2025</td>
+                                    <td>3400₽</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="recent-reviews">
+                        <div class="section-header">
+                            <h3>Последние отзывы</h3>
+                            <a href="#feedback" class="view-all">Все отзывы</a>
+                        </div>
+                        
+                        <div class="review-list">
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="reviewer">
+                                        <img src="https://via.placeholder.com/40" alt="Клиент">
+                                        <div>
+                                            <h4>Алексей К.</h4>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="review-date">02.04.2025</span>
+                                </div>
+                                <p class="review-text">Отличные шины, хорошо держат дорогу. Доставка быстрая, всем рекомендую!</p>
+                            </div>
+                            
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="reviewer">
+                                        <img src="https://via.placeholder.com/40" alt="Клиент">
+                                        <div>
+                                            <h4>Мария Д.</h4>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="review-date">01.04.2025</span>
+                                </div>
+                                <p class="review-text">Покупала масло, качество соответствует описанию. Спасибо за консультацию!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="products" class="content-section">
+                <div class="section-header">
+                    <h2>Управление товарами</h2>
+                    <p>Список всех товаров в каталоге</p>
+                </div>
+                
+                <div class="actions-panel">
+                    <button class="add-button"><i class="fas fa-plus"></i> Добавить товар</button>
+                    <div class="filter-options">
+                        <select>
+                            <option value="">Все категории</option>
+                            <option value="tires">Шины</option>
+                            <option value="oils">Масла</option>
+                            <option value="brakes">Тормозные колодки</option>
+                            <option value="filters">Фильтры</option>
+                            <option value="batteries">Аккумуляторы</option>
+                        </select>
+                        <select>
+                            <option value="">Все бренды</option>
+                            <option value="continental">Continental</option>
+                            <option value="michelin">Michelin</option>
+                            <option value="pirelli">Pirelli</option>
+                            <option value="goodyear">Goodyear</option>
+                            <option value="bridgestone">Bridgestone</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="content-table">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Изображение</th>
+                                <th>Название</th>
+                                <th>Категория</th>
+                                <th>Цена</th>
+                                <th>Наличие</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><img src="../images/Continental-VancoFourSeason-500.png" alt="Товар" class="product-thumbnail"></td>
+                                <td>Летние шины Continental</td>
+                                <td>Шины</td>
+                                <td>6500₽</td>
+                                <td><span class="status-badge in-stock">В наличии</span></td>
+                                <td class="actions">
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><img src="../images/Continental-VancoFourSeason-500.png" alt="Товар" class="product-thumbnail"></td>
+                                <td>Зимние шины Continental</td>
+                                <td>Шины</td>
+                                <td>7200₽</td>
+                                <td><span class="status-badge in-stock">В наличии</span></td>
+                                <td class="actions">
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><img src="../images/optimize.jpg" alt="Товар" class="product-thumbnail"></td>
+                                <td>Моторное масло Castrol 5W-30</td>
+                                <td>Масла</td>
+                                <td>2300₽</td>
+                                <td><span class="status-badge low-stock">Мало</span></td>
+                                <td class="actions">
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><img src="../images/optimize.jpg" alt="Товар" class="product-thumbnail"></td>
+                                <td>Трансмиссионное масло Shell 75W-90</td>
+                                <td>Масла</td>
+                                <td>1900₽</td>
+                                <td><span class="status-badge out-of-stock">Нет в наличии</span></td>
+                                <td class="actions">
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><img src="../images/optimize (1).webp" alt="Товар" class="product-thumbnail"></td>
+                                <td>Тормозные колодки</td>
+                                <td>Тормозные колодки</td>
+                                <td>3200₽</td>
+                                <td><span class="status-badge in-stock">В наличии</span></td>
+                                <td class="actions">
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button class="page-btn prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn more">...</button>
+                    <button class="page-btn">10</button>
+                    <button class="page-btn next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div id="orders" class="content-section">
+                <div class="section-header">
+                    <h2>Управление заказами</h2>
+                    <p>Список всех заказов</p>
+                </div>
+                
+                <div class="actions-panel">
+                    <div class="filter-options">
+                        <select>
+                            <option value="">Все статусы</option>
+                            <option value="pending">В обработке</option>
+                            <option value="shipped">Отправлен</option>
+                            <option value="completed">Выполнен</option>
+                            <option value="cancelled">Отменен</option>
+                        </select>
+                        <input type="date" placeholder="Начальная дата">
+                        <input type="date" placeholder="Конечная дата">
+                        <button class="filter-button"><i class="fas fa-filter"></i> Применить</button>
+                    </div>
+                </div>
+                
+                <div class="content-table">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID заказа</th>
+                                <th>Клиент</th>
+                                <th>Дата</th>
+                                <th>Статус</th>
+                                <th>Сумма</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#1205</td>
+                                <td>
+                                    <div class="client-info">
+                                        <span class="client-name">Иванов И.И.</span>
+                                        <span class="client-phone">+7 (901) 123-45-67</span>
+                                    </div>
+                                </td>
+                                <td>05.04.2025</td>
+                                <td><span class="status completed">Выполнен</span></td>
+                                <td>2500₽</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#1204</td>
+                                <td>
+                                    <div class="client-info">
+                                        <span class="client-name">Петров П.П.</span>
+                                        <span class="client-phone">+7 (902) 234-56-78</span>
+                                    </div>
+                                </td>
+                                <td>04.04.2025</td>
+                                <td><span class="status pending">В обработке</span></td>
+                                <td>1800₽</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#1203</td>
+                                <td>
+                                    <div class="client-info">
+                                        <span class="client-name">Сидоров С.С.</span>
+                                        <span class="client-phone">+7 (903) 345-67-89</span>
+                                    </div>
+                                </td>
+                                <td>03.04.2025</td>
+                                <td><span class="status shipped">Отправлен</span></td>
+                                <td>3400₽</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#1202</td>
+                                <td>
+                                    <div class="client-info">
+                                        <span class="client-name">Козлов К.К.</span>
+                                        <span class="client-phone">+7 (904) 456-78-90</span>
+                                    </div>
+                                </td>
+                                <td>02.04.2025</td>
+                                <td><span class="status cancelled">Отменен</span></td>
+                                <td>2900₽</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#1201</td>
+                                <td>
+                                    <div class="client-info">
+                                        <span class="client-name">Смирнов С.С.</span>
+                                        <span class="client-phone">+7 (905) 567-89-01</span>
+                                    </div>
+                                </td>
+                                <td>01.04.2025</td>
+                                <td><span class="status completed">Выполнен</span></td>
+                                <td>5200₽</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button class="page-btn prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn more">...</button>
+                    <button class="page-btn">10</button>
+                    <button class="page-btn next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div id="customers" class="content-section">
+                <div class="section-header">
+                    <h2>Управление клиентами</h2>
+                    <p>Информация о клиентах</p>
+                </div>
+                
+                <div class="actions-panel">
+                    <button class="add-button"><i class="fas fa-user-plus"></i> Добавить клиента</button>
+                    <div class="filter-options">
+                        <input type="text" placeholder="Поиск по имени или телефону">
+                        <button class="filter-button"><i class="fas fa-search"></i> Найти</button>
+                    </div>
+                </div>
+                
+                <div class="content-table">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ФИО</th>
+                                <th>Контактная информация</th>
+                                <th>Дата регистрации</th>
+                                <th>Кол-во заказов</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Иванов Иван Иванович</td>
+                                <td>
+                                    <div class="contact-info">
+                                        <div><i class="fas fa-phone"></i> +7 (901) 123-45-67</div>
+                                        <div><i class="fas fa-envelope"></i> ivanov@example.com</div>
+                                    </div>
+                                </td>
+                                <td>15.01.2025</td>
+                                <td>3</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Петров Петр Петрович</td>
+                                <td>
+                                    <div class="contact-info">
+                                        <div><i class="fas fa-phone"></i> +7 (902) 234-56-78</div>
+                                        <div><i class="fas fa-envelope"></i> petrov@example.com</div>
+                                    </div>
+                                </td>
+                                <td>20.01.2025</td>
+                                <td>1</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Сидоров Сидор Сидорович</td>
+                                <td>
+                                    <div class="contact-info">
+                                        <div><i class="fas fa-phone"></i> +7 (903) 345-67-89</div>
+                                        <div><i class="fas fa-envelope"></i> sidorov@example.com</div>
+                                    </div>
+                                </td>
+                                <td>25.01.2025</td>
+                                <td>2</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Козлов Константин Константинович</td>
+                                <td>
+                                    <div class="contact-info">
+                                        <div><i class="fas fa-phone"></i> +7 (904) 456-78-90</div>
+                                        <div><i class="fas fa-envelope"></i> kozlov@example.com</div>
+                                    </div>
+                                </td>
+                                <td>01.02.2025</td>
+                                <td>1</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Смирнов Сергей Сергеевич</td>
+                                <td>
+                                    <div class="contact-info">
+                                        <div><i class="fas fa-phone"></i> +7 (905) 567-89-01</div>
+                                        <div><i class="fas fa-envelope"></i> smirnov@example.com</div>
+                                    </div>
+                                </td>
+                                <td>10.02.2025</td>
+                                <td>2</td>
+                                <td class="actions">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button class="page-btn prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div id="feedback" class="content-section">
+                <div class="section-header">
+                    <h2>Управление отзывами</h2>
+                    <p>Отзывы клиентов о товарах</p>
+                </div>
+                
+                <div class="actions-panel">
+                    <div class="filter-options">
+                        <select>
+                            <option value="">Все статусы</option>
+                            <option value="approved">Опубликованные</option>
+                            <option value="pending">На модерации</option>
+                            <option value="rejected">Отклоненные</option>
+                        </select>
+                        <select>
+                            <option value="">Все оценки</option>
+                            <option value="5">5 звезд</option>
+                            <option value="4">4 звезды</option>
+                            <option value="3">3 звезды</option>
+                            <option value="2">2 звезды</option>
+                            <option value="1">1 звезда</option>
+                        </select>
+                        <button class="filter-button"><i class="fas fa-filter"></i> Применить</button>
+                    </div>
+                </div>
+                
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <img src="https://via.placeholder.com/40" alt="Клиент">
+                                <div>
+                                    <h4>Алексей К.</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <span>4.5</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="review-date">02.04.2025</span>
+                        </div>
+                        <div class="review-product">
+                            <img src="../images/Continental-VancoFourSeason-500.png" alt="Товар" class="product-thumbnail">
+                            <div>
+                                <h5>Летние шины Continental</h5>
+                                <span class="product-category">Шины</span>
+                            </div>
+                        </div>
+                        <p class="review-text">Отличные шины, хорошо держат дорогу. Доставка быстрая, всем рекомендую!</p>
+                        <div class="review-footer">
+                            <span class="status-badge approved">Опубликован</span>
+                            <div class="actions">
+                                <button class="action-btn approve"><i class="fas fa-check"></i></button>
+                                <button class="action-btn reject"><i class="fas fa-times"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <img src="https://via.placeholder.com/40" alt="Клиент">
+                                <div>
+                                    <h4>Мария Д.</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <span>4.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="review-date">01.04.2025</span>
+                        </div>
+                        <div class="review-product">
+                            <img src="../images/optimize.jpg" alt="Товар" class="product-thumbnail">
+                            <div>
+                                <h5>Моторное масло Castrol 5W-30</h5>
+                                <span class="product-category">Масла</span>
+                            </div>
+                        </div>
+                        <p class="review-text">Покупала масло, качество соответствует описанию. Спасибо за консультацию!</p>
+                        <div class="review-footer">
+                            <span class="status-badge pending">На модерации</span>
+                            <div class="actions">
+                                <button class="action-btn approve"><i class="fas fa-check"></i></button>
+                                <button class="action-btn reject"><i class="fas fa-times"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <img src="https://via.placeholder.com/40" alt="Клиент">
+                                <div>
+                                    <h4>Игорь П.</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <span>2.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="review-date">28.03.2025</span>
+                        </div>
+                        <div class="review-product">
+                            <img src="../images/Continental-VancoFourSeason-500.png" alt="Товар" class="product-thumbnail">
+                            <div>
+                                <h5>Зимние шины Continental</h5>
+                                <span class="product-category">Шины</span>
+                            </div>
+                        </div>
+                        <p class="review-text">Разочарован качеством. Ожидал большего от такого бренда. Пошли трещины после первой зимы.</p>
+                        <div class="review-footer">
+                            <span class="status-badge rejected">Отклонен</span>
+                            <div class="actions">
+                                <button class="action-btn approve"><i class="fas fa-check"></i></button>
+                                <button class="action-btn reject"><i class="fas fa-times"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <img src="https://via.placeholder.com/40" alt="Клиент">
+                                <div>
+                                    <h4>Анна С.</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <span>5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="review-date">25.03.2025</span>
+                        </div>
+                        <div class="review-product">
+                            <img src="../images/optimize (1).webp" alt="Товар" class="product-thumbnail">
+                            <div>
+                                <h5>Тормозные колодки</h5>
+                                <span class="product-category">Тормозные колодки</span>
+                            </div>
+                        </div>
+                        <p class="review-text">Отличные колодки, менять очень легко. Зря переживала, что не справлюсь сама. Спасибо за подробную инструкцию при покупке!</p>
+                        <div class="review-footer">
+                            <span class="status-badge approved">Опубликован</span>
+                            <div class="actions">
+                                <button class="action-btn approve"><i class="fas fa-check"></i></button>
+                                <button class="action-btn reject"><i class="fas fa-times"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <button class="page-btn prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div id="settings" class="content-section">
+                <div class="section-header">
+                    <h2>Настройки</h2>
+                    <p>Управление настройками магазина</p>
+                </div>
+                
+                <div class="settings-container">
+                    <div class="settings-sidebar">
+                        <ul class="settings-nav">
+                            <li class="active"><a href="#general-settings">Общие настройки</a></li>
+                            <li><a href="#store-settings">Настройки магазина</a></li>
+                            <li><a href="#payment-settings">Оплата и доставка</a></li>
+                            <li><a href="#email-settings">Email уведомления</a></li>
+                            <li><a href="#user-settings">Пользователи</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <div id="general-settings" class="settings-panel active">
+                            <h3>Общие настройки</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label for="site-name">Название сайта</label>
+                                    <input type="text" id="site-name" class="form-control" value="АвтоЗапчасти">
+                                </div>
+                                <div class="form-group">
+                                    <label for="site-description">Описание сайта</label>
+                                    <textarea id="site-description" class="form-control">Интернет-магазин автомобильных запчастей и аксессуаров с доставкой по всей стране.</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="site-logo">Логотип сайта</label>
+                                    <div class="file-upload-container">
+                                        <input type="file" id="site-logo" class="file-input">
+                                        <div class="file-preview">
+                                            <img src="../images/photo_2025-04-02_00-16-38.jpg" alt="Логотип">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary">Выбрать файл</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="favicon">Favicon</label>
+                                    <div class="file-upload-container">
+                                        <input type="file" id="favicon" class="file-input">
+                                        <div class="file-preview">
+                                            <img src="../images/favicon.ico" alt="Favicon">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary">Выбрать файл</button>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div id="store-settings" class="settings-panel">
+                            <h3>Настройки магазина</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label for="store-currency">Валюта</label>
+                                    <select id="store-currency" class="form-control">
+                                        <option value="RUB" selected>Российский рубль (₽)</option>
+                                        <option value="USD">Доллар США ($)</option>
+                                        <option value="EUR">Евро (€)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="store-address">Адрес магазина</label>
+                                    <input type="text" id="store-address" class="form-control" value="г. Минск, станция метро Малиновка">
+                                </div>
+                                <div class="form-group">
+                                    <label for="store-phone">Телефон</label>
+                                    <input type="text" id="store-phone" class="form-control" value="+375 (29) 123-45-67">
+                                </div>
+                                <div class="form-group">
+                                    <label for="store-email">Email</label>
+                                    <input type="email" id="store-email" class="form-control" value="sos2223kj@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="store-working-hours">Часы работы</label>
+                                    <input type="text" id="store-working-hours" class="form-control" value="Пн-Пт: 9:00 - 18:00, Сб: 10:00 - 16:00, Вс: выходной">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div id="payment-settings" class="settings-panel">
+                            <h3>Оплата и доставка</h3>
+                            <form class="settings-form">
+                                <div class="payment-methods">
+                                    <h4>Способы оплаты</h4>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="payment-cash" checked>
+                                            <label for="payment-cash">Наличными при получении</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="payment-card" checked>
+                                            <label for="payment-card">Банковской картой</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="payment-online">
+                                            <label for="payment-online">Онлайн-платежи</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="delivery-methods">
+                                    <h4>Способы доставки</h4>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="delivery-pickup" checked>
+                                            <label for="delivery-pickup">Самовывоз</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="delivery-courier" checked>
+                                            <label for="delivery-courier">Курьерская доставка</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="delivery-post">
+                                            <label for="delivery-post">Почта</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div id="email-settings" class="settings-panel">
+                            <h3>Email уведомления</h3>
+                            <form class="settings-form">
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="email-new-order" checked>
+                                        <label for="email-new-order">Новый заказ</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="email-order-status" checked>
+                                        <label for="email-order-status">Изменение статуса заказа</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="email-new-review" checked>
+                                        <label for="email-new-review">Новый отзыв</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="email-low-stock">
+                                        <label for="email-low-stock">Низкий запас товаров</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email-from">Email отправителя</label>
+                                    <input type="email" id="email-from" class="form-control" value="sos2223kj@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email-admin">Email администратора</label>
+                                    <input type="email" id="email-admin" class="form-control" value="admin@example.com">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div id="user-settings" class="settings-panel">
+                            <h3>Пользователи</h3>
+                            <div class="user-list">
+                                <div class="user-item">
+                                    <div class="user-info">
+                                        <img src="https://via.placeholder.com/40" alt="Администратор">
+                                        <div>
+                                            <h4>Администратор</h4>
+                                            <p>admin@example.com</p>
+                                            <span class="user-role admin">Администратор</span>
+                                        </div>
+                                    </div>
+                                    <div class="user-actions">
+                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </div>
+                                <div class="user-item">
+                                    <div class="user-info">
+                                        <img src="https://via.placeholder.com/40" alt="Менеджер">
+                                        <div>
+                                            <h4>Менеджер</h4>
+                                            <p>manager@example.com</p>
+                                            <span class="user-role manager">Менеджер</span>
+                                        </div>
+                                    </div>
+                                    <div class="user-actions">
+                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-user-container">
+                                <button class="add-button"><i class="fas fa-user-plus"></i> Добавить пользователя</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Модальное окно для добавления/редактирования товара -->
+    <div class="modal" id="productModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="productModalTitle">Добавить товар</h2>
+                <button type="button" class="close-modal" id="closeProductModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId" name="productId">
+                    
+                    <div class="form-group">
+                        <label for="productName">Название товара</label>
+                        <input type="text" id="productName" name="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productSKU">Артикул (SKU)</label>
+                        <input type="text" id="productSKU" name="sku" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="productCategory">Категория</label>
+                            <select id="productCategory" name="category" class="form-control" required>
+                                <option value="">Выберите категорию</option>
+                                <option value="Двигатель">Двигатель</option>
+                                <option value="Кузовные детали">Кузовные детали</option>
+                                <option value="Тормозная система">Тормозная система</option>
+                                <option value="Подвеска">Подвеска</option>
+                                <option value="Электрика">Электрика</option>
+                                <option value="Аксессуары">Аксессуары</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="productBrand">Бренд</label>
+                            <input type="text" id="productBrand" name="brand" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="productPrice">Цена</label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" min="0" id="productPrice" name="price" class="form-control" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">BYN</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="productDiscountPrice">Цена со скидкой (необязательно)</label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" min="0" id="productDiscountPrice" name="discountPrice" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">BYN</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productStock">Количество на складе</label>
+                        <input type="number" min="0" id="productStock" name="stock" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDescription">Описание</label>
+                        <textarea id="productDescription" name="description" class="form-control" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Изображения товара</label>
+                        <div class="product-images-container">
+                            <div class="main-image-container">
+                                <div class="file-upload-container">
+                                    <img src="images/placeholder-image.jpg" alt="Главное изображение" class="file-preview">
+                                    <input type="file" class="file-input" id="mainProductImage" name="mainImage" accept="image/*">
+                                    <button type="button" class="btn btn-primary btn-sm" id="selectMainImage">Выбрать главное изображение</button>
+                                </div>
+                            </div>
+                            <div class="additional-images-container">
+                                <div class="file-upload-container">
+                                    <img src="images/placeholder-image.jpg" alt="Дополнительное изображение" class="file-preview">
+                                    <input type="file" class="file-input" name="additionalImage1" accept="image/*">
+                                    <button type="button" class="btn btn-secondary btn-sm">+</button>
+                                </div>
+                                <div class="file-upload-container">
+                                    <img src="images/placeholder-image.jpg" alt="Дополнительное изображение" class="file-preview">
+                                    <input type="file" class="file-input" name="additionalImage2" accept="image/*">
+                                    <button type="button" class="btn btn-secondary btn-sm">+</button>
+                                </div>
+                                <div class="file-upload-container">
+                                    <img src="images/placeholder-image.jpg" alt="Дополнительное изображение" class="file-preview">
+                                    <input type="file" class="file-input" name="additionalImage3" accept="image/*">
+                                    <button type="button" class="btn btn-secondary btn-sm">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Спецификации</label>
+                        <div id="specificationsContainer">
+                            <div class="specification-row">
+                                <div class="form-row">
+                                    <div class="col-md-5">
+                                        <input type="text" name="spec_key[]" class="form-control" placeholder="Название">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" name="spec_value[]" class="form-control" placeholder="Значение">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger btn-sm remove-spec">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="addSpecification" class="btn btn-secondary mt-2">
+                            Добавить спецификацию
+                        </button>
+                    </div>
+                    
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="productFeatured" name="featured" class="form-check-input">
+                        <label for="productFeatured" class="form-check-label">Рекомендуемый товар</label>
+                    </div>
+                    
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="productActive" name="active" class="form-check-input" checked>
+                        <label for="productActive" class="form-check-label">Активный (отображается на сайте)</label>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-outline-secondary" id="cancelProductForm">Отмена</button>
+                        <button type="submit" class="btn btn-primary" id="saveProduct">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html> 

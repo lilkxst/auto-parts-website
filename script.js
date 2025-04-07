@@ -336,26 +336,44 @@ if (contactForm) {
     });
 }
 
-// Функция для показа уведомлений
-function showNotification(message, type) {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-
-    document.body.appendChild(notification);
-
-    // Анимация появления
+// Уведомления
+function showNotification(message, type = 'info') {
+  // Создаем элемент уведомления
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.innerHTML = `
+    <div class="notification-content">
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+      <span>${message}</span>
+    </div>
+    <button type="button" class="notification-close">
+      <i class="fas fa-times"></i>
+    </button>
+  `;
+  
+  // Добавляем на страницу
+  document.body.appendChild(notification);
+  
+  // Добавляем класс для анимации появления
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 10);
+  
+  // Удаляем через 3 секунды
+  setTimeout(() => {
+    notification.classList.remove('show');
     setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
-
-    // Удаление уведомления через 3 секунды
+      notification.remove();
+    }, 300);
+  }, 3000);
+  
+  // Обработчик закрытия
+  notification.querySelector('.notification-close').addEventListener('click', function() {
+    notification.classList.remove('show');
     setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 3000);
+      notification.remove();
+    }, 300);
+  });
 }
 
 // Добавляем обработчик для карточек популярных товаров
@@ -384,4 +402,390 @@ document.addEventListener('DOMContentLoaded', () => {
         // Очищаем сохраненную категорию
         localStorage.removeItem('selectedCategory');
     }
-}); 
+});
+
+// Корзина покупок
+document.addEventListener('DOMContentLoaded', function() {
+  // Инициализация корзины
+  initCart();
+  
+  // Обработчики событий для кнопок добавления в корзину
+  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const productCard = this.closest('.product-card');
+      const productId = productCard.getAttribute('data-id');
+      const productName = productCard.querySelector('h3').textContent;
+      const productPrice = parseFloat(productCard.querySelector('.product-price').textContent);
+      const productImage = productCard.querySelector('img').getAttribute('src');
+      const productCategory = productCard.getAttribute('data-category');
+      
+      addToCart({
+        id: productId,
+        name: productName,
+        price: productPrice,
+        image: productImage,
+        category: productCategory,
+        quantity: 1
+      });
+      
+      showNotification(`${productName} добавлен в корзину`, 'success');
+    });
+  });
+  
+  // Обработчики для страницы корзины
+  if (window.location.pathname.includes('cart.html')) {
+    renderCart();
+    
+    // Кнопка перехода к оформлению заказа
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', function() {
+        window.location.href = 'checkout.html';
+      });
+    }
+  }
+  
+  // Обработчики для страницы оформления заказа
+  if (window.location.pathname.includes('checkout.html')) {
+    renderCheckoutSummary();
+    
+    // Изменение метода доставки
+    const deliveryOptions = document.querySelectorAll('input[name="delivery"]');
+    deliveryOptions.forEach(option => {
+      option.addEventListener('change', function() {
+        updateCheckoutSummary();
+      });
+    });
+    
+    // Кнопка размещения заказа
+    const placeOrderBtn = document.getElementById('placeOrderBtn');
+    if (placeOrderBtn) {
+      placeOrderBtn.addEventListener('click', function() {
+        const form = document.getElementById('checkoutForm');
+        if (form.checkValidity()) {
+          // Размещение заказа
+          placeOrder();
+          window.location.href = 'order-confirmation.html';
+        } else {
+          form.reportValidity();
+        }
+      });
+    }
+  }
+});
+
+// Инициализация корзины
+function initCart() {
+  // Проверяем существование корзины в localStorage
+  if (!localStorage.getItem('cart')) {
+    localStorage.setItem('cart', JSON.stringify([]));
+  }
+  
+  // Обновляем счетчик товаров в корзине
+  updateCartCount();
+}
+
+// Добавление товара в корзину
+function addToCart(product) {
+  let cart = JSON.parse(localStorage.getItem('cart'));
+  
+  // Проверяем, есть ли уже такой товар в корзине
+  const existingProductIndex = cart.findIndex(item => item.id === product.id);
+  
+  if (existingProductIndex !== -1) {
+    // Если товар уже есть, увеличиваем количество
+    cart[existingProductIndex].quantity += product.quantity;
+  } else {
+    // Если товара нет, добавляем его
+    cart.push(product);
+  }
+  
+  // Сохраняем корзину в localStorage
+  localStorage.setItem('cart', JSON.stringify(cart));
+  
+  // Обновляем счетчик товаров
+  updateCartCount();
+}
+
+// Обновление количества товаров в иконке корзины
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart'));
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+  
+  const cartCountElements = document.querySelectorAll('.cart-count');
+  cartCountElements.forEach(element => {
+    element.textContent = totalItems;
+  });
+}
+
+// Удаление товара из корзины
+function removeFromCart(productId) {
+  let cart = JSON.parse(localStorage.getItem('cart'));
+  cart = cart.filter(item => item.id !== productId);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  
+  // Обновляем отображение корзины
+  renderCart();
+  updateCartCount();
+}
+
+// Изменение количества товара в корзине
+function updateQuantity(productId, change) {
+  let cart = JSON.parse(localStorage.getItem('cart'));
+  const index = cart.findIndex(item => item.id === productId);
+  
+  if (index !== -1) {
+    cart[index].quantity += change;
+    
+    // Если количество стало 0 или меньше, удаляем товар
+    if (cart[index].quantity <= 0) {
+      cart.splice(index, 1);
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Обновляем отображение корзины
+    renderCart();
+    updateCartCount();
+  }
+}
+
+// Отображение корзины на странице cart.html
+function renderCart() {
+  const cart = JSON.parse(localStorage.getItem('cart'));
+  const emptyCartElement = document.getElementById('emptyCart');
+  const filledCartElement = document.getElementById('filledCart');
+  const cartItemsContainer = document.getElementById('cartItems');
+  
+  if (!emptyCartElement || !filledCartElement || !cartItemsContainer) return;
+  
+  // Показываем соответствующий блок в зависимости от наличия товаров
+  if (cart.length === 0) {
+    emptyCartElement.style.display = 'block';
+    filledCartElement.style.display = 'none';
+    return;
+  } else {
+    emptyCartElement.style.display = 'none';
+    filledCartElement.style.display = 'block';
+  }
+  
+  // Очищаем контейнер с товарами
+  cartItemsContainer.innerHTML = '';
+  
+  // Заполняем таблицу товарами
+  let subtotal = 0;
+  
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+    
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div class="cart-product">
+          <img src="${item.image}" alt="${item.name}" class="cart-product-img">
+          <div class="cart-product-info">
+            <h3>${item.name}</h3>
+            <p>Категория: ${item.category}</p>
+          </div>
+        </div>
+      </td>
+      <td>${item.price.toFixed(2)} BYN</td>
+      <td>
+        <div class="cart-quantity">
+          <button type="button" class="decrease-qty" data-id="${item.id}">-</button>
+          <span>${item.quantity}</span>
+          <button type="button" class="increase-qty" data-id="${item.id}">+</button>
+        </div>
+      </td>
+      <td>${itemTotal.toFixed(2)} BYN</td>
+      <td>
+        <div class="cart-actions">
+          <button type="button" class="remove-item" data-id="${item.id}">
+            <i class="fas fa-trash-alt"></i> Удалить
+          </button>
+        </div>
+      </td>
+    `;
+    
+    cartItemsContainer.appendChild(tr);
+  });
+  
+  // Добавляем обработчики событий для кнопок
+  document.querySelectorAll('.decrease-qty').forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.getAttribute('data-id');
+      updateQuantity(productId, -1);
+    });
+  });
+  
+  document.querySelectorAll('.increase-qty').forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.getAttribute('data-id');
+      updateQuantity(productId, 1);
+    });
+  });
+  
+  document.querySelectorAll('.remove-item').forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.getAttribute('data-id');
+      removeFromCart(productId);
+    });
+  });
+  
+  // Обновляем итоговую сумму
+  updateCartSummary(subtotal);
+}
+
+// Обновление итоговой суммы в корзине
+function updateCartSummary(subtotal) {
+  const subtotalElement = document.getElementById('subtotal');
+  const discountElement = document.getElementById('discount');
+  const shippingElement = document.getElementById('shipping');
+  const totalElement = document.getElementById('total');
+  
+  if (!subtotalElement || !discountElement || !shippingElement || !totalElement) return;
+  
+  // Рассчитываем скидку и доставку
+  const discount = 0; // В данном примере скидки нет
+  const shipping = subtotal > 0 ? 10 : 0; // Доставка стоит 10 BYN
+  const total = subtotal - discount + shipping;
+  
+  // Обновляем элементы на странице
+  subtotalElement.textContent = subtotal.toFixed(2) + ' BYN';
+  discountElement.textContent = discount.toFixed(2) + ' BYN';
+  shippingElement.textContent = shipping.toFixed(2) + ' BYN';
+  totalElement.textContent = total.toFixed(2) + ' BYN';
+}
+
+// Отображение информации о заказе на странице оформления
+function renderCheckoutSummary() {
+  const cart = JSON.parse(localStorage.getItem('cart'));
+  const checkoutProductsElement = document.getElementById('checkoutProducts');
+  
+  if (!checkoutProductsElement) return;
+  
+  // Очищаем контейнер
+  checkoutProductsElement.innerHTML = '';
+  
+  // Заполняем товарами
+  cart.forEach(item => {
+    const productDiv = document.createElement('div');
+    productDiv.className = 'checkout-product';
+    productDiv.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="checkout-product-img">
+      <div class="checkout-product-info">
+        <h4>${item.name}</h4>
+        <div class="checkout-product-price">${item.price.toFixed(2)} BYN</div>
+        <div class="checkout-product-quantity">Количество: ${item.quantity}</div>
+      </div>
+    `;
+    
+    checkoutProductsElement.appendChild(productDiv);
+  });
+  
+  // Обновляем итоговую сумму
+  updateCheckoutSummary();
+}
+
+// Обновление итоговой суммы на странице оформления заказа
+function updateCheckoutSummary() {
+  const cart = JSON.parse(localStorage.getItem('cart'));
+  
+  // Рассчитываем сумму товаров
+  const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  
+  // Получаем способ доставки
+  const deliveryMethod = document.querySelector('input[name="delivery"]:checked');
+  const shipping = deliveryMethod && deliveryMethod.value === 'pickup' ? 0 : 10;
+  
+  // Рассчитываем скидку и итоговую сумму
+  const discount = 0;
+  const total = subtotal - discount + shipping;
+  
+  // Обновляем элементы на странице
+  document.getElementById('checkoutSubtotal').textContent = subtotal.toFixed(2) + ' BYN';
+  document.getElementById('checkoutDiscount').textContent = discount.toFixed(2) + ' BYN';
+  document.getElementById('checkoutShipping').textContent = shipping.toFixed(2) + ' BYN';
+  document.getElementById('checkoutTotal').textContent = total.toFixed(2) + ' BYN';
+}
+
+// Размещение заказа
+function placeOrder() {
+  const cart = JSON.parse(localStorage.getItem('cart'));
+  
+  // Получаем данные формы
+  const form = document.getElementById('checkoutForm');
+  if (!form) return;
+  
+  const formData = new FormData(form);
+  
+  // Создаем объект заказа
+  const order = {
+    customer: {
+      firstName: formData.get('firstName'),
+      lastName: formData.get('lastName'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      city: formData.get('city'),
+      address: formData.get('address'),
+      zipCode: formData.get('zipCode'),
+      apartment: formData.get('apartment')
+    },
+    orderDetails: {
+      items: cart,
+      delivery: formData.get('delivery'),
+      payment: formData.get('payment'),
+      comment: formData.get('orderComment'),
+      subtotal: cart.reduce((total, item) => total + (item.price * item.quantity), 0),
+      shipping: formData.get('delivery') === 'pickup' ? 0 : 10,
+      discount: 0
+    },
+    orderDate: new Date().toISOString()
+  };
+  
+  // Отправляем заказ на сервер
+  try {
+    // POST-запрос на бэкенд
+    fetch('http://localhost:5000/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(order)
+    })
+    .then(response => {
+      if (!response.ok) {
+        console.error('Ошибка при отправке заказа:', response.statusText);
+        showNotification('Произошла ошибка при оформлении заказа. Попробуйте еще раз позже.', 'error');
+        return null;
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data) {
+        console.log('Заказ успешно отправлен:', data);
+        // Сохраняем ID заказа для страницы подтверждения
+        localStorage.setItem('lastOrderId', data.orderId || 'ORD-' + Math.floor(100000 + Math.random() * 900000));
+        
+        // Очищаем корзину
+        localStorage.setItem('cart', JSON.stringify([]));
+        updateCartCount();
+      }
+    })
+    .catch(error => {
+      console.error('Ошибка при отправке заказа:', error);
+      showNotification('Произошла ошибка при оформлении заказа. Попробуйте еще раз позже.', 'error');
+    });
+  } catch (error) {
+    console.error('Ошибка при отправке заказа:', error);
+    
+    // В случае ошибки или отсутствия бэкенда, просто сохраняем ID заказа для страницы подтверждения
+    localStorage.setItem('lastOrderId', 'ORD-' + Math.floor(100000 + Math.random() * 900000));
+    
+    // Очищаем корзину
+    localStorage.setItem('cart', JSON.stringify([]));
+    updateCartCount();
+  }
+} 

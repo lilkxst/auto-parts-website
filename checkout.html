@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>АвтоЗапчасти - Оформление заказа</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo fade-in">
+        <img
+          src="images/photo_2025-04-02_00-16-38.jpg"
+          alt="Auto Parts Logo"
+          class="logo-img"
+        />
+      </div>
+      <nav class="nav-links slide-in">
+        <a href="index.html">Главная</a>
+        <a href="catalog.html">Каталог</a>
+        <a href="contacts.html">Контакты</a>
+        <a href="about.html">О нас</a>
+      </nav>
+      <div class="contact-info fade-in">
+        <p><i class="fas fa-phone"></i> <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
+        <p>
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a>
+        </p>
+        <a href="cart.html" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="checkout-page">
+      <div class="checkout-form">
+        <h1 class="checkout-title">Оформление заказа</h1>
+        
+        <form id="checkoutForm">
+          <div class="form-section">
+            <h3 class="form-section-title">Контактная информация</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">Имя*</label>
+                <input type="text" id="firstName" name="firstName" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Фамилия*</label>
+                <input type="text" id="lastName" name="lastName" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Телефон*</label>
+                <input type="tel" id="phone" name="phone" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email*</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3 class="form-section-title">Адрес доставки</h3>
+            <div class="form-group">
+              <label for="city">Город*</label>
+              <input type="text" id="city" name="city" required>
+            </div>
+            <div class="form-group">
+              <label for="address">Адрес*</label>
+              <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="zipCode">Почтовый индекс</label>
+                <input type="text" id="zipCode" name="zipCode">
+              </div>
+              <div class="form-group">
+                <label for="apartment">Квартира/Офис</label>
+                <input type="text" id="apartment" name="apartment">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3 class="form-section-title">Способ доставки</h3>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="delivery" value="courier" checked>
+                Курьерская доставка (+10.00 BYN)
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="delivery" value="pickup">
+                Самовывоз (бесплатно)
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3 class="form-section-title">Способ оплаты</h3>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="payment" value="cash" checked>
+                Наличными при получении
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="payment" value="card">
+                Банковской картой при получении
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="payment" value="online">
+                Оплата онлайн
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3 class="form-section-title">Комментарий к заказу</h3>
+            <div class="form-group">
+              <textarea id="orderComment" name="orderComment" rows="4"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="checkout-summary">
+        <h3 class="checkout-summary-title">Ваш заказ</h3>
+        <div class="checkout-products" id="checkoutProducts">
+          <!-- Здесь будут динамически добавляться товары из JS -->
+        </div>
+        
+        <div class="checkout-summary-row">
+          <span>Сумма товаров:</span>
+          <span id="checkoutSubtotal">0.00 BYN</span>
+        </div>
+        <div class="checkout-summary-row">
+          <span>Скидка:</span>
+          <span id="checkoutDiscount">0.00 BYN</span>
+        </div>
+        <div class="checkout-summary-row">
+          <span>Доставка:</span>
+          <span id="checkoutShipping">10.00 BYN</span>
+        </div>
+        <div class="checkout-summary-row total">
+          <span>Итого к оплате:</span>
+          <span id="checkoutTotal">0.00 BYN</span>
+        </div>
+        
+        <button class="place-order-btn" id="placeOrderBtn">Разместить заказ</button>
+        <a href="cart.html" class="continue-shopping">
+          <i class="fas fa-arrow-left"></i> Вернуться в корзину
+        </a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-col">
+        <h3>АвтоЗапчасти</h3>
+        <p>Мы предлагаем широкий ассортимент автомобильных запчастей высокого качества от лучших производителей.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Контакты</h3>
+        <p><i class="fas fa-map-marker-alt"></i> г. Минск, ул. Примерная, 123</p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>Режим работы</h3>
+        <p>Пн-Пт: 9:00 - 18:00</p>
+        <p>Сб: 10:00 - 15:00</p>
+        <p>Вс: выходной</p>
+      </div>
+      <div class="footer-col">
+        <h3>Следите за нами</h3>
+        <div class="social-links">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+          <a href="https://t.me/share/url?url=https://autozapchasti.by" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 АвтоЗапчасти. Все права защищены.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html> 

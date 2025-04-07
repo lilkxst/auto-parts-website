@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Автозапчасти</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .status {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .online {
+            background-color: #2ecc71;
+        }
+        .offline {
+            background-color: #e74c3c;
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            border-left: 3px solid #3498db;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .method {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .get { color: #2980b9; }
+        .post { color: #27ae60; }
+        .put { color: #f39c12; }
+        .delete { color: #c0392b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>API Интернет-магазина Автозапчасти</h1>
+        
+        <div class="status">
+            <div class="indicator" id="status-indicator"></div>
+            <p>Статус API: <span id="status-text">Проверка...</span></p>
+        </div>
+        
+        <div id="api-info">
+            <p>Загрузка информации...</p>
+        </div>
+        
+        <h2>Основные Endpoints</h2>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span> /api/products
+            <p>Получение списка товаров с пагинацией и фильтрацией</p>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method post">POST</span> /api/auth/login
+            <p>Аутентификация пользователя</p>
+            <pre>{
+  "username": "your_username",
+  "password": "your_password"
+}</pre>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span> /api/orders
+            <p>Получение списка заказов (требуется аутентификация)</p>
+        </div>
+        
+        <p>Для полного списка API-endpoints см. документацию в <a href="https://github.com/your-repo/auto-parts-website/backend">репозитории проекта</a>.</p>
+    </div>
+
+    <script>
+        // Проверка статуса API
+        async function checkApiStatus() {
+            try {
+                const response = await fetch('/');
+                const data = await response.json();
+                
+                // Обновляем индикатор и текст статуса
+                const indicator = document.getElementById('status-indicator');
+                const statusText = document.getElementById('status-text');
+                const apiInfo = document.getElementById('api-info');
+                
+                if (response.ok) {
+                    indicator.className = 'indicator online';
+                    statusText.textContent = 'Онлайн';
+                    
+                    // Отображаем информацию об API
+                    apiInfo.innerHTML = `
+                        <p><strong>Версия:</strong> ${data.version || 'Не указана'}</p>
+                        <p><strong>Статус:</strong> ${data.status || 'Активен'}</p>
+                        <p><strong>Сообщение:</strong> ${data.message || 'API работает нормально'}</p>
+                    `;
+                } else {
+                    indicator.className = 'indicator offline';
+                    statusText.textContent = 'Офлайн или ошибка';
+                    apiInfo.innerHTML = '<p>Не удалось получить информацию от API</p>';
+                }
+            } catch (error) {
+                // В случае ошибки отмечаем API как офлайн
+                const indicator = document.getElementById('status-indicator');
+                const statusText = document.getElementById('status-text');
+                const apiInfo = document.getElementById('api-info');
+                
+                indicator.className = 'indicator offline';
+                statusText.textContent = 'Офлайн';
+                apiInfo.innerHTML = `<p>Ошибка подключения к API: ${error.message}</p>`;
+            }
+        }
+        
+        // Запускаем проверку при загрузке страницы
+        window.addEventListener('load', checkApiStatus);
+    </script>
+</body>
+</html> 

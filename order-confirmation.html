@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>АвтоЗапчасти - Заказ оформлен</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <meta http-equiv="refresh" content="10;url=index.html">
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo fade-in">
+        <img
+          src="images/photo_2025-04-02_00-16-38.jpg"
+          alt="Auto Parts Logo"
+          class="logo-img"
+        />
+      </div>
+      <nav class="nav-links slide-in">
+        <a href="index.html">Главная</a>
+        <a href="catalog.html">Каталог</a>
+        <a href="contacts.html">Контакты</a>
+        <a href="about.html">О нас</a>
+      </nav>
+      <div class="contact-info fade-in">
+        <p><i class="fas fa-phone"></i> <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
+        <p>
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a>
+        </p>
+        <a href="cart.html" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="confirmation-page">
+      <div class="confirmation-container fade-in">
+        <div class="confirmation-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        
+        <h1 class="confirmation-title">Заказ успешно оформлен!</h1>
+        
+        <div class="confirmation-message">
+          <p>Спасибо за ваш заказ. Информация о заказе отправлена на ваш email.</p>
+          <div class="order-details">
+            <h3>Номер заказа: <span id="orderNumber">ORD-123456</span></h3>
+            <p>Дата оформления: <span id="orderDate">26 апреля 2025</span></p>
+          </div>
+        </div>
+        
+        <div class="confirmation-actions">
+          <a href="catalog.html" class="btn">Продолжить покупки</a>
+          <a href="index.html" class="btn secondary">Вернуться на главную</a>
+        </div>
+        
+        <div class="redirect-message">
+          <p>Вы будете автоматически перенаправлены на главную страницу через <span id="countdown">10</span> секунд</p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-col">
+        <h3>АвтоЗапчасти</h3>
+        <p>Мы предлагаем широкий ассортимент автомобильных запчастей высокого качества от лучших производителей.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Контакты</h3>
+        <p><i class="fas fa-map-marker-alt"></i> г. Минск, станция метро Малиновка</p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>Режим работы</h3>
+        <p>Пн-Пт: 9:00 - 18:00</p>
+        <p>Сб: 10:00 - 15:00</p>
+        <p>Вс: выходной</p>
+      </div>
+      <div class="footer-col">
+        <h3>Следите за нами</h3>
+        <div class="social-links">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+          <a href="https://t.me/share/url?url=https://autozapchasti.by" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 АвтоЗапчасти. Все права защищены.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      // Обратный отсчет
+      let countdown = 10;
+      const countdownElement = document.getElementById('countdown');
+      
+      function updateCountdown() {
+        countdown--;
+        countdownElement.textContent = countdown;
+        
+        if (countdown <= 0) {
+          clearInterval(countdownInterval);
+        }
+      }
+      
+      const countdownInterval = setInterval(updateCountdown, 1000);
+      
+      // Отображение информации о заказе
+      document.addEventListener('DOMContentLoaded', function() {
+        // Получаем ID заказа из localStorage или генерируем новый
+        const orderNumber = localStorage.getItem('lastOrderId') || 'ORD-' + Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('orderNumber').textContent = orderNumber;
+        
+        // Очищаем ID заказа из localStorage
+        localStorage.removeItem('lastOrderId');
+        
+        // Текущая дата
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('orderDate').textContent = now.toLocaleDateString('ru-RU', options);
+        
+        // Очистка корзины
+        localStorage.removeItem('cart');
+        document.querySelector('.cart-count').textContent = '0';
+      });
+    </script>
+  </body>
+</html> 
