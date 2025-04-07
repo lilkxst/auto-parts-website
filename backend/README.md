@@ -1,6 +1,7 @@
 # Бэкенд Интернет-магазина Автозапчастей
 
 API-сервер для интернет-магазина автозапчастей, построенный на Node.js, Express и MongoDB.
+ GitHub Pages: https://triganus.github.io/auto-parts-website/
 
 ## Технологии
 
@@ -11,8 +12,6 @@ API-сервер для интернет-магазина автозапчаст
 - **express-validator**: Валидация данных
 - **Multer**: Загрузка файлов
 - **CORS**: Для безопасных межсайтовых запросов
-
-- GitHub Pages: https://triganus.github.io/auto-parts-website/
 
 ## Требования
 
