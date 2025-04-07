@@ -12,6 +12,8 @@ API-сервер для интернет-магазина автозапчаст
 - **Multer**: Загрузка файлов
 - **CORS**: Для безопасных межсайтовых запросов
 
+- GitHub Pages: https://triganus.github.io/auto-parts-website/
+
 ## Требования
 
 - Node.js 14+ 
