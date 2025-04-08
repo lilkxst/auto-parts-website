@@ -7,8 +7,6 @@ const connectDB = async () => {
   try {
     // Настройки подключения
     const options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       serverSelectionTimeoutMS: 10000, // Увеличиваем тайм-аут до 10 секунд
       socketTimeoutMS: 45000, // Close sockets после 45 секунд неактивности
       family: 4, // Используем IPv4, избегаем проблем с IPv6

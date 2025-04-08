@@ -755,6 +755,19 @@ function updateCheckoutSummary() {
 function placeOrder() {
   const cart = JSON.parse(localStorage.getItem('cart'));
   
+  // Проверяем и нормализуем элементы корзины
+  const validatedCart = cart.map(item => {
+    // Проверяем наличие и корректность всех обязательных полей
+    return {
+      id: item.id || `item_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      name: item.name || 'Неизвестный товар',
+      price: typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0,
+      quantity: typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1,
+      image: item.image || '',
+      category: item.category || ''
+    };
+  });
+  
   // Получаем данные формы
   const form = document.getElementById('checkoutForm');
   if (!form) return;
@@ -774,16 +787,33 @@ function placeOrder() {
       apartment: formData.get('apartment')
     },
     orderDetails: {
-      items: cart,
+      items: validatedCart,
       delivery: formData.get('delivery'),
       payment: formData.get('payment'),
       comment: formData.get('orderComment'),
-      subtotal: cart.reduce((total, item) => total + (item.price * item.quantity), 0),
+      subtotal: validatedCart.reduce((total, item) => total + (item.price * item.quantity), 0),
       shipping: formData.get('delivery') === 'pickup' ? 0 : 10,
       discount: 0
     },
     orderDate: new Date().toISOString()
   };
+  
+  // ОТЛАДКА: Выводим структуру заказа
+  console.log('ОТПРАВЛЯЕМЫЕ ДАННЫЕ ЗАКАЗА:');
+  console.log(JSON.stringify(order, null, 2));
+  console.log('Проверка структуры заказа:');
+  console.log('- customer:', order.customer ? 'OK' : 'MISSING');
+  console.log('  - firstName:', order.customer?.firstName ? 'OK' : 'MISSING/EMPTY');
+  console.log('  - lastName:', order.customer?.lastName ? 'OK' : 'MISSING/EMPTY');
+  console.log('  - email:', order.customer?.email ? 'OK' : 'MISSING/EMPTY');
+  console.log('  - phone:', order.customer?.phone ? 'OK' : 'MISSING/EMPTY');
+  console.log('  - city:', order.customer?.city ? 'OK' : 'MISSING/EMPTY');
+  console.log('  - address:', order.customer?.address ? 'OK' : 'MISSING/EMPTY');
+  console.log('- orderDetails:', order.orderDetails ? 'OK' : 'MISSING');
+  console.log('  - items:', order.orderDetails?.items?.length > 0 ? 'OK' : 'EMPTY ARRAY');
+  console.log('  - delivery:', order.orderDetails?.delivery ? 'OK' : 'MISSING/EMPTY');
+  console.log('  - payment:', order.orderDetails?.payment ? 'OK' : 'MISSING/EMPTY');
+  console.log('  - subtotal:', typeof order.orderDetails?.subtotal === 'number' ? 'OK' : 'NOT A NUMBER');
   
   // Показываем индикатор загрузки
   showNotification('Оформляем заказ...', 'info');
@@ -798,7 +828,20 @@ function placeOrder() {
   })
   .then(response => {
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      // Дополнительный отладочный вывод
+      console.error(`Ошибка запроса: ${response.status} ${response.statusText}`);
+      return response.text().then(text => {
+        try {
+          // Пробуем распарсить JSON
+          const errorData = JSON.parse(text);
+          console.error('Детали ошибки:', errorData);
+          throw new Error(`Ошибка сервера: ${errorData.message || response.statusText}`);
+        } catch (e) {
+          // Если не удалось распарсить как JSON, выводим как текст
+          console.error('Ответ сервера (текст):', text);
+          throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
+        }
+      });
     }
     return response.json();
   })
@@ -822,6 +865,7 @@ function placeOrder() {
   })
   .catch(error => {
     console.error('Ошибка при отправке заказа:', error);
+    console.error('Стек ошибки:', error.stack);
     
     // Показываем уведомление об ошибке
     showNotification('Произошла ошибка при оформлении заказа. Попробуйте еще раз позже.', 'error');

@@ -5,6 +5,7 @@ const { sendOrderConfirmation } = require('../utils/emailSender');
 exports.createOrder = async (req, res) => {
   try {
     const orderData = req.body;
+    console.log('Received order data:', JSON.stringify(orderData, null, 2));
     
     // Если мы в демо-режиме, то просто генерируем ответ
     if (global.useDemoMode) {
@@ -25,20 +26,39 @@ exports.createOrder = async (req, res) => {
     }
     
     // В реальном режиме создаем заказ в базе данных
+    console.log('Creating order in database');
     const order = new Order(orderData);
     await order.save();
+    console.log('Order saved successfully with ID:', order._id);
     
-    // Отправляем уведомление на email
-    const emailResult = await sendOrderConfirmation(orderData);
-    console.log('Email sending result:', emailResult);
-    
-    res.status(201).json({
-      success: true,
-      message: 'Order created successfully',
-      orderId: order._id,
-      orderDate: order.createdAt,
-      emailSent: emailResult.success
-    });
+    try {
+      // Отправляем уведомление на email
+      console.log('Attempting to send email confirmation...');
+      const emailResult = await sendOrderConfirmation(orderData);
+      console.log('Email sending result:', emailResult);
+      
+      order.emailSent = emailResult.success;
+      await order.save();
+      
+      res.status(201).json({
+        success: true,
+        message: 'Order created successfully',
+        orderId: order._id,
+        orderDate: order.createdAt,
+        emailSent: emailResult.success
+      });
+    } catch (emailError) {
+      console.error('Error in email sending but order created:', emailError);
+      
+      // Даже если есть проблемы с отправкой email, заказ успешно создан
+      res.status(201).json({
+        success: true,
+        message: 'Order created successfully, but email notification failed',
+        orderId: order._id,
+        orderDate: order.createdAt,
+        emailSent: false
+      });
+    }
   } catch (error) {
     console.error('Error creating order:', error);
     res.status(500).json({

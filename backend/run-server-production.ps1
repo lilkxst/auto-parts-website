@@ -21,7 +21,7 @@ JWT_EXPIRE=30d
 
 # Настройки SMTP для отправки писем
 EMAIL_USER=sos2223kj@gmail.com
-EMAIL_PASS=$EMAIL_PASSWORD
+EMAIL_PASS=idgddxelkylaabjp
 EMAIL_FROM=АвтоЗапчасти <sos2223kj@gmail.com>
 "@ | Out-File -FilePath .\.env -Encoding utf8
 

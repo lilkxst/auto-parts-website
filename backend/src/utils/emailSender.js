@@ -10,10 +10,12 @@ console.log('Email configuration:', {
 
 // Создание транспорта для отправки почты
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER || 'sos2223kj@gmail.com',
-    pass: process.env.EMAIL_PASS || 'app_password' // Заменить на реальный пароль приложения
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   },
   // Дополнительные параметры для повышения успешности отправки
   tls: {
@@ -43,8 +45,21 @@ const sendOrderConfirmation = async (order) => {
   }
   
   console.log('Attempting to send real email for order...');
+  console.log('Order data:', JSON.stringify(order, null, 2));
   
   try {
+    // Проверка, что транспортер создан
+    if (!transporter) {
+      console.error('Email transporter is not initialized');
+      return { success: false, error: 'Email transporter not initialized' };
+    }
+    
+    // Проверка данных заказа
+    if (!order || !order.customer || !order.orderDetails) {
+      console.error('Invalid order data format:', order);
+      return { success: false, error: 'Invalid order data format' };
+    }
+    
     // Подготовка информации о товарах
     const itemsList = order.orderDetails.items.map(item => 
       `<tr>
@@ -57,13 +72,15 @@ const sendOrderConfirmation = async (order) => {
 
     // Расчет итоговой суммы
     const subtotal = order.orderDetails.subtotal;
-    const shipping = order.orderDetails.shipping;
-    const discount = order.orderDetails.discount;
+    const shipping = order.orderDetails.shipping || 0;
+    const discount = order.orderDetails.discount || 0;
     const total = subtotal + shipping - discount;
 
     // Формируем куда отправлять письмо: на адрес из настроек и копию клиенту
     const clientEmail = order.customer.email;
     const shopEmail = process.env.EMAIL_USER || 'sos2223kj@gmail.com';
+    
+    console.log('Preparing email with client address:', clientEmail);
     
     // Подготовка текста письма
     const mailOptions = {
@@ -107,21 +124,40 @@ const sendOrderConfirmation = async (order) => {
         <h3>Способ оплаты:</h3>
         <p>${order.orderDetails.payment === 'cash' ? 'Наличными' : 'Картой'}</p>
         
-        <p><strong>Дата заказа:</strong> ${new Date(order.orderDate).toLocaleString('ru-RU')}</p>
+        <p><strong>Дата заказа:</strong> ${new Date(order.orderDate || new Date()).toLocaleString('ru-RU')}</p>
         
         ${order.orderDetails.comment ? `<h3>Комментарий к заказу:</h3><p>${order.orderDetails.comment}</p>` : ''}
-      `
+      `,
+      encoding: 'utf-8' // Явно указываем UTF-8 кодировку
     };
 
     // Отправка письма
     console.log('Sending email to:', mailOptions.to, 'CC:', mailOptions.cc);
-    const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent successfully:', info.messageId);
-    console.log('Preview URL:', nodemailer.getTestMessageUrl(info));
-    return { success: true, messageId: info.messageId };
+    
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log('✅ Email sent successfully:', info.messageId);
+      
+      // Убираем вызов getTestMessageUrl, который может вызывать ошибку
+      return { success: true, messageId: info.messageId };
+    } catch (emailError) {
+      console.error('❌ Error sending email:', emailError);
+      
+      // В случае ошибки отправки, позволяем процессу заказа продолжиться
+      // но возвращаем информацию об ошибке
+      return { 
+        success: false, 
+        error: emailError.message,
+        orderCreated: true // Заказ все равно должен создаться
+      };
+    }
   } catch (error) {
-    console.error('❌ Error sending email:', error);
-    return { success: false, error: error.message };
+    console.error('❌ Error preparing email:', error);
+    return { 
+      success: false, 
+      error: error.message,
+      orderCreated: true // Продолжаем создание заказа
+    };
   }
 };
 
