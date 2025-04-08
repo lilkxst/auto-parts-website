@@ -689,7 +689,7 @@ function updateCartSummary(subtotal) {
   
   // Рассчитываем скидку и доставку
   const discount = 0; // В данном примере скидки нет
-  const shipping = subtotal > 0 ? 10 : 0; // Доставка стоит 10 BYN
+  const shipping = 0; // Доставка бесплатная (самовывоз)
   const total = subtotal - discount + shipping;
   
   // Обновляем элементы на странице
@@ -736,9 +736,8 @@ function updateCheckoutSummary() {
   // Рассчитываем сумму товаров
   const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   
-  // Получаем способ доставки
-  const deliveryMethod = document.querySelector('input[name="delivery"]:checked');
-  const shipping = deliveryMethod && deliveryMethod.value === 'pickup' ? 0 : 10;
+  // При самовывозе доставка всегда бесплатная
+  const shipping = 0;
   
   // Рассчитываем скидку и итоговую сумму
   const discount = 0;
@@ -788,11 +787,11 @@ function placeOrder() {
     },
     orderDetails: {
       items: validatedCart,
-      delivery: formData.get('delivery'),
+      delivery: 'pickup', // Всегда самовывоз
       payment: formData.get('payment'),
       comment: formData.get('orderComment'),
       subtotal: validatedCart.reduce((total, item) => total + (item.price * item.quantity), 0),
-      shipping: formData.get('delivery') === 'pickup' ? 0 : 10,
+      shipping: 0, // Доставка всегда бесплатная при самовывозе
       discount: 0
     },
     orderDate: new Date().toISOString()
