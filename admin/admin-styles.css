@@ -1211,4 +1211,35 @@ textarea.form-control {
 
 .text-center {
     text-align: center;
+}
+
+/* Стили для индикатора статуса сервера */
+.server-status {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.server-status .status-badge {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #f8f9fa;
+}
+
+.server-status .status-badge i {
+    margin-right: 5px;
+}
+
+.server-status .status-badge.online {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.server-status .status-badge.demo {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
 } 

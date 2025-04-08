@@ -49,6 +49,12 @@
         <!-- Основной контент -->
         <main class="main-content">
             <header class="main-header">
+                <div class="server-status">
+                    <span id="serverStatus" class="status-badge">
+                        <i class="fas fa-circle"></i> Загрузка...
+                    </span>
+                </div>
+                
                 <div class="header-search">
                     <form>
                         <input type="text" placeholder="Поиск...">
@@ -256,8 +262,8 @@
                                 <td>6500₽</td>
                                 <td><span class="status-badge in-stock">В наличии</span></td>
                                 <td class="actions">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn edit" data-id="1"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" data-id="1"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -268,8 +274,8 @@
                                 <td>7200₽</td>
                                 <td><span class="status-badge in-stock">В наличии</span></td>
                                 <td class="actions">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn edit" data-id="2"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" data-id="2"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -280,8 +286,8 @@
                                 <td>2300₽</td>
                                 <td><span class="status-badge low-stock">Мало</span></td>
                                 <td class="actions">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn edit" data-id="3"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" data-id="3"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -292,8 +298,8 @@
                                 <td>1900₽</td>
                                 <td><span class="status-badge out-of-stock">Нет в наличии</span></td>
                                 <td class="actions">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn edit" data-id="4"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" data-id="4"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -304,8 +310,8 @@
                                 <td>3200₽</td>
                                 <td><span class="status-badge in-stock">В наличии</span></td>
                                 <td class="actions">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn edit" data-id="5"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" data-id="5"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -609,7 +615,7 @@
                 </div>
                 
                 <div class="reviews-grid">
-                    <div class="review-card">
+                    <div class="review-card" data-id="review1">
                         <div class="review-header">
                             <div class="reviewer-info">
                                 <img src="https://via.placeholder.com/40" alt="Клиент">
@@ -638,14 +644,14 @@
                         <div class="review-footer">
                             <span class="status-badge approved">Опубликован</span>
                             <div class="actions">
-                                <button class="action-btn approve"><i class="fas fa-check"></i></button>
-                                <button class="action-btn reject"><i class="fas fa-times"></i></button>
-                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn approve" data-id="review1"><i class="fas fa-check"></i></button>
+                                <button class="action-btn reject" data-id="review1"><i class="fas fa-times"></i></button>
+                                <button class="action-btn delete" data-id="review1"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="review-card">
+                    <div class="review-card" data-id="review2">
                         <div class="review-header">
                             <div class="reviewer-info">
                                 <img src="https://via.placeholder.com/40" alt="Клиент">
@@ -674,14 +680,14 @@
                         <div class="review-footer">
                             <span class="status-badge pending">На модерации</span>
                             <div class="actions">
-                                <button class="action-btn approve"><i class="fas fa-check"></i></button>
-                                <button class="action-btn reject"><i class="fas fa-times"></i></button>
-                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn approve" data-id="review2"><i class="fas fa-check"></i></button>
+                                <button class="action-btn reject" data-id="review2"><i class="fas fa-times"></i></button>
+                                <button class="action-btn delete" data-id="review2"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="review-card">
+                    <div class="review-card" data-id="review3">
                         <div class="review-header">
                             <div class="reviewer-info">
                                 <img src="https://via.placeholder.com/40" alt="Клиент">
@@ -710,14 +716,14 @@
                         <div class="review-footer">
                             <span class="status-badge rejected">Отклонен</span>
                             <div class="actions">
-                                <button class="action-btn approve"><i class="fas fa-check"></i></button>
-                                <button class="action-btn reject"><i class="fas fa-times"></i></button>
-                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn approve" data-id="review3"><i class="fas fa-check"></i></button>
+                                <button class="action-btn reject" data-id="review3"><i class="fas fa-times"></i></button>
+                                <button class="action-btn delete" data-id="review3"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="review-card">
+                    <div class="review-card" data-id="review4">
                         <div class="review-header">
                             <div class="reviewer-info">
                                 <img src="https://via.placeholder.com/40" alt="Клиент">
@@ -746,9 +752,9 @@
                         <div class="review-footer">
                             <span class="status-badge approved">Опубликован</span>
                             <div class="actions">
-                                <button class="action-btn approve"><i class="fas fa-check"></i></button>
-                                <button class="action-btn reject"><i class="fas fa-times"></i></button>
-                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn approve" data-id="review4"><i class="fas fa-check"></i></button>
+                                <button class="action-btn reject" data-id="review4"><i class="fas fa-times"></i></button>
+                                <button class="action-btn delete" data-id="review4"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     </div>

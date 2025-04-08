@@ -171,12 +171,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     isDemoMode = false;
                     showNotification('Подключение к серверу восстановлено. Демо-режим отключен.', 'success');
                 }
+                updateServerStatus(true);
                 return true;
             } else {
                 console.log('Сервер недоступен, переключаемся в демо-режим');
                 localStorage.setItem('isDemoMode', 'true');
                 isDemoMode = true;
                 showNotification('Сервер недоступен. Включен демо-режим.', 'info');
+                updateServerStatus(false);
                 return false;
             }
         } catch (error) {
@@ -185,21 +187,69 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('isDemoMode', 'true');
             isDemoMode = true;
             showNotification('Сервер недоступен. Включен демо-режим.', 'info');
+            updateServerStatus(false);
             return false;
         }
     }
 
-    // Проверяем сервер при загрузке страницы
-    checkServerAvailability();
+    // Обновление статуса сервера
+    function updateServerStatus(isAvailable) {
+        const statusElement = document.getElementById('serverStatus');
+        if (!statusElement) return;
+        
+        if (isAvailable) {
+            statusElement.innerHTML = '<i class="fas fa-circle" style="color: #28a745;"></i> Онлайн режим';
+            statusElement.classList.remove('demo');
+            statusElement.classList.add('online');
+        } else {
+            statusElement.innerHTML = '<i class="fas fa-circle" style="color: #ffc107;"></i> Демо режим';
+            statusElement.classList.remove('online');
+            statusElement.classList.add('demo');
+        }
+    }
 
-    // Модифицированная функция apiRequest с поддержкой демо-режима
+    // Функция проверки доступности сервера при загрузке страницы
+    checkServerAvailability().then(isAvailable => {
+        // Обновляем статус сервера
+        updateServerStatus(isAvailable);
+        
+        // Загружаем данные для активного раздела
+        const activeSection = document.querySelector('.content-section.active');
+        if (activeSection) {
+            const sectionId = activeSection.getAttribute('id');
+            console.log('Загрузка данных для активного раздела:', sectionId);
+            
+            if (sectionId === 'products') {
+                loadProducts();
+            } else if (sectionId === 'reviews') {
+                loadReviews();
+            } else if (sectionId === 'orders') {
+                loadOrders();
+            } else if (sectionId === 'customers') {
+                loadCustomers();
+            }
+        } else {
+            // Если нет активного раздела, по умолчанию загружаем товары
+            document.getElementById('products').classList.add('active');
+            document.querySelector('.sidebar-nav li:first-child').classList.add('active');
+            loadProducts();
+        }
+    });
+
+    // Модифицированная функция apiRequest с улучшенной поддержкой демо-режима и отладкой
     async function apiRequest(endpoint, method = 'GET', data = null) {
         console.log(`Выполняем запрос ${method} ${endpoint}`, data);
-
+        
         // Если включен демо-режим, возвращаем демо-данные
         if (isDemoMode) {
-            console.log('Использую демо-режим для запроса');
-            return handleDemoApiRequest(endpoint, method, data);
+            console.log('Используем демо-режим для запроса');
+            try {
+                return await handleDemoApiRequest(endpoint, method, data);
+            } catch (error) {
+                console.error('Ошибка в обработке демо-запроса:', error);
+                showNotification('Ошибка в демо-режиме: ' + error.message, 'error');
+                throw error;
+            }
         }
         
         const url = `${API_URL}${endpoint}`;
@@ -219,9 +269,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            console.log(`Отправляю запрос на ${url}`, options);
+            console.log(`Отправляем запрос на ${url}`, options);
+            
+            // Добавляем таймаут для запроса
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 секунд
+            options.signal = controller.signal;
             
             const response = await fetch(url, options);
+            clearTimeout(timeoutId);
+            
             console.log(`Получен ответ от ${url}:`, response);
             
             if (response.status === 401) {
@@ -261,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Распарсенный JSON-ответ:', result);
                 
                 if (!response.ok) {
-                    throw new Error(result.message || 'Произошла ошибка');
+                    throw new Error(result.message || 'Произошла ошибка на сервере');
                 }
                 
                 return result;
@@ -278,27 +335,26 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('API Error:', error);
             
-            // Если ошибка соединения, переключаемся в демо-режим
-            if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+            // Если ошибка соединения или таймаут, переключаемся в демо-режим
+            if (error.message === 'Failed to fetch' || error.name === 'TypeError' || error.name === 'AbortError') {
                 console.log('Ошибка соединения с сервером, переключаемся в демо-режим');
                 isDemoMode = true;
                 localStorage.setItem('isDemoMode', 'true');
-                showNotification('Сервер недоступен. Включен демо-режим.', 'info');
-                return handleDemoApiRequest(endpoint, method, data);
-            }
-            
-            showNotification(error.message, 'error');
-            
-            // В случае других ошибок, но при удалении и редактировании, 
-            // можно считать операцию условно успешной в некоторых случаях
-            if (method === 'DELETE') {
-                if (endpoint.startsWith('/products/') || endpoint.startsWith('/reviews/')) {
-                    console.log('Считаем удаление успешным, несмотря на ошибку');
-                    return { success: true, message: 'Объект удален' };
+                showNotification('Сервер недоступен или тайм-аут. Включен демо-режим.', 'info');
+                
+                // Пробуем обработать запрос в демо-режиме
+                try {
+                    updateServerStatus(false); // Обновляем статус на "Демо режим"
+                    return await handleDemoApiRequest(endpoint, method, data);
+                } catch (demoError) {
+                    console.error('Ошибка в обработке демо-запроса:', demoError);
+                    showNotification('Ошибка в демо-режиме: ' + demoError.message, 'error');
+                    throw demoError;
                 }
             }
             
-            return null;
+            showNotification(error.message, 'error');
+            throw error;
         }
     }
 
@@ -862,9 +918,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Добавление обработчиков событий для кнопок товаров
     function addProductEventListeners() {
-        // Действия с товарами
-        const editProductButtons = document.querySelectorAll('.product-list .edit');
-        const deleteProductButtons = document.querySelectorAll('.product-list .delete');
+        // Действия с товарами - используем правильные селекторы, соответствующие HTML
+        const editProductButtons = document.querySelectorAll('#products .action-btn.edit');
+        const deleteProductButtons = document.querySelectorAll('#products .action-btn.delete');
+        
+        console.log('Найдено кнопок редактирования:', editProductButtons.length);
+        console.log('Найдено кнопок удаления:', deleteProductButtons.length);
         
         if (editProductButtons.length > 0) {
             editProductButtons.forEach(button => {
@@ -873,7 +932,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.parentNode.replaceChild(oldButton, button);
                 
                 oldButton.addEventListener('click', function() {
-                    const productId = this.getAttribute('data-id');
+                    const productId = this.getAttribute('data-id') || this.closest('tr').querySelector('td:first-child').textContent;
+                    console.log('Клик по кнопке редактирования товара с ID:', productId);
                     openProductEditModal(productId);
                 });
             });
@@ -886,7 +946,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.parentNode.replaceChild(oldButton, button);
                 
                 oldButton.addEventListener('click', function() {
-                    const productId = this.getAttribute('data-id');
+                    const productId = this.getAttribute('data-id') || this.closest('tr').querySelector('td:first-child').textContent;
+                    console.log('Клик по кнопке удаления товара с ID:', productId);
                     if (confirm('Вы уверены, что хотите удалить этот товар?')) {
                         deleteProduct(productId);
                     }
@@ -906,34 +967,42 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(`Удаляем товар с ID: ${productId}`);
             
             // Немедленно найдем и удалим строку из DOM для лучшего пользовательского опыта
-            const productRow = document.querySelector(`.product-list tr button.delete[data-id="${productId}"]`)?.closest('tr');
+            const productRow = document.querySelector(`.data-table tr td:first-child:contains('${productId}')`)?.closest('tr') || 
+                               document.querySelector(`.data-table tr button.action-btn.delete[data-id="${productId}"]`)?.closest('tr');
+            
             if (productRow) {
                 // Добавляем класс анимации удаления перед удалением из DOM
                 productRow.classList.add('deleting');
                 setTimeout(() => {
                     productRow.remove();
                 }, 300);
+            } else {
+                console.warn(`Не найдена строка товара с ID: ${productId}`);
             }
             
             // Для демо-режима немедленно удаляем из памяти
             if (isDemoMode) {
                 const productIndex = demoData.products.findIndex(p => p._id === productId);
                 if (productIndex !== -1) {
+                    console.log(`Удаляем товар из демо-данных: индекс ${productIndex}`);
                     demoData.products.splice(productIndex, 1);
+                } else {
+                    console.warn(`Товар с ID ${productId} не найден в демо-данных`);
                 }
             }
             
+            // Отправляем запрос к API
             const response = await apiRequest(`/products/${productId}`, 'DELETE');
             
-            if (response) {
+            if (response && response.success) {
                 showNotification('Товар успешно удален', 'success');
-                // После успешного удаления обновим список товаров
+                // После успешного удаления обновим список товаров через небольшую задержку
                 setTimeout(() => {
                     loadProducts();
                 }, 500);
             } else {
-                showNotification('Запрос удаления выполнен. Обновление списка...', 'info');
-                // Все равно обновим список
+                // Если ответ есть, но success = false
+                showNotification(response?.message || 'Ошибка при удалении товара', 'error');
                 setTimeout(() => {
                     loadProducts();
                 }, 500);
@@ -942,8 +1011,11 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error deleting product:', error);
             showNotification(`Ошибка при удалении товара: ${error.message}`, 'error');
             
-            // Если мы в демо-режиме, успешно обновим список
+            // Если мы в демо-режиме, считаем удаление условно успешным
             if (isDemoMode) {
+                showNotification('Товар удален (демо-режим)', 'success');
+            } else {
+                // Обновляем список товаров в любом случае
                 setTimeout(() => {
                     loadProducts();
                 }, 500);
@@ -1901,10 +1973,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Добавление обработчиков событий для кнопок отзывов
     function addReviewEventListeners() {
-        // Одобрение отзыва
-        const approveButtons = document.querySelectorAll('#reviews .action-btn.approve');
-        const rejectButtons = document.querySelectorAll('#reviews .action-btn.reject');
-        const deleteReviewButtons = document.querySelectorAll('#reviews .action-btn.delete');
+        // Одобрение отзыва - правильный селектор для feedback
+        const approveButtons = document.querySelectorAll('#feedback .reviews-grid .action-btn.approve');
+        const rejectButtons = document.querySelectorAll('#feedback .reviews-grid .action-btn.reject');
+        const deleteReviewButtons = document.querySelectorAll('#feedback .reviews-grid .action-btn.delete');
+        
+        console.log('Найдено кнопок одобрения:', approveButtons.length);
+        console.log('Найдено кнопок отклонения:', rejectButtons.length);
+        console.log('Найдено кнопок удаления:', deleteReviewButtons.length);
         
         if (approveButtons.length > 0) {
             approveButtons.forEach(button => {
@@ -1913,7 +1989,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.parentNode.replaceChild(oldButton, button);
                 
                 oldButton.addEventListener('click', function() {
-                    const reviewId = this.getAttribute('data-id');
+                    const reviewId = this.getAttribute('data-id') || this.closest('.review-card').getAttribute('data-id') || 'demo_' + Date.now();
+                    console.log('Одобрение отзыва с ID:', reviewId);
                     approveReview(reviewId);
                 });
             });
@@ -1926,7 +2003,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.parentNode.replaceChild(oldButton, button);
                 
                 oldButton.addEventListener('click', function() {
-                    const reviewId = this.getAttribute('data-id');
+                    const reviewId = this.getAttribute('data-id') || this.closest('.review-card').getAttribute('data-id') || 'demo_' + Date.now();
+                    console.log('Отклонение отзыва с ID:', reviewId);
                     rejectReview(reviewId);
                 });
             });
@@ -1939,7 +2017,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.parentNode.replaceChild(oldButton, button);
                 
                 oldButton.addEventListener('click', function() {
-                    const reviewId = this.getAttribute('data-id');
+                    const reviewId = this.getAttribute('data-id') || this.closest('.review-card').getAttribute('data-id') || 'demo_' + Date.now();
+                    console.log('Удаление отзыва с ID:', reviewId);
                     if (confirm('Вы уверены, что хотите удалить этот отзыв?')) {
                         deleteReview(reviewId);
                     }
@@ -2267,4 +2346,34 @@ document.addEventListener('DOMContentLoaded', function() {
         // Перенаправляем на страницу входа
         window.location.href = 'login.html';
     }
+
+    // Инициализация обработчиков при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализируем обработчики кнопок на страницах с предзагруженным содержимым
+        console.log('Инициализация обработчиков событий для кнопок...');
+        
+        // Для товаров
+        if (document.querySelector('#products')) {
+            console.log('Инициализация обработчиков для товаров...');
+            addProductEventListeners();
+        }
+        
+        // Для отзывов
+        if (document.querySelector('#feedback')) {
+            console.log('Инициализация обработчиков для отзывов...');
+            addReviewEventListeners();
+        }
+        
+        // Для заказов, если соответствующие функции существуют
+        if (document.querySelector('#orders') && typeof addOrderEventListeners === 'function') {
+            console.log('Инициализация обработчиков для заказов...');
+            addOrderEventListeners();
+        }
+        
+        // Для клиентов, если соответствующие функции существуют
+        if (document.querySelector('#customers') && typeof addCustomerEventListeners === 'function') {
+            console.log('Инициализация обработчиков для клиентов...');
+            addCustomerEventListeners();
+        }
+    });
 }); 

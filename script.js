@@ -409,27 +409,67 @@ document.addEventListener('DOMContentLoaded', function() {
   // Инициализация корзины
   initCart();
   
-  // Обработчики событий для кнопок добавления в корзину
-  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-  addToCartButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const productCard = this.closest('.product-card');
-      const productId = productCard.getAttribute('data-id');
-      const productName = productCard.querySelector('h3').textContent;
-      const productPrice = parseFloat(productCard.querySelector('.product-price').textContent);
-      const productImage = productCard.querySelector('img').getAttribute('src');
-      const productCategory = productCard.getAttribute('data-category');
-      
-      addToCart({
-        id: productId,
-        name: productName,
-        price: productPrice,
-        image: productImage,
-        category: productCategory,
-        quantity: 1
+  // Функция для добавления обработчиков на кнопки "Добавить в корзину"
+  function addCartButtonHandlers() {
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    
+    // Сначала удаляем существующие обработчики, чтобы избежать дублирования
+    addToCartButtons.forEach(button => {
+      // Клонируем кнопку, чтобы удалить все обработчики событий
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+    });
+    
+    // Теперь добавляем новые обработчики
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        // Предотвращаем всплытие события, чтобы не срабатывал клик по карточке товара
+        e.stopPropagation();
+        
+        const productCard = this.closest('.product-card');
+        // Генерируем уникальный ID, если его нет
+        const productId = productCard.getAttribute('data-id') || `product_${Date.now()}`;
+        const productName = productCard.querySelector('h3').textContent;
+        // Извлекаем цену, убираем "BYN" и пробелы
+        const priceText = productCard.querySelector('.product-price').textContent;
+        const productPrice = parseFloat(priceText.replace(/[^\d.]/g, ''));
+        const productImage = productCard.querySelector('img').getAttribute('src');
+        const productCategory = productCard.getAttribute('data-category') || 'unknown';
+        
+        addToCart({
+          id: productId,
+          name: productName,
+          price: productPrice,
+          image: productImage,
+          category: productCategory,
+          quantity: 1
+        });
+        
+        showNotification(`${productName} добавлен в корзину`, 'success');
       });
-      
-      showNotification(`${productName} добавлен в корзину`, 'success');
+    });
+  }
+  
+  // Добавляем обработчики для кнопок добавления в корзину на основной странице
+  addCartButtonHandlers();
+  
+  // Добавляем обработчики для кнопок в модальных окнах категорий
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      // Предотвращаем закрытие модального окна при клике на контент
+      if (e.target.closest('.modal-content') && !e.target.closest('.modal-close')) {
+        e.stopPropagation();
+      }
+    });
+  });
+  
+  // Обновляем обработчики при открытии/закрытии модальных окон
+  document.querySelectorAll('.category-link').forEach(link => {
+    link.addEventListener('click', function() {
+      // Даем время для отображения модального окна
+      setTimeout(() => {
+        addCartButtonHandlers();
+      }, 100);
     });
   });
   
@@ -745,47 +785,54 @@ function placeOrder() {
     orderDate: new Date().toISOString()
   };
   
+  // Показываем индикатор загрузки
+  showNotification('Оформляем заказ...', 'info');
+  
   // Отправляем заказ на сервер
-  try {
-    // POST-запрос на бэкенд
-    fetch('http://localhost:5000/api/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(order)
-    })
-    .then(response => {
-      if (!response.ok) {
-        console.error('Ошибка при отправке заказа:', response.statusText);
-        showNotification('Произошла ошибка при оформлении заказа. Попробуйте еще раз позже.', 'error');
-        return null;
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data) {
-        console.log('Заказ успешно отправлен:', data);
-        // Сохраняем ID заказа для страницы подтверждения
-        localStorage.setItem('lastOrderId', data.orderId || 'ORD-' + Math.floor(100000 + Math.random() * 900000));
-        
-        // Очищаем корзину
-        localStorage.setItem('cart', JSON.stringify([]));
-        updateCartCount();
-      }
-    })
-    .catch(error => {
-      console.error('Ошибка при отправке заказа:', error);
-      showNotification('Произошла ошибка при оформлении заказа. Попробуйте еще раз позже.', 'error');
-    });
-  } catch (error) {
-    console.error('Ошибка при отправке заказа:', error);
+  fetch('http://localhost:5000/api/orders', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(order)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Заказ успешно отправлен:', data);
     
-    // В случае ошибки или отсутствия бэкенда, просто сохраняем ID заказа для страницы подтверждения
-    localStorage.setItem('lastOrderId', 'ORD-' + Math.floor(100000 + Math.random() * 900000));
+    // Сохраняем ID заказа для страницы подтверждения
+    localStorage.setItem('lastOrderId', data.orderId || 'ORD-' + Math.floor(100000 + Math.random() * 900000));
     
     // Очищаем корзину
     localStorage.setItem('cart', JSON.stringify([]));
     updateCartCount();
-  }
+    
+    // Показываем уведомление об успешном размещении заказа
+    showNotification('Заказ успешно оформлен! Подтверждение отправлено на почту', 'success');
+    
+    // Перенаправляем на страницу подтверждения заказа
+    setTimeout(() => {
+      window.location.href = 'order-confirmation.html';
+    }, 1500);
+  })
+  .catch(error => {
+    console.error('Ошибка при отправке заказа:', error);
+    
+    // Показываем уведомление об ошибке
+    showNotification('Произошла ошибка при оформлении заказа. Попробуйте еще раз позже.', 'error');
+    
+    // В случае ошибки, все равно перенаправляем на страницу подтверждения в демо-режиме
+    localStorage.setItem('lastOrderId', 'ORD-' + Math.floor(100000 + Math.random() * 900000));
+    localStorage.setItem('cart', JSON.stringify([]));
+    updateCartCount();
+    
+    setTimeout(() => {
+      window.location.href = 'order-confirmation.html';
+    }, 3000);
+  });
 } 
