@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>АвтоЗапчасти - Каталог</title>
+    <title>Каталог автозапчастей</title>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
   </head>
   <body>
     <header class="header">
       <div class="logo fade-in">
         <img
-          src="images/photo_2025-04-02_00-16-38.jpg"
-          alt="Auto Parts Logo"
+          src="images/logo.png"
+          alt="Логотип"
           class="logo-img"
         />
       </div>
@@ -30,7 +30,7 @@
         <p><i class="fas fa-phone"></i> <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
         <p>
           <i class="fas fa-envelope"></i>
-          <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a>
+          <a href="mailto:info@example.com">info@example.com</a>
         </p>
         <a href="cart.html" class="cart-icon">
           <i class="fas fa-shopping-cart"></i>
@@ -40,409 +40,145 @@
     </header>
 
     <main class="catalog-page">
-      <aside class="sidebar fade-in">
+      <aside class="catalog-sidebar fade-in">
         <h2>Категории</h2>
         <div class="mobile-toggle">
-          <i class="fas fa-bars"></i> Категории
+          Категории
         </div>
         <ul class="category-list">
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link" data-category="tires">Шины</a>
-              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+              <a href="#" class="category-link">Шины и диски</a>
+              <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
             </div>
             <ul class="subcategory-list">
               <li><a href="#">Летние шины</a></li>
               <li><a href="#">Зимние шины</a></li>
               <li><a href="#">Всесезонные шины</a></li>
-              <li><a href="#">Для внедорожников</a></li>
+              <li><a href="#">Литые диски</a></li>
+              <li><a href="#">Штампованные диски</a></li>
             </ul>
           </li>
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link" data-category="oils">Масла</a>
-              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+              <a href="#" class="category-link">Масла и жидкости</a>
+              <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
             </div>
             <ul class="subcategory-list">
               <li><a href="#">Моторные масла</a></li>
               <li><a href="#">Трансмиссионные масла</a></li>
-              <li><a href="#">Гидравлические масла</a></li>
-              <li><a href="#">Для АКПП</a></li>
+              <li><a href="#">Тормозные жидкости</a></li>
+              <li><a href="#">Охлаждающие жидкости</a></li>
+              <li><a href="#">Присадки</a></li>
             </ul>
           </li>
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link" data-category="brakes">Тормозные колодки</a>
-              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+              <a href="#" class="category-link">Детали двигателя</a>
+              <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
             </div>
             <ul class="subcategory-list">
-              <li><a href="#">Передние</a></li>
-              <li><a href="#">Задние</a></li>
-              <li><a href="#">Керамические</a></li>
-              <li><a href="#">Полуметаллические</a></li>
+              <li><a href="#">Поршни и кольца</a></li>
+              <li><a href="#">Коленвалы</a></li>
+              <li><a href="#">Распредвалы</a></li>
+              <li><a href="#">Клапаны</a></li>
+              <li><a href="#">Прокладки</a></li>
             </ul>
           </li>
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link" data-category="filters">Фильтры</a>
-              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+              <a href="#" class="category-link">Тормозная система</a>
+              <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
             </div>
             <ul class="subcategory-list">
-              <li><a href="#">Масляные фильтры</a></li>
-              <li><a href="#">Воздушные фильтры</a></li>
-              <li><a href="#">Топливные фильтры</a></li>
-              <li><a href="#">Салонные фильтры</a></li>
+              <li><a href="#">Тормозные колодки</a></li>
+              <li><a href="#">Тормозные диски</a></li>
+              <li><a href="#">Суппорты</a></li>
+              <li><a href="#">Шланги и трубки</a></li>
             </ul>
           </li>
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link" data-category="batteries">Аккумуляторы</a>
-              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+              <a href="#" class="category-link">Электрооборудование</a>
+              <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
             </div>
             <ul class="subcategory-list">
-              <li><a href="#">Легковые</a></li>
-              <li><a href="#">Грузовые</a></li>
-              <li><a href="#">Мотоциклетные</a></li>
-              <li><a href="#">Гелевые</a></li>
+              <li><a href="#">Аккумуляторы</a></li>
+              <li><a href="#">Стартеры</a></li>
+              <li><a href="#">Генераторы</a></li>
+              <li><a href="#">Свечи зажигания</a></li>
+              <li><a href="#">Лампы и фары</a></li>
             </ul>
           </li>
         </ul>
       </aside>
 
-      <section class="products-section">
+      <section class="catalog-content">
         <div class="search-bar fade-in">
           <input type="text" placeholder="Поиск товаров..." />
           <button><i class="fas fa-search"></i></button>
         </div>
 
-        <div class="product-grid">
-          <div class="product-card fade-in" data-id="1" data-category="tires">
-            <img src="images/Continental-VancoFourSeason-500.png" alt="Летние шины Continental" />
-            <h3>Летние шины Continental</h3>
-            <p>Высококачественные шины для легковых автомобилей, размер 205/55 R16</p>
-            <div class="product-price">180.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card fade-in" data-id="2" data-category="tires">
-            <img src="images/Continental-VancoFourSeason-500.png" alt="Зимние шины Continental" />
-            <h3>Зимние шины Continental</h3>
-            <p>Надежные зимние шины для безопасного вождения, размер 205/55 R16</p>
-            <div class="product-price">200.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card fade-in" data-id="3" data-category="tires">
-            <img src="images/Continental-VancoFourSeason-500.png" alt="Всесезонные шины Michelin" />
-            <h3>Всесезонные шины Michelin</h3>
-            <p>Универсальные всесезонные шины для комфортной езды, размер 215/65 R16</p>
-            <div class="product-price">220.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card fade-in" data-id="4" data-category="tires">
-            <img src="images/Continental-VancoFourSeason-500.png" alt="Спортивные шины Pirelli" />
-            <h3>Спортивные шины Pirelli</h3>
-            <p>Спортивные шины для высокой производительности, размер 225/45 R17</p>
-            <div class="product-price">250.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card fade-in" data-id="5" data-category="oils">
-            <img src="images/optimize.jpg" alt="Моторное масло Castrol" />
-            <h3>Моторное масло Castrol 5W-30</h3>
-            <p>Синтетическое моторное масло премиум-класса для бензиновых двигателей, 4л</p>
-            <div class="product-price">85.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card fade-in" data-id="6" data-category="oils">
-            <img src="images/optimize.jpg" alt="Трансмиссионное масло Shell" />
-            <h3>Трансмиссионное масло Shell 75W-90</h3>
-            <p>Качественное масло для механических коробок передач, 1л</p>
-            <div class="product-price">45.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card fade-in" data-id="7" data-category="oils">
-            <img src="images/optimize.jpg" alt="Моторное масло Mobil" />
-            <h3>Моторное масло Mobil 1 0W-40</h3>
-            <p>Полностью синтетическое моторное масло для экстремальных температур, 4л</p>
-            <div class="product-price">95.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card fade-in" data-id="8" data-category="oils">
-            <img src="images/optimize.jpg" alt="Масло для АКПП" />
-            <h3>Масло для АКПП Dexron VI</h3>
-            <p>Трансмиссионное масло для автоматических коробок передач, 1л</p>
-            <div class="product-price">50.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
+        <div class="category-section">
+          <h3>Популярные товары</h3>
+          <div class="product-grid">
+            <div class="product-card fade-in" data-id="product1" data-category="Шины">
+              <img src="images/tire.jpg" alt="Шина Continental" />
+              <h3>Летние шины Continental</h3>
+              <p>Высококачественные шины для легковых автомобилей, размер 205/55 R16</p>
+              <div class="product-price">150.00 BYN</div>
+              <button class="add-to-cart-btn">Добавить в корзину</button>
+            </div>
+            <div class="product-card fade-in" data-id="product2" data-category="Масла">
+              <img src="images/oil.jpg" alt="Масло моторное" />
+              <h3>Моторное масло Castrol Edge</h3>
+              <p>Синтетическое моторное масло, 5W-30, 4 литра</p>
+              <div class="product-price">85.00 BYN</div>
+              <button class="add-to-cart-btn">Добавить в корзину</button>
+            </div>
+            <div class="product-card fade-in" data-id="product3" data-category="Тормоза">
+              <img src="images/brake.jpg" alt="Тормозные колодки" />
+              <h3>Тормозные колодки Bosch</h3>
+              <p>Комплект передних тормозных колодок для Toyota Camry</p>
+              <div class="product-price">65.00 BYN</div>
+              <button class="add-to-cart-btn">Добавить в корзину</button>
+            </div>
+            <div class="product-card fade-in" data-id="product4" data-category="Электрика">
+              <img src="images/battery.jpg" alt="Аккумулятор" />
+              <h3>Аккумулятор Varta Blue Dynamic</h3>
+              <p>60 Ah, 540A, правый плюс</p>
+              <div class="product-price">180.00 BYN</div>
+              <button class="add-to-cart-btn">Добавить в корзину</button>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Модальные окна для категорий -->
-    <div class="modal" id="tiresModal">
-      <div class="modal-content">
-        <button class="modal-close" title="Закрыть"><i class="fas fa-times"></i></button>
-        <h2 class="modal-title">Шины</h2>
-        <div class="modal-products">
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Летние шины Continental"
-            />
-            <h3>Летние шины Continental</h3>
-            <p>Высококачественные летние шины для легковых автомобилей, размер 205/55 R16</p>
-            <div class="product-price">170.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Зимние шины Continental"
-            />
-            <h3>Зимние шины Continental</h3>
-            <p>Надежные зимние шины для безопасного вождения, размер 205/55 R16</p>
-            <div class="product-price">185.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Всесезонные шины Michelin"
-            />
-            <h3>Всесезонные шины Michelin</h3>
-            <p>Универсальные всесезонные шины для комфортной езды круглый год, размер 215/65 R16</p>
-            <div class="product-price">210.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Спортивные шины Pirelli"
-            />
-            <h3>Спортивные шины Pirelli</h3>
-            <p>Спортивные шины для высокой производительности и отличного сцепления, размер 225/45 R17</p>
-            <div class="product-price">250.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Внедорожные шины Goodyear"
-            />
-            <h3>Внедорожные шины Goodyear</h3>
-            <p>Прочные шины для внедорожников с улучшенным сцеплением на бездорожье, размер 265/70 R16</p>
-            <div class="product-price">290.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Зимние шипованные шины Nokian"
-            />
-            <h3>Зимние шипованные шины Nokian</h3>
-            <p>Шипованные зимние шины для максимального сцепления на льду, размер 195/65 R15</p>
-            <div class="product-price">195.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Летние шины Bridgestone"
-            />
-            <h3>Летние шины Bridgestone</h3>
-            <p>Премиальные летние шины с низким сопротивлением качению, размер 215/55 R17</p>
-            <div class="product-price">215.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Шины для коммерческого транспорта"
-            />
-            <h3>Шины для коммерческого транспорта</h3>
-            <p>Прочные шины повышенной грузоподъемности для микроавтобусов, размер 215/70 R15C</p>
-            <div class="product-price">235.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Эконом-шины Cordiant"
-            />
-            <h3>Эконом-шины Cordiant</h3>
-            <p>Надежные шины по доступной цене для городского использования, размер 185/65 R15</p>
-            <div class="product-price">120.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img
-              src="images/Continental-VancoFourSeason-500.png"
-              alt="Всесезонные шины для кроссоверов"
-            />
-            <h3>Всесезонные шины для кроссоверов</h3>
-            <p>Универсальные шины для кроссоверов с повышенной проходимостью, размер 235/65 R17</p>
-            <div class="product-price">240.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="oilsModal">
-      <div class="modal-content">
-        <button class="modal-close" title="Закрыть"><i class="fas fa-times"></i></button>
-        <h2 class="modal-title">Масла</h2>
-        <div class="modal-products">
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Моторное масло Castrol" />
-            <h3>Моторное масло Castrol 5W-30</h3>
-            <p>Синтетическое моторное масло премиум-класса для бензиновых двигателей, 4л</p>
-            <div class="product-price">85.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Трансмиссионное масло" />
-            <h3>Трансмиссионное масло Shell 75W-90</h3>
-            <p>Качественное масло для механических коробок передач, 1л</p>
-            <div class="product-price">45.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Моторное масло Mobil" />
-            <h3>Моторное масло Mobil 1 0W-40</h3>
-            <p>Полностью синтетическое моторное масло для экстремальных температур, 4л</p>
-            <div class="product-price">95.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Моторное масло для дизелей" />
-            <h3>Моторное масло для дизелей 10W-40</h3>
-            <p>Полусинтетическое масло для дизельных двигателей, 5л</p>
-            <div class="product-price">75.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Гидравлическое масло" />
-            <h3>Гидравлическое масло Shell Tellus</h3>
-            <p>Премиальное гидравлическое масло для промышленного оборудования, 20л</p>
-            <div class="product-price">190.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Моторное масло Liqui Moly" />
-            <h3>Моторное масло Liqui Moly 10W-60</h3>
-            <p>Синтетическое масло для спортивных автомобилей с повышенной вязкостью, 4л</p>
-            <div class="product-price">110.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Масло для АКПП" />
-            <h3>Масло для АКПП Dexron VI</h3>
-            <p>Трансмиссионное масло для автоматических коробок передач, 1л</p>
-            <div class="product-price">50.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Моторное масло для газовых двигателей" />
-            <h3>Масло для газовых двигателей</h3>
-            <p>Специальное моторное масло для автомобилей с ГБО, 4л</p>
-            <div class="product-price">80.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Масло для лодочных моторов" />
-            <h3>Масло для лодочных моторов</h3>
-            <p>Специализированное масло для 2-тактных подвесных лодочных моторов, 1л</p>
-            <div class="product-price">35.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize.jpg" alt="Универсальное тракторное масло" />
-            <h3>Универсальное тракторное масло</h3>
-            <p>Многофункциональное масло для сельскохозяйственной техники, 10л</p>
-            <div class="product-price">120.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="brakesModal">
-      <div class="modal-content">
-        <button class="modal-close" title="Закрыть"><i class="fas fa-times"></i></button>
-        <h2 class="modal-title">Тормозные колодки</h2>
-        <div class="modal-products">
-          <div class="product-card">
-            <img src="images/optimize (1).webp" alt="Тормозные колодки" />
-            <h3>Тормозные колодки</h3>
-            <p>Надежные тормозные колодки для безопасного торможения</p>
-            <div class="product-price">65.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize (1).webp" alt="Тормозные колодки Brembo" />
-            <h3>Тормозные колодки Brembo</h3>
-            <p>Премиальные тормозные колодки с увеличенным сроком службы</p>
-            <div class="product-price">95.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-          <div class="product-card">
-            <img src="images/optimize (1).webp" alt="Керамические тормозные колодки" />
-            <h3>Керамические тормозные колодки</h3>
-            <p>Тормозные колодки с пониженным выделением пыли и шума</p>
-            <div class="product-price">120.00 BYN</div>
-            <button class="add-to-cart-btn">Добавить в корзину</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="filtersModal">
-      <div class="modal-content">
-        <button class="modal-close" title="Закрыть"><i class="fas fa-times"></i></button>
-        <h2 class="modal-title">Фильтры</h2>
-        <div class="modal-products">
-          <div class="product-card">
-            <img src="images/filter1.jpg" alt="Масляный фильтр" />
-            <h3>Масляный фильтр</h3>
-            <p>Качественный масляный фильтр для двигателя</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="batteriesModal">
-      <div class="modal-content">
-        <button class="modal-close" title="Закрыть"><i class="fas fa-times"></i></button>
-        <h2 class="modal-title">Аккумуляторы</h2>
-        <div class="modal-products">
-          <div class="product-card">
-            <img src="images/battery1.jpg" alt="Аккумулятор" />
-            <h3>Автомобильный аккумулятор</h3>
-            <p>Надежный аккумулятор для вашего автомобиля</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <footer class="footer fade-in">
       <div class="footer-content">
         <div class="footer-section">
-          <h3>Контакты</h3>
-          <p>г. Минск, станция метро Малиновка</p>
-          <p>Телефон: <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
-          <p>Email: <a href="mailto:sos2223kj@gmail.com">sos2223kj@gmail.com</a></p>
+          <h3>О компании</h3>
+          <p>Мы предлагаем широкий ассортимент автозапчастей для иномарок и отечественных автомобилей.</p>
         </div>
         <div class="footer-section">
-          <h3>Социальные сети</h3>
+          <h3>Контакты</h3>
+          <p>Телефон: <a href="tel:+375291234567">+375 (29) 123-45-67</a></p>
+          <p>Email: <a href="mailto:info@example.com">info@example.com</a></p>
+          <p>Адрес: г. Минск, ул. Примерная, 123</p>
+        </div>
+        <div class="footer-section">
+          <h3>Мы в соцсетях</h3>
           <div class="social-links">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+            <a href="https://vk.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-vk"></i></a>
             <a href="https://t.me/share/url?url=https://autozapchasti.by" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 Auto Parts. Все права защищены.</p>
+        <p>&copy; 2023 АвтоЗапчасти. Все права защищены.</p>
       </div>
     </footer>
     <script src="script.js"></script>

@@ -942,17 +942,42 @@ footer::before {
     }
     
     .category-list {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height var(--transition-medium);
+        display: none;
     }
     
     .category-list.open {
-        max-height: 1000px;
+        display: block;
+        animation: slideDown 0.3s ease forwards;
+        max-height: none;
+        overflow: visible;
+    }
+    
+    .subcategory-list {
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
     }
     
     .subcategory-list.open {
-        max-height: 300px;
+        display: block;
+        max-height: 500px;
+        animation: slideDown 0.3s ease forwards;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .sidebar h2 {
+        display: none; /* Скрываем заголовок, т.к. он уже есть в mobile-toggle */
     }
 
     /* Стили для мобильной корзины - теперь не нужны, так как используем другой подход */
@@ -2413,13 +2438,38 @@ body.dark-theme .redirect-notice {
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 15px;
   background-color: var(--primary-color);
   color: white;
   border-radius: 8px;
   margin-bottom: 15px;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.mobile-toggle::after {
+  content: "\f107"; /* fa-angle-down */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+  font-size: 20px;
+  color: white;
+}
+
+.mobile-toggle.active::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.mobile-toggle:hover, 
+.mobile-toggle:active {
+  background-color: var(--secondary-color);
 }
 
 .category-item {
@@ -2463,8 +2513,19 @@ body.dark-theme .redirect-notice {
   margin-left: 5px;
 }
 
+.toggle-icon i {
+  transition: transform 0.3s ease;
+  font-size: 14px;
+  color: #666;
+}
+
 .toggle-icon.open i {
   transform: rotate(180deg);
+  color: var(--primary-color);
+}
+
+.toggle-icon:hover {
+  background-color: rgba(0, 206, 209, 0.1);
 }
 
 .subcategory-list {
@@ -2472,7 +2533,7 @@ body.dark-theme .redirect-notice {
   padding-left: 15px;
   max-height: 0;
   overflow: hidden;
-  transition: max-height var(--transition-medium);
+  transition: max-height 0.3s ease;
 }
 
 .subcategory-list.open {
@@ -2495,4 +2556,99 @@ body.dark-theme .redirect-notice {
 
 .subcategory-list a:hover {
   color: var(--primary-color);
+}
+
+/* Темная тема для категорий */
+body.dark-theme .category-item {
+    border-bottom-color: #444;
+}
+
+body.dark-theme .toggle-icon {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .toggle-icon i {
+    color: #ccc;
+}
+
+body.dark-theme .subcategory-list a {
+    color: #aaa;
+}
+
+body.dark-theme .subcategory-list a:hover {
+    color: var(--primary-color);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .mobile-toggle {
+        display: flex;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .mobile-toggle:hover {
+        background-color: var(--secondary-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .mobile-toggle:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .category-header {
+        padding: 10px 0;
+    }
+    
+    .category-link {
+        font-size: 16px;
+        padding: 8px 0;
+    }
+    
+    .toggle-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .toggle-icon i {
+        font-size: 16px;
+    }
+    
+    .subcategory-list a {
+        padding: 8px 0;
+        font-size: 15px;
+    }
+    
+    /* Плавная анимация раскрытия */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+    }
+    
+    .category-list.open {
+        display: block;
+        animation: slideDown 0.3s ease forwards;
+    }
+    
+    .subcategory-list.open {
+        display: block;
+        animation: slideDown 0.3s ease forwards;
+    }
 } 

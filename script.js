@@ -19,8 +19,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoryList = document.querySelector('.category-list');
     
     if (mobileToggle && categoryList) {
-        mobileToggle.addEventListener('click', function() {
+        mobileToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             categoryList.classList.toggle('open');
+            this.classList.toggle('active');
+            
+            // Плавная анимация
+            if (categoryList.classList.contains('open')) {
+                categoryList.style.opacity = '0';
+                setTimeout(() => {
+                    categoryList.style.opacity = '1';
+                }, 10);
+            }
         });
     }
     
@@ -31,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         header.addEventListener('click', function(e) {
             // Проверяем, был ли клик на ссылке категории
             const clickedOnLink = e.target.closest('.category-link');
+            const clickedOnToggle = e.target.closest('.toggle-icon');
             
             // Находим элементы
             const categoryItem = this.closest('.category-item');
@@ -39,21 +51,19 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Если клик был на иконке или на заголовке (но не на ссылке),
             // переключаем видимость подкатегорий
-            if (!clickedOnLink || e.target.closest('.toggle-icon')) {
+            if (clickedOnToggle || (!clickedOnLink && !clickedOnToggle)) {
                 e.preventDefault();
+                e.stopPropagation();
+                
+                // Переключаем состояние
                 subcategoryList.classList.toggle('open');
                 toggleIcon.classList.toggle('open');
                 
-                // Если открываем на мобильном, убедимся что родительский список категорий тоже открыт
+                // Убедимся, что на мобильных устройствах основной список открыт
                 if (window.innerWidth <= 768) {
                     categoryList.classList.add('open');
+                    if (mobileToggle) mobileToggle.classList.add('active');
                 }
-            }
-            
-            // Если клик был на ссылке категории и мы на мобильном, 
-            // убедимся, что список открыт перед загрузкой модального окна
-            if (clickedOnLink && window.innerWidth <= 768) {
-                categoryList.classList.add('open');
             }
         });
     });
@@ -73,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Убедимся, что на мобильных устройствах список категорий открыт
             if (window.innerWidth <= 768) {
                 categoryList.classList.add('open');
+                if (mobileToggle) mobileToggle.classList.add('active');
             }
         });
     });
@@ -85,18 +96,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // При загрузке страницы показываем категории на десктопе
+    // При загрузке страницы проверяем размер экрана и открываем/закрываем категории
     function updateCategoriesVisibility() {
         if (window.innerWidth > 768) {
-            categoryList.classList.add('open');
+            // На десктопе показываем категории
+            if (categoryList) categoryList.classList.add('open');
+            
+            // Для ранее открытых подкатегорий восстанавливаем состояние
+            document.querySelectorAll('.subcategory-list.open').forEach(list => {
+                list.style.display = 'block';
+            });
         } else {
-            categoryList.classList.remove('open');
+            // На мобильных закрываем категории изначально
+            if (categoryList) categoryList.classList.remove('open');
+            if (mobileToggle) mobileToggle.classList.remove('active');
         }
     }
     
     // Вызываем при загрузке и изменении размера окна
     updateCategoriesVisibility();
     window.addEventListener('resize', updateCategoriesVisibility);
+    
+    // Проверка и восстановление состояния категорий из localStorage (опционально)
+    const savedCategoryState = localStorage.getItem('categoryListOpen');
+    if (savedCategoryState === 'true' && window.innerWidth <= 768) {
+        if (categoryList) categoryList.classList.add('open');
+        if (mobileToggle) mobileToggle.classList.add('active');
+    }
 });
 
 // Анимация появления элементов при прокрутке
