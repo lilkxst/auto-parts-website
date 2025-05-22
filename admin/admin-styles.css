@@ -468,9 +468,10 @@ body {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
+        width: 250px;
     }
     
     .sidebar.active {
@@ -482,18 +483,101 @@ body {
         width: 100%;
     }
     
+    .toggle-sidebar {
+        display: block;
+        background: none;
+        border: none;
+        color: #555;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 5px;
+    }
+    
+    .admin-profile .avatar {
+        width: 30px;
+        height: 30px;
+    }
+    
     .stat-cards {
         grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .dashboard-sections {
+        flex-direction: column;
+    }
+    
+    .recent-orders, .recent-reviews {
+        width: 100%;
+        margin: 0 0 20px 0;
+    }
+    
+    .data-table {
+        min-width: 600px;
+        overflow-x: auto;
+    }
+    
+    .reviews-table, .content-table {
+        min-width: 700px;
+    }
+    
+    /* Добавляем контейнер со скроллингом для таблиц */
+    .content-section {
+        overflow-x: auto;
+        padding-bottom: 20px;
     }
 }
 
-@media screen and (max-width: 576px) {
+@media (max-width: 576px) {
     .stat-cards {
         grid-template-columns: 1fr;
     }
     
+    .main-header {
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+    
     .header-search {
+        order: 3;
+        margin-top: 10px;
+        max-width: none;
+        width: 100%;
+    }
+    
+    .header-right {
+        order: 2;
+    }
+    
+    .toggle-sidebar {
+        order: 1;
+    }
+    
+    .admin-profile span {
         display: none;
+    }
+    
+    .logout-button span {
+        display: none;
+    }
+    
+    .actions-panel {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .filter-options {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    
+    .filter-options select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .add-button {
+        width: 100%;
     }
 }
 
@@ -1242,4 +1326,104 @@ textarea.form-control {
 .server-status .status-badge.demo {
     background-color: rgba(255, 193, 7, 0.1);
     color: #ffc107;
+}
+
+/* Стили для секции отзывов */
+.reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reviews-table th,
+.reviews-table td {
+    padding: 12px 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.reviews-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Стили для показа рейтинга */
+.reviews-table .fa-star,
+.reviews-table .fa-star-half-alt {
+    color: #ffc107;
+    font-size: 14px;
+}
+
+.reviews-table .fa-star.empty {
+    color: #e0e0e0;
+}
+
+/* Стили для модального окна отзыва */
+.review-details {
+    padding: 15px 0;
+}
+
+.review-info-section,
+.review-text-section {
+    margin-bottom: 20px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.info-row .label {
+    font-weight: 600;
+    width: 150px;
+    color: #555;
+}
+
+.info-row .value {
+    flex: 1;
+}
+
+.review-text {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Улучшение мобильного вида для таблицы отзывов */
+@media (max-width: 768px) {
+    .reviews-table {
+        min-width: 700px;
+    }
+    
+    #feedback .content-section {
+        overflow-x: auto;
+        padding-bottom: 20px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .review-details {
+        padding: 10px 0;
+    }
+    
+    .info-row {
+        flex-direction: column;
+    }
+    
+    .info-row .label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
 } 

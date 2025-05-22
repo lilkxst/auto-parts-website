@@ -1872,87 +1872,162 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Загрузка отзывов
-    async function loadReviews() {
-        const reviewsList = document.querySelector('#reviews .reviews-list');
-        if (!reviewsList) return;
-        
-        // Очищаем список отзывов
-        reviewsList.innerHTML = '<div class="loading">Загрузка отзывов...</div>';
-        
+    async function loadReviews(page = 1, limit = 10) {
         try {
-            const response = await apiRequest('/reviews');
+            const reviewsTableBody = document.getElementById('reviewsTableBody');
             
-            if (response && response.data) {
-                // Очищаем список отзывов перед обновлением
-                reviewsList.innerHTML = '';
+            if (!reviewsTableBody) {
+                console.error('Элемент reviewsTableBody не найден');
+                return;
+            }
+            
+            // Показываем индикатор загрузки
+            reviewsTableBody.innerHTML = '<tr><td colspan="7" class="text-center">Загрузка отзывов...</td></tr>';
+            
+            // Получаем статус фильтра
+            const statusFilter = document.getElementById('reviewStatusFilter');
+            const status = statusFilter ? statusFilter.value : 'all';
+            
+            let reviews = [];
+            let pagination = { totalPages: 1, currentPage: page, totalItems: 0 };
+            
+            if (isDemoMode) {
+                // Имитируем задержку запроса в демо-режиме
+                await new Promise(resolve => setTimeout(resolve, 500));
                 
-                if (response.data.length === 0) {
-                    reviewsList.innerHTML = '<div class="no-data">Отзывы не найдены</div>';
-                    return;
+                // Если в демо-хранилище нет отзывов, добавляем тестовые данные
+                if (demoData.reviews.length === 0) {
+                    demoData.reviews = [
+                        {
+                            _id: 'demo_review1',
+                            product: { name: 'Масляный фильтр OEM 15208-65F0E' },
+                            author: 'Иван Петров',
+                            rating: 5,
+                            text: 'Отличный фильтр, машина работает как часы.',
+                            status: 'pending',
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            _id: 'demo_review2',
+                            product: { name: 'Воздушный фильтр K&N 33-2304' },
+                            author: 'Алексей Смирнов',
+                            rating: 4,
+                            text: 'Хороший фильтр, но цена высоковата.',
+                            status: 'approved',
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            _id: 'demo_review3',
+                            product: { name: 'Тормозные колодки Brembo P85020' },
+                            author: 'Сергей Иванов',
+                            rating: 3,
+                            text: 'Средние колодки, есть и получше.',
+                            status: 'rejected',
+                            createdAt: new Date().toISOString()
+                        }
+                    ];
                 }
                 
-                // Добавляем отзывы в список
-                response.data.forEach(review => {
-                    const card = document.createElement('div');
-                    card.className = 'review-card';
-                    card.setAttribute('data-id', review._id);
-                    
-                    let statusClass = 'pending';
-                    let statusText = 'На рассмотрении';
-                    
-                    if (review.status === 'approved') {
-                        statusClass = 'approved';
-                        statusText = 'Опубликован';
-                    } else if (review.status === 'rejected') {
-                        statusClass = 'rejected';
-                        statusText = 'Отклонен';
+                // Получаем отзывы из демо-данных
+                let filteredReviews = [...demoData.reviews];
+                
+                // Применяем фильтр по статусу
+                if (status !== 'all') {
+                    filteredReviews = filteredReviews.filter(review => review.status === status);
+                }
+                
+                const totalItems = filteredReviews.length;
+                const totalPages = Math.ceil(totalItems / limit);
+                
+                // Пагинация
+                const startIndex = (page - 1) * limit;
+                const endIndex = Math.min(startIndex + limit, totalItems);
+                
+                reviews = filteredReviews.slice(startIndex, endIndex);
+                pagination = { totalPages, currentPage: page, totalItems };
+            } else {
+                try {
+                    // Формируем URL с параметрами
+                    let url = `/reviews?page=${page}&limit=${limit}`;
+                    if (status !== 'all') {
+                        url += `&status=${status}`;
                     }
                     
-                    card.innerHTML = `
-                        <div class="review-header">
-                            <h4>${review.product ? review.product.name : 'Неизвестный товар'}</h4>
-                            <span class="status-badge ${statusClass}">${statusText}</span>
-                        </div>
-                        <div class="review-info">
-                            <div class="author">
-                                <i class="fas fa-user"></i>
-                                <span>${review.author}</span>
-                            </div>
-                            <div class="rating">
-                                ${generateStarRating(review.rating)}
-                            </div>
-                            <div class="date">
-                                <i class="far fa-calendar-alt"></i>
-                                <span>${new Date(review.createdAt).toLocaleDateString()}</span>
-                            </div>
-                        </div>
-                        <div class="review-content">
-                            <p>${review.text}</p>
-                        </div>
-                        <div class="review-actions">
-                            ${review.status === 'pending' ? `
-                                <button type="button" class="action-btn approve" data-id="${review._id}">
-                                    <i class="fas fa-check"></i> Одобрить
-                                </button>
-                                <button type="button" class="action-btn reject" data-id="${review._id}">
-                                    <i class="fas fa-times"></i> Отклонить
-                                </button>
-                            ` : ''}
-                            <button type="button" class="action-btn delete" data-id="${review._id}">
-                                <i class="fas fa-trash-alt"></i> Удалить
-                            </button>
-                        </div>
-                    `;
+                    // Отправляем запрос на сервер
+                    const response = await apiRequest(url);
                     
-                    reviewsList.appendChild(card);
-                });
-                
-                // Добавляем обработчики событий для кнопок
-                addReviewEventListeners();
+                    if (response && response.data) {
+                        reviews = response.data;
+                        pagination = response.pagination || { totalPages: 1, currentPage: page, totalItems: reviews.length };
+                    } else {
+                        throw new Error('Не удалось загрузить отзывы');
+                    }
+                } catch (error) {
+                    console.error('Ошибка при загрузке отзывов:', error);
+                    // В случае ошибки переключаемся на демо-режим
+                    await checkServerAvailability();
+                    return loadReviews(page, limit);
+                }
             }
+            
+            // Очищаем таблицу
+            reviewsTableBody.innerHTML = '';
+            
+            if (reviews.length === 0) {
+                reviewsTableBody.innerHTML = '<tr><td colspan="7" class="text-center">Отзывы не найдены</td></tr>';
+                return;
+            }
+            
+            // Заполняем таблицу отзывами
+            reviews.forEach(review => {
+                const row = document.createElement('tr');
+                row.setAttribute('data-id', review._id);
+                
+                // Генерируем HTML для отображения рейтинга
+                const starsHtml = generateStarRating(review.rating);
+                
+                // Получаем текст и класс для статуса
+                const statusClass = review.status === 'approved' ? 'success' : 
+                                  review.status === 'rejected' ? 'danger' : 'warning';
+                const statusText = review.status === 'approved' ? 'Одобрен' : 
+                                  review.status === 'rejected' ? 'Отклонен' : 'На рассмотрении';
+                
+                row.innerHTML = `
+                    <td>${review._id}</td>
+                    <td>${review.author}</td>
+                    <td>${review.product ? review.product.name : 'Неизвестный товар'}</td>
+                    <td>${starsHtml}</td>
+                    <td>${new Date(review.createdAt).toLocaleDateString()}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="actions">
+                        <button class="action-btn view" data-id="${review._id}" title="Просмотреть"><i class="fas fa-eye"></i></button>
+                        ${review.status !== 'approved' ? `<button class="action-btn approve" data-id="${review._id}" title="Одобрить"><i class="fas fa-check"></i></button>` : ''}
+                        ${review.status !== 'rejected' ? `<button class="action-btn reject" data-id="${review._id}" title="Отклонить"><i class="fas fa-times"></i></button>` : ''}
+                        <button class="action-btn delete" data-id="${review._id}" title="Удалить"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                
+                reviewsTableBody.appendChild(row);
+            });
+            
+            // Рендерим пагинацию
+            const paginationContainer = document.getElementById('reviewsPagination');
+            if (paginationContainer) {
+                renderPagination(paginationContainer, pagination, (newPage) => loadReviews(newPage, limit));
+            }
+            
+            // Добавляем обработчики событий для кнопок
+            addReviewEventListeners();
+            
         } catch (error) {
-            reviewsList.innerHTML = '<div class="error">Ошибка загрузки отзывов</div>';
-            console.error('Error loading reviews:', error);
+            console.error('Ошибка при загрузке отзывов:', error);
+            showNotification('Не удалось загрузить отзывы. Попробуйте позже.', 'error');
+            
+            // Показываем сообщение в таблице
+            if (document.getElementById('reviewsTableBody')) {
+                document.getElementById('reviewsTableBody').innerHTML = 
+                    '<tr><td colspan="7" class="text-center">Ошибка загрузки отзывов</td></tr>';
+            }
         }
     }
     
@@ -1973,58 +2048,193 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Добавление обработчиков событий для кнопок отзывов
     function addReviewEventListeners() {
-        // Одобрение отзыва - правильный селектор для feedback
-        const approveButtons = document.querySelectorAll('#feedback .reviews-grid .action-btn.approve');
-        const rejectButtons = document.querySelectorAll('#feedback .reviews-grid .action-btn.reject');
-        const deleteReviewButtons = document.querySelectorAll('#feedback .reviews-grid .action-btn.delete');
+        // Используем правильные селекторы для табличного представления
+        const viewButtons = document.querySelectorAll('#reviewsTableBody .action-btn.view');
+        const approveButtons = document.querySelectorAll('#reviewsTableBody .action-btn.approve');
+        const rejectButtons = document.querySelectorAll('#reviewsTableBody .action-btn.reject');
+        const deleteButtons = document.querySelectorAll('#reviewsTableBody .action-btn.delete');
         
+        console.log('Найдено кнопок просмотра:', viewButtons.length);
         console.log('Найдено кнопок одобрения:', approveButtons.length);
         console.log('Найдено кнопок отклонения:', rejectButtons.length);
-        console.log('Найдено кнопок удаления:', deleteReviewButtons.length);
+        console.log('Найдено кнопок удаления:', deleteButtons.length);
         
-        if (approveButtons.length > 0) {
-            approveButtons.forEach(button => {
-                // Удаляем старые обработчики, чтобы избежать дублирования
-                const oldButton = button.cloneNode(true);
-                button.parentNode.replaceChild(oldButton, button);
-                
-                oldButton.addEventListener('click', function() {
-                    const reviewId = this.getAttribute('data-id') || this.closest('.review-card').getAttribute('data-id') || 'demo_' + Date.now();
-                    console.log('Одобрение отзыва с ID:', reviewId);
-                    approveReview(reviewId);
-                });
+        // Обработчики для кнопок просмотра
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const reviewId = this.getAttribute('data-id');
+                viewReview(reviewId);
             });
-        }
+        });
         
-        if (rejectButtons.length > 0) {
-            rejectButtons.forEach(button => {
-                // Удаляем старые обработчики, чтобы избежать дублирования
-                const oldButton = button.cloneNode(true);
-                button.parentNode.replaceChild(oldButton, button);
-                
-                oldButton.addEventListener('click', function() {
-                    const reviewId = this.getAttribute('data-id') || this.closest('.review-card').getAttribute('data-id') || 'demo_' + Date.now();
-                    console.log('Отклонение отзыва с ID:', reviewId);
-                    rejectReview(reviewId);
-                });
+        // Обработчики для кнопок одобрения
+        approveButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const reviewId = this.getAttribute('data-id');
+                approveReview(reviewId);
             });
-        }
+        });
         
-        if (deleteReviewButtons.length > 0) {
-            deleteReviewButtons.forEach(button => {
-                // Удаляем старые обработчики, чтобы избежать дублирования
-                const oldButton = button.cloneNode(true);
-                button.parentNode.replaceChild(oldButton, button);
-                
-                oldButton.addEventListener('click', function() {
-                    const reviewId = this.getAttribute('data-id') || this.closest('.review-card').getAttribute('data-id') || 'demo_' + Date.now();
-                    console.log('Удаление отзыва с ID:', reviewId);
-                    if (confirm('Вы уверены, что хотите удалить этот отзыв?')) {
-                        deleteReview(reviewId);
+        // Обработчики для кнопок отклонения
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const reviewId = this.getAttribute('data-id');
+                rejectReview(reviewId);
+            });
+        });
+        
+        // Обработчики для кнопок удаления
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const reviewId = this.getAttribute('data-id');
+                if (confirm('Вы уверены, что хотите удалить этот отзыв?')) {
+                    deleteReview(reviewId);
+                }
+            });
+        });
+    }
+    
+    // Функция просмотра отзыва
+    function viewReview(reviewId) {
+        let review;
+        
+        // Находим отзыв в демо-данных или получаем через API
+        if (isDemoMode) {
+            review = demoData.reviews.find(r => r._id === reviewId);
+        } else {
+            // В реальном режиме делаем запрос к API
+            apiRequest(`/reviews/${reviewId}`, 'GET')
+                .then(data => {
+                    if (data) {
+                        showReviewModal(data);
                     }
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке отзыва:', error);
+                    showNotification('Не удалось загрузить отзыв', 'error');
                 });
+            return;
+        }
+        
+        if (review) {
+            showReviewModal(review);
+        } else {
+            showNotification('Отзыв не найден', 'error');
+        }
+    }
+    
+    // Показ модального окна с отзывом
+    function showReviewModal(review) {
+        // Создаем модальное окно для просмотра отзыва
+        const modalHTML = `
+            <div id="reviewViewModal" class="modal">
+                <div class="modal-backdrop"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Просмотр отзыва</h2>
+                        <button type="button" class="close-modal" id="closeReviewViewModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="review-details">
+                            <div class="review-info-section">
+                                <h3>Информация об отзыве</h3>
+                                <div class="info-grid">
+                                    <div class="info-row">
+                                        <span class="label">Автор:</span>
+                                        <span class="value">${review.author}</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Товар:</span>
+                                        <span class="value">${review.product ? review.product.name : 'Неизвестный товар'}</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Рейтинг:</span>
+                                        <span class="value">${generateStarRating(review.rating)}</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Дата:</span>
+                                        <span class="value">${new Date(review.createdAt).toLocaleDateString()}</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Статус:</span>
+                                        <span class="value status-badge ${review.status === 'approved' ? 'success' : review.status === 'rejected' ? 'danger' : 'warning'}">
+                                            ${review.status === 'approved' ? 'Одобрен' : review.status === 'rejected' ? 'Отклонен' : 'На рассмотрении'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-text-section">
+                                <h3>Текст отзыва</h3>
+                                <div class="review-text">
+                                    ${review.text || 'Текст отзыва отсутствует'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelReviewViewBtn">Закрыть</button>
+                        ${review.status !== 'approved' ? `<button type="button" class="btn btn-success" id="approveReviewBtn" data-id="${review._id}">Одобрить</button>` : ''}
+                        ${review.status !== 'rejected' ? `<button type="button" class="btn btn-warning" id="rejectReviewBtn" data-id="${review._id}">Отклонить</button>` : ''}
+                        <button type="button" class="btn btn-danger" id="deleteReviewBtn" data-id="${review._id}">Удалить</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Добавляем модальное окно в DOM
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        // Получаем элементы модального окна
+        const modal = document.getElementById('reviewViewModal');
+        const closeBtn = document.getElementById('closeReviewViewModal');
+        const cancelBtn = document.getElementById('cancelReviewViewBtn');
+        const approveBtn = document.getElementById('approveReviewBtn');
+        const rejectBtn = document.getElementById('rejectReviewBtn');
+        const deleteBtn = document.getElementById('deleteReviewBtn');
+        const backdrop = modal.querySelector('.modal-backdrop');
+        
+        // Добавляем обработчики событий
+        closeBtn.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        cancelBtn.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        backdrop.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        if (approveBtn) {
+            approveBtn.addEventListener('click', () => {
+                document.body.removeChild(modal);
+                approveReview(review._id);
             });
         }
+        
+        if (rejectBtn) {
+            rejectBtn.addEventListener('click', () => {
+                document.body.removeChild(modal);
+                rejectReview(review._id);
+            });
+        }
+        
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                if (confirm('Вы уверены, что хотите удалить этот отзыв?')) {
+                    document.body.removeChild(modal);
+                    deleteReview(review._id);
+                }
+            });
+        }
+        
+        // Предотвращаем закрытие при клике на контент
+        modal.querySelector('.modal-content').addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
     }
     
     // Функция одобрения отзыва
@@ -2033,37 +2243,46 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(`Одобряем отзыв с ID: ${reviewId}`);
             
             // Сразу обновляем UI для лучшего пользовательского опыта
-            const reviewCard = document.querySelector(`.review-card[data-id="${reviewId}"]`);
-            if (reviewCard) {
-                const statusBadge = reviewCard.querySelector('.status-badge');
+            const reviewRow = document.querySelector(`#reviewsTableBody tr[data-id="${reviewId}"]`);
+            if (reviewRow) {
+                const statusBadge = reviewRow.querySelector('.status-badge');
                 if (statusBadge) {
-                    statusBadge.className = 'status-badge approved';
-                    statusBadge.textContent = 'Опубликован';
+                    statusBadge.className = 'status-badge success';
+                    statusBadge.textContent = 'Одобрен';
                 }
                 
                 // Удаляем кнопки approve/reject
-                const approveBtn = reviewCard.querySelector('.action-btn.approve');
-                const rejectBtn = reviewCard.querySelector('.action-btn.reject');
+                const approveBtn = reviewRow.querySelector('.action-btn.approve');
+                const rejectBtn = reviewRow.querySelector('.action-btn.reject');
                 if (approveBtn) approveBtn.remove();
                 if (rejectBtn) rejectBtn.remove();
             }
             
+            // Для демо-режима обновляем данные в памяти
+            if (isDemoMode) {
+                const reviewIndex = demoData.reviews.findIndex(r => r._id === reviewId);
+                if (reviewIndex !== -1) {
+                    demoData.reviews[reviewIndex].status = 'approved';
+                    showNotification('Отзыв успешно одобрен', 'success');
+                    return;
+                }
+            }
+            
+            // Отправляем запрос к API
             const response = await apiRequest(`/reviews/${reviewId}/approve`, 'PUT');
             
-            if (response) {
-                showNotification('Отзыв успешно опубликован', 'success');
+            if (response && response.success) {
+                showNotification('Отзыв успешно одобрен', 'success');
             } else {
-                showNotification('Запрос на публикацию отзыва отправлен', 'info');
-                // Если операция не удалась, но мы в демо-режиме, не перезагружаем
-                if (!isDemoMode) {
-                    setTimeout(() => {
-                        loadReviews();
-                    }, 500);
-                }
+                showNotification('Запрос на одобрение отзыва отправлен', 'info');
+                // Перезагружаем отзывы через некоторое время
+                setTimeout(() => {
+                    loadReviews();
+                }, 500);
             }
         } catch (error) {
             console.error('Error approving review:', error);
-            showNotification('Ошибка при публикации отзыва', 'error');
+            showNotification('Ошибка при одобрении отзыва', 'error');
             
             // При ошибке перезагружаем отзывы после задержки
             setTimeout(() => {
@@ -2078,33 +2297,42 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(`Отклоняем отзыв с ID: ${reviewId}`);
             
             // Сразу обновляем UI для лучшего пользовательского опыта
-            const reviewCard = document.querySelector(`.review-card[data-id="${reviewId}"]`);
-            if (reviewCard) {
-                const statusBadge = reviewCard.querySelector('.status-badge');
+            const reviewRow = document.querySelector(`#reviewsTableBody tr[data-id="${reviewId}"]`);
+            if (reviewRow) {
+                const statusBadge = reviewRow.querySelector('.status-badge');
                 if (statusBadge) {
-                    statusBadge.className = 'status-badge rejected';
+                    statusBadge.className = 'status-badge danger';
                     statusBadge.textContent = 'Отклонен';
                 }
                 
                 // Удаляем кнопки approve/reject
-                const approveBtn = reviewCard.querySelector('.action-btn.approve');
-                const rejectBtn = reviewCard.querySelector('.action-btn.reject');
+                const approveBtn = reviewRow.querySelector('.action-btn.approve');
+                const rejectBtn = reviewRow.querySelector('.action-btn.reject');
                 if (approveBtn) approveBtn.remove();
                 if (rejectBtn) rejectBtn.remove();
             }
             
+            // Для демо-режима обновляем данные в памяти
+            if (isDemoMode) {
+                const reviewIndex = demoData.reviews.findIndex(r => r._id === reviewId);
+                if (reviewIndex !== -1) {
+                    demoData.reviews[reviewIndex].status = 'rejected';
+                    showNotification('Отзыв отклонен', 'success');
+                    return;
+                }
+            }
+            
+            // Отправляем запрос к API
             const response = await apiRequest(`/reviews/${reviewId}/reject`, 'PUT');
             
-            if (response) {
+            if (response && response.success) {
                 showNotification('Отзыв отклонен', 'success');
             } else {
                 showNotification('Запрос на отклонение отзыва отправлен', 'info');
-                // Если операция не удалась, но мы в демо-режиме, не перезагружаем
-                if (!isDemoMode) {
-                    setTimeout(() => {
-                        loadReviews();
-                    }, 500);
-                }
+                // Перезагружаем отзывы через некоторое время
+                setTimeout(() => {
+                    loadReviews();
+                }, 500);
             }
         } catch (error) {
             console.error('Error rejecting review:', error);
@@ -2127,37 +2355,41 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             console.log(`Удаляем отзыв с ID: ${reviewId}`);
             
-            // Находим карточку отзыва для визуального удаления
-            const reviewCard = document.querySelector(`.review-card[data-id="${reviewId}"]`);
-            if (reviewCard) {
-                // Добавляем класс анимации удаления
-                reviewCard.classList.add('deleting');
+            // Сразу удаляем строку из таблицы для лучшего UX
+            const reviewRow = document.querySelector(`#reviewsTableBody tr[data-id="${reviewId}"]`);
+            if (reviewRow) {
+                // Добавляем анимацию удаления
+                reviewRow.classList.add('deleting');
                 setTimeout(() => {
-                    reviewCard.remove();
+                    reviewRow.remove();
+                    
+                    // Проверяем, остались ли еще отзывы
+                    const remainingRows = document.querySelectorAll('#reviewsTableBody tr:not(.deleting)');
+                    if (remainingRows.length === 0) {
+                        document.getElementById('reviewsTableBody').innerHTML = 
+                            '<tr><td colspan="7" class="text-center">Отзывы не найдены</td></tr>';
+                    }
                 }, 300);
             }
             
-            // Для демо-режима немедленно удаляем из памяти
+            // Для демо-режима удаляем из памяти
             if (isDemoMode) {
                 const reviewIndex = demoData.reviews.findIndex(r => r._id === reviewId);
                 if (reviewIndex !== -1) {
                     demoData.reviews.splice(reviewIndex, 1);
+                    showNotification('Отзыв успешно удален', 'success');
+                    return;
                 }
             }
             
+            // Отправляем запрос к API
             const response = await apiRequest(`/reviews/${reviewId}`, 'DELETE');
             
-            if (response) {
+            if (response && response.success) {
                 showNotification('Отзыв успешно удален', 'success');
-                // Если карточка не была найдена, обновляем список отзывов
-                if (!reviewCard) {
-                    setTimeout(() => {
-                        loadReviews();
-                    }, 500);
-                }
             } else {
-                showNotification('Запрос удаления выполнен. Обновление списка...', 'info');
-                // Перезагружаем список отзывов в любом случае
+                showNotification('Запрос на удаление отзыва отправлен', 'info');
+                // Если нет явного подтверждения успеха, перезагружаем отзывы
                 setTimeout(() => {
                     loadReviews();
                 }, 500);
@@ -2166,15 +2398,10 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error deleting review:', error);
             showNotification(`Ошибка при удалении отзыва: ${error.message}`, 'error');
             
-            // Если в демо-режиме, считаем удаление успешным
-            if (isDemoMode) {
-                showNotification('Отзыв удален (демо-режим)', 'success');
-            } else {
-                // Обновляем список отзывов после ошибки
-                setTimeout(() => {
-                    loadReviews();
-                }, 500);
-            }
+            // При ошибке перезагружаем отзывы
+            setTimeout(() => {
+                loadReviews();
+            }, 500);
         }
     }
     
@@ -2374,6 +2601,55 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.querySelector('#customers') && typeof addCustomerEventListeners === 'function') {
             console.log('Инициализация обработчиков для клиентов...');
             addCustomerEventListeners();
+        }
+    });
+
+    // Мобильная навигация - переключение боковой панели
+    const toggleSidebarBtn = document.querySelector('.toggle-sidebar');
+    if (toggleSidebarBtn) {
+        toggleSidebarBtn.addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+    } else {
+        // Если кнопка не была создана ранее, создаем ее
+        const sidebar = document.querySelector('.sidebar');
+        const mainHeader = document.querySelector('.main-header');
+        
+        if (sidebar && mainHeader) {
+            const toggleBtn = document.createElement('button');
+            toggleBtn.classList.add('toggle-sidebar');
+            toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            mainHeader.prepend(toggleBtn);
+            
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+        }
+    }
+
+    // Добавляем инициализацию загрузки отзывов при открытии раздела
+    document.addEventListener('DOMContentLoaded', function() {
+        // Находим ссылку на раздел отзывов
+        const feedbackLink = document.querySelector('.sidebar-nav a[href="#feedback"]');
+        
+        if (feedbackLink) {
+            feedbackLink.addEventListener('click', function() {
+                // Загружаем отзывы при переходе в раздел
+                loadReviews();
+            });
+        }
+        
+        // Если секция отзывов активна при загрузке страницы, загружаем отзывы
+        if (document.querySelector('#feedback.content-section.active')) {
+            loadReviews();
+        }
+        
+        // Обработчик изменения фильтра статуса отзывов
+        const reviewStatusFilter = document.getElementById('reviewStatusFilter');
+        if (reviewStatusFilter) {
+            reviewStatusFilter.addEventListener('change', function() {
+                loadReviews();
+            });
         }
     });
 }); 

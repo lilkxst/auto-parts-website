@@ -49,6 +49,10 @@
         <!-- Основной контент -->
         <main class="main-content">
             <header class="main-header">
+                <button class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
                 <div class="server-status">
                     <span id="serverStatus" class="status-badge">
                         <i class="fas fa-circle"></i> Загрузка...
@@ -68,7 +72,7 @@
                         <span class="badge">3</span>
                     </button>
                     <div class="admin-profile">
-                        <img src="images/avatar.jpg" alt="Admin" class="avatar">
+                        <img src="../images/avatar.jpg" alt="Admin" class="avatar">
                         <span>Администратор</span>
                     </div>
                     <button class="logout-button">
@@ -590,182 +594,43 @@
             
             <div id="feedback" class="content-section">
                 <div class="section-header">
-                    <h2>Управление отзывами</h2>
-                    <p>Отзывы клиентов о товарах</p>
+                    <h2>Отзывы</h2>
+                    <p>Управление отзывами клиентов</p>
                 </div>
                 
                 <div class="actions-panel">
                     <div class="filter-options">
-                        <select>
-                            <option value="">Все статусы</option>
-                            <option value="approved">Опубликованные</option>
-                            <option value="pending">На модерации</option>
+                        <select id="reviewStatusFilter">
+                            <option value="all">Все отзывы</option>
+                            <option value="pending">На рассмотрении</option>
+                            <option value="approved">Одобренные</option>
                             <option value="rejected">Отклоненные</option>
                         </select>
-                        <select>
-                            <option value="">Все оценки</option>
-                            <option value="5">5 звезд</option>
-                            <option value="4">4 звезды</option>
-                            <option value="3">3 звезды</option>
-                            <option value="2">2 звезды</option>
-                            <option value="1">1 звезда</option>
-                        </select>
-                        <button class="filter-button"><i class="fas fa-filter"></i> Применить</button>
                     </div>
                 </div>
                 
-                <div class="reviews-grid">
-                    <div class="review-card" data-id="review1">
-                        <div class="review-header">
-                            <div class="reviewer-info">
-                                <img src="https://via.placeholder.com/40" alt="Клиент">
-                                <div>
-                                    <h4>Алексей К.</h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <span>4.5</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="review-date">02.04.2025</span>
-                        </div>
-                        <div class="review-product">
-                            <img src="../images/Continental-VancoFourSeason-500.png" alt="Товар" class="product-thumbnail">
-                            <div>
-                                <h5>Летние шины Continental</h5>
-                                <span class="product-category">Шины</span>
-                            </div>
-                        </div>
-                        <p class="review-text">Отличные шины, хорошо держат дорогу. Доставка быстрая, всем рекомендую!</p>
-                        <div class="review-footer">
-                            <span class="status-badge approved">Опубликован</span>
-                            <div class="actions">
-                                <button class="action-btn approve" data-id="review1"><i class="fas fa-check"></i></button>
-                                <button class="action-btn reject" data-id="review1"><i class="fas fa-times"></i></button>
-                                <button class="action-btn delete" data-id="review1"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="review-card" data-id="review2">
-                        <div class="review-header">
-                            <div class="reviewer-info">
-                                <img src="https://via.placeholder.com/40" alt="Клиент">
-                                <div>
-                                    <h4>Мария Д.</h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <span>4.0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="review-date">01.04.2025</span>
-                        </div>
-                        <div class="review-product">
-                            <img src="../images/optimize.jpg" alt="Товар" class="product-thumbnail">
-                            <div>
-                                <h5>Моторное масло Castrol 5W-30</h5>
-                                <span class="product-category">Масла</span>
-                            </div>
-                        </div>
-                        <p class="review-text">Покупала масло, качество соответствует описанию. Спасибо за консультацию!</p>
-                        <div class="review-footer">
-                            <span class="status-badge pending">На модерации</span>
-                            <div class="actions">
-                                <button class="action-btn approve" data-id="review2"><i class="fas fa-check"></i></button>
-                                <button class="action-btn reject" data-id="review2"><i class="fas fa-times"></i></button>
-                                <button class="action-btn delete" data-id="review2"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="review-card" data-id="review3">
-                        <div class="review-header">
-                            <div class="reviewer-info">
-                                <img src="https://via.placeholder.com/40" alt="Клиент">
-                                <div>
-                                    <h4>Игорь П.</h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <span>2.0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="review-date">28.03.2025</span>
-                        </div>
-                        <div class="review-product">
-                            <img src="../images/Continental-VancoFourSeason-500.png" alt="Товар" class="product-thumbnail">
-                            <div>
-                                <h5>Зимние шины Continental</h5>
-                                <span class="product-category">Шины</span>
-                            </div>
-                        </div>
-                        <p class="review-text">Разочарован качеством. Ожидал большего от такого бренда. Пошли трещины после первой зимы.</p>
-                        <div class="review-footer">
-                            <span class="status-badge rejected">Отклонен</span>
-                            <div class="actions">
-                                <button class="action-btn approve" data-id="review3"><i class="fas fa-check"></i></button>
-                                <button class="action-btn reject" data-id="review3"><i class="fas fa-times"></i></button>
-                                <button class="action-btn delete" data-id="review3"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="review-card" data-id="review4">
-                        <div class="review-header">
-                            <div class="reviewer-info">
-                                <img src="https://via.placeholder.com/40" alt="Клиент">
-                                <div>
-                                    <h4>Анна С.</h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span>5.0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="review-date">25.03.2025</span>
-                        </div>
-                        <div class="review-product">
-                            <img src="../images/optimize (1).webp" alt="Товар" class="product-thumbnail">
-                            <div>
-                                <h5>Тормозные колодки</h5>
-                                <span class="product-category">Тормозные колодки</span>
-                            </div>
-                        </div>
-                        <p class="review-text">Отличные колодки, менять очень легко. Зря переживала, что не справлюсь сама. Спасибо за подробную инструкцию при покупке!</p>
-                        <div class="review-footer">
-                            <span class="status-badge approved">Опубликован</span>
-                            <div class="actions">
-                                <button class="action-btn approve" data-id="review4"><i class="fas fa-check"></i></button>
-                                <button class="action-btn reject" data-id="review4"><i class="fas fa-times"></i></button>
-                                <button class="action-btn delete" data-id="review4"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <table class="content-table reviews-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Автор</th>
+                            <th>Товар</th>
+                            <th>Рейтинг</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewsTableBody">
+                        <!-- Сюда будут загружаться отзывы через JavaScript -->
+                        <tr>
+                            <td colspan="7" class="text-center">Загрузка отзывов...</td>
+                        </tr>
+                    </tbody>
+                </table>
                 
-                <div class="pagination">
-                    <button class="page-btn prev"><i class="fas fa-chevron-left"></i></button>
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn next"><i class="fas fa-chevron-right"></i></button>
+                <div id="reviewsPagination" class="pagination">
+                    <!-- Здесь будет пагинация -->
                 </div>
             </div>
             
