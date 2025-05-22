@@ -52,20 +52,22 @@
       
       <!-- Корзина с товарами (изначально скрыта) -->
       <div id="filledCart" style="display: none;">
-        <table class="cart-table">
-          <thead>
-            <tr>
-              <th>Товар</th>
-              <th>Цена</th>
-              <th>Количество</th>
-              <th>Итого</th>
-              <th>Действия</th>
-            </tr>
-          </thead>
-          <tbody id="cartItems">
-            <!-- Здесь будут динамически добавляться товары из JS -->
-          </tbody>
-        </table>
+        <div class="cart-table-container">
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th>Товар</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Итого</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody id="cartItems">
+              <!-- Здесь будут динамически добавляться товары из JS -->
+            </tbody>
+          </table>
+        </div>
         
         <div class="cart-summary">
           <h3 class="cart-summary-title">Сумма заказа</h3>

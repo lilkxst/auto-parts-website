@@ -793,6 +793,18 @@ footer::before {
     .about-hero h2 {
         font-size: 2.2rem;
     }
+
+    .catalog-page {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+        position: relative;
+        top: 0;
+    }
 }
 
 @media (max-width: 768px) {
@@ -924,6 +936,34 @@ footer::before {
         padding: 30px;
         font-size: 16px;
     }
+
+    .mobile-toggle {
+        display: flex;
+    }
+    
+    .category-list {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--transition-medium);
+    }
+    
+    .category-list.open {
+        max-height: 1000px;
+    }
+    
+    .subcategory-list.open {
+        max-height: 300px;
+    }
+
+    /* Стили для мобильной корзины - теперь не нужны, так как используем другой подход */
+    .cart-table {
+        /* Уже не нужно */
+        /*display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;*/
+    }
 }
 
 @media (max-width: 576px) {
@@ -981,6 +1021,13 @@ footer::before {
     .contact-form {
         padding: 25px;
     }
+
+    /* Улучшенная адаптивность корзины для малых экранов - не нужно, мы используем контейнер */
+    .cart-page {
+        padding: 15px 10px;
+    }
+    
+    /* Остальные стили мобильной корзины оставляем */
 }
 
 @media (max-width: 480px) {
@@ -1018,6 +1065,79 @@ footer::before {
 
     .achievement-card .number {
         font-size: 36px;
+    }
+
+    /* Стили для очень маленьких экранов */
+    .cart-table {
+        display: block;
+        width: 100%;
+    }
+    
+    /* Преобразуем таблицу в более компактный вид для мобильных устройств */
+    .cart-table thead {
+        display: none; /* Скрываем заголовки */
+    }
+    
+    .cart-table tr {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .cart-table td {
+        border: none;
+        padding: 8px 5px;
+    }
+    
+    /* Первая ячейка (с товаром) занимает всю ширину */
+    .cart-table td:nth-child(1) {
+        width: 100%;
+        padding-right: 60px; /* Место для кнопки удаления */
+    }
+    
+    /* Цена отображается в компактном виде */
+    .cart-table td:nth-child(2) {
+        display: inline-block;
+        width: auto;
+        margin-right: 10px;
+    }
+    
+    /* Количество товара */
+    .cart-table td:nth-child(3) {
+        width: 33%;
+    }
+    
+    /* Итоговая цена */
+    .cart-table td:nth-child(4) {
+        width: 33%;
+        text-align: right;
+    }
+    
+    /* Кнопка удаления */
+    .cart-table td:nth-child(5) {
+        position: absolute;
+        top: 8px;
+        right: 5px;
+    }
+    
+    .cart-actions button {
+        padding: 0;
+        font-size: 1.2rem;
+    }
+    
+    .cart-actions button span {
+        display: none; /* Скрываем текст кнопки, оставляем только иконку */
+    }
+    
+    .cart-product {
+        width: 100%;
+    }
+    
+    .cart-quantity {
+        justify-content: flex-start;
     }
 }
 
@@ -1766,6 +1886,7 @@ body.dark-theme .redirect-notice {
   max-width: 1200px;
   margin: 30px auto;
   padding: 20px;
+  overflow-x: hidden; /* Предотвращаем горизонтальную прокрутку */
 }
 
 .cart-title {
@@ -1808,6 +1929,13 @@ body.dark-theme .redirect-notice {
   transform: translateY(-2px);
 }
 
+.cart-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
 .cart-table {
   width: 100%;
   border-collapse: collapse;
@@ -1815,6 +1943,7 @@ body.dark-theme .redirect-notice {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  min-width: 600px; /* Минимальная ширина для предотвращения сжатия на мобильных */
 }
 
 .cart-table th {
@@ -2262,4 +2391,108 @@ body.dark-theme .redirect-notice {
 .redirect-message #countdown {
   font-weight: bold;
   color: #007bff;
+}
+
+/* Стили для категорий в каталоге */
+.sidebar {
+  background-color: var(--bg-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  width: 250px;
+  margin-right: 30px;
+  transition: all var(--transition-fast);
+  position: sticky;
+  top: 100px;
+}
+
+.mobile-toggle {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  justify-content: center;
+  text-align: center;
+}
+
+.category-item {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 0;
+  position: relative;
+}
+
+.category-link {
+  flex-grow: 1;
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.category-link:hover, 
+.category-link.active {
+  color: var(--primary-color);
+}
+
+.toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+  padding: 5px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-left: 5px;
+}
+
+.toggle-icon.open i {
+  transform: rotate(180deg);
+}
+
+.subcategory-list {
+  list-style: none;
+  padding-left: 15px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-medium);
+}
+
+.subcategory-list.open {
+  max-height: 300px;
+  margin-bottom: 10px;
+}
+
+.subcategory-list li {
+  margin-bottom: 8px;
+}
+
+.subcategory-list a {
+  text-decoration: none;
+  color: #666;
+  font-size: 14px;
+  transition: color var(--transition-fast);
+  display: block;
+  padding: 5px 0;
+}
+
+.subcategory-list a:hover {
+  color: var(--primary-color);
 } 

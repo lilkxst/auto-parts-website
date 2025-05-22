@@ -42,27 +42,69 @@
     <main class="catalog-page">
       <aside class="sidebar fade-in">
         <h2>Категории</h2>
+        <div class="mobile-toggle">
+          <i class="fas fa-bars"></i> Категории
+        </div>
         <ul class="category-list">
-          <li>
-            <a href="#" class="category-link" data-category="tires">Шины</a>
+          <li class="category-item">
+            <div class="category-header">
+              <a href="#" class="category-link" data-category="tires">Шины</a>
+              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <ul class="subcategory-list">
+              <li><a href="#">Летние шины</a></li>
+              <li><a href="#">Зимние шины</a></li>
+              <li><a href="#">Всесезонные шины</a></li>
+              <li><a href="#">Для внедорожников</a></li>
+            </ul>
           </li>
-          <li>
-            <a href="#" class="category-link" data-category="oils">Масла</a>
+          <li class="category-item">
+            <div class="category-header">
+              <a href="#" class="category-link" data-category="oils">Масла</a>
+              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <ul class="subcategory-list">
+              <li><a href="#">Моторные масла</a></li>
+              <li><a href="#">Трансмиссионные масла</a></li>
+              <li><a href="#">Гидравлические масла</a></li>
+              <li><a href="#">Для АКПП</a></li>
+            </ul>
           </li>
-          <li>
-            <a href="#" class="category-link" data-category="brakes"
-              >Тормозные колодки</a
-            >
+          <li class="category-item">
+            <div class="category-header">
+              <a href="#" class="category-link" data-category="brakes">Тормозные колодки</a>
+              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <ul class="subcategory-list">
+              <li><a href="#">Передние</a></li>
+              <li><a href="#">Задние</a></li>
+              <li><a href="#">Керамические</a></li>
+              <li><a href="#">Полуметаллические</a></li>
+            </ul>
           </li>
-          <li>
-            <a href="#" class="category-link" data-category="filters"
-              >Фильтры</a
-            >
+          <li class="category-item">
+            <div class="category-header">
+              <a href="#" class="category-link" data-category="filters">Фильтры</a>
+              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <ul class="subcategory-list">
+              <li><a href="#">Масляные фильтры</a></li>
+              <li><a href="#">Воздушные фильтры</a></li>
+              <li><a href="#">Топливные фильтры</a></li>
+              <li><a href="#">Салонные фильтры</a></li>
+            </ul>
           </li>
-          <li>
-            <a href="#" class="category-link" data-category="batteries"
-              >Аккумуляторы</a
-            >
+          <li class="category-item">
+            <div class="category-header">
+              <a href="#" class="category-link" data-category="batteries">Аккумуляторы</a>
+              <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <ul class="subcategory-list">
+              <li><a href="#">Легковые</a></li>
+              <li><a href="#">Грузовые</a></li>
+              <li><a href="#">Мотоциклетные</a></li>
+              <li><a href="#">Гелевые</a></li>
+            </ul>
           </li>
         </ul>
       </aside>

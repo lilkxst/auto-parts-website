@@ -12,6 +12,93 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Функционал сворачивания/разворачивания категорий
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработчик для мобильной кнопки переключения всех категорий
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const categoryList = document.querySelector('.category-list');
+    
+    if (mobileToggle && categoryList) {
+        mobileToggle.addEventListener('click', function() {
+            categoryList.classList.toggle('open');
+        });
+    }
+    
+    // Обработчики для переключения подкатегорий
+    const categoryHeaders = document.querySelectorAll('.category-header');
+    
+    categoryHeaders.forEach(header => {
+        header.addEventListener('click', function(e) {
+            // Проверяем, был ли клик на ссылке категории
+            const clickedOnLink = e.target.closest('.category-link');
+            
+            // Находим элементы
+            const categoryItem = this.closest('.category-item');
+            const subcategoryList = categoryItem.querySelector('.subcategory-list');
+            const toggleIcon = categoryItem.querySelector('.toggle-icon');
+            
+            // Если клик был на иконке или на заголовке (но не на ссылке),
+            // переключаем видимость подкатегорий
+            if (!clickedOnLink || e.target.closest('.toggle-icon')) {
+                e.preventDefault();
+                subcategoryList.classList.toggle('open');
+                toggleIcon.classList.toggle('open');
+                
+                // Если открываем на мобильном, убедимся что родительский список категорий тоже открыт
+                if (window.innerWidth <= 768) {
+                    categoryList.classList.add('open');
+                }
+            }
+            
+            // Если клик был на ссылке категории и мы на мобильном, 
+            // убедимся, что список открыт перед загрузкой модального окна
+            if (clickedOnLink && window.innerWidth <= 768) {
+                categoryList.classList.add('open');
+            }
+        });
+    });
+    
+    // Добавляем отдельный обработчик на иконки переключения
+    document.querySelectorAll('.toggle-icon').forEach(icon => {
+        icon.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Предотвращаем срабатывание события клика на родителе
+            
+            const categoryItem = this.closest('.category-item');
+            const subcategoryList = categoryItem.querySelector('.subcategory-list');
+            
+            subcategoryList.classList.toggle('open');
+            this.classList.toggle('open');
+            
+            // Убедимся, что на мобильных устройствах список категорий открыт
+            if (window.innerWidth <= 768) {
+                categoryList.classList.add('open');
+            }
+        });
+    });
+    
+    // Предотвращаем закрытие подкатегорий при клике на ссылки в них
+    const subcategoryLinks = document.querySelectorAll('.subcategory-list a');
+    subcategoryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+    
+    // При загрузке страницы показываем категории на десктопе
+    function updateCategoriesVisibility() {
+        if (window.innerWidth > 768) {
+            categoryList.classList.add('open');
+        } else {
+            categoryList.classList.remove('open');
+        }
+    }
+    
+    // Вызываем при загрузке и изменении размера окна
+    updateCategoriesVisibility();
+    window.addEventListener('resize', updateCategoriesVisibility);
+});
+
 // Анимация появления элементов при прокрутке
 const observerOptions = {
     root: null,
@@ -643,7 +730,7 @@ function renderCart() {
       <td>
         <div class="cart-actions">
           <button type="button" class="remove-item" data-id="${item.id}">
-            <i class="fas fa-trash-alt"></i> Удалить
+            <i class="fas fa-trash-alt"></i> <span>Удалить</span>
           </button>
         </div>
       </td>
