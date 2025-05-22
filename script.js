@@ -991,4 +991,117 @@ function placeOrder() {
       window.location.href = 'order-confirmation.html';
     }, 3000);
   });
-} 
+}
+
+// Функционал фильтрации товаров по категориям
+document.addEventListener('DOMContentLoaded', function() {
+    // Находим все ссылки категорий, включая подкатегории
+    const categoryLinks = document.querySelectorAll('.category-link, .subcategory-list a');
+    
+    // Функция для отображения товаров выбранной категории
+    function filterProductsByCategory(category) {
+        // Находим все секции категорий
+        const categorySections = document.querySelectorAll('.category-section');
+        
+        // Если выбраны все товары, показываем все секции
+        if (category === 'all') {
+            categorySections.forEach(section => {
+                section.style.display = 'block';
+                // Анимация появления
+                setTimeout(() => {
+                    section.style.opacity = '1';
+                }, 50);
+            });
+            return;
+        }
+        
+        // Иначе скрываем все секции кроме выбранной и популярных товаров
+        categorySections.forEach(section => {
+            const sectionId = section.id;
+            
+            if (sectionId === category + '-section' || sectionId === 'popular-section') {
+                section.style.display = 'block';
+                // Плавное появление
+                section.style.opacity = '0';
+                setTimeout(() => {
+                    section.style.opacity = '1';
+                }, 50);
+            } else {
+                // Плавное скрытие
+                section.style.opacity = '0';
+                setTimeout(() => {
+                    section.style.display = 'none';
+                }, 300);
+            }
+        });
+        
+        // Подсвечиваем активную категорию
+        categoryLinks.forEach(link => {
+            if (link.getAttribute('data-category') === category) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+        
+        // Сохраняем выбранную категорию в localStorage для сохранения между посещениями
+        localStorage.setItem('selectedCategory', category);
+    }
+    
+    // Назначаем обработчики клика для всех ссылок категорий
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Получаем категорию из атрибута data-category
+            const category = this.getAttribute('data-category');
+            
+            // Фильтруем товары
+            filterProductsByCategory(category);
+            
+            // На мобильных устройствах закрываем меню категорий после выбора
+            if (window.innerWidth <= 768) {
+                const mobileToggle = document.querySelector('.mobile-toggle');
+                const categoryList = document.querySelector('.category-list');
+                
+                if (mobileToggle && categoryList) {
+                    // Не закрываем список категорий при выборе категории на мобильных
+                    // для лучшего UX
+                }
+            }
+        });
+    });
+    
+    // При загрузке страницы проверяем, есть ли сохраненная категория
+    const savedCategory = localStorage.getItem('selectedCategory');
+    if (savedCategory) {
+        filterProductsByCategory(savedCategory);
+    } else {
+        // По умолчанию показываем все товары
+        filterProductsByCategory('all');
+    }
+    
+    // Очистка фильтра при нажатии на логотип или ссылку "Каталог"
+    const logoLink = document.querySelector('.logo a');
+    const catalogNavLink = document.querySelector('.nav-links a[href="catalog.html"]');
+    
+    if (logoLink) {
+        logoLink.addEventListener('click', function(e) {
+            // Не блокируем переход по ссылке на главную
+            if (window.location.pathname.includes('catalog.html')) {
+                e.preventDefault();
+                filterProductsByCategory('all');
+            }
+        });
+    }
+    
+    if (catalogNavLink) {
+        catalogNavLink.addEventListener('click', function(e) {
+            // Если мы уже на странице каталога, просто сбрасываем фильтр
+            if (window.location.pathname.includes('catalog.html')) {
+                e.preventDefault();
+                filterProductsByCategory('all');
+            }
+        });
+    }
+}); 

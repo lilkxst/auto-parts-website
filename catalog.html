@@ -48,67 +48,46 @@
         <ul class="category-list">
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link">Шины и диски</a>
+              <a href="#" class="category-link" data-category="tires">Шины и диски</a>
               <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
             </div>
             <ul class="subcategory-list">
-              <li><a href="#">Летние шины</a></li>
-              <li><a href="#">Зимние шины</a></li>
-              <li><a href="#">Всесезонные шины</a></li>
-              <li><a href="#">Литые диски</a></li>
-              <li><a href="#">Штампованные диски</a></li>
+              <li><a href="#" data-category="tires">Летние шины</a></li>
+              <li><a href="#" data-category="tires">Зимние шины</a></li>
+              <li><a href="#" data-category="tires">Всесезонные шины</a></li>
+              <li><a href="#" data-category="tires">Литые диски</a></li>
+              <li><a href="#" data-category="tires">Штампованные диски</a></li>
             </ul>
           </li>
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link">Масла и жидкости</a>
+              <a href="#" class="category-link" data-category="oils">Масла и жидкости</a>
               <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
             </div>
             <ul class="subcategory-list">
-              <li><a href="#">Моторные масла</a></li>
-              <li><a href="#">Трансмиссионные масла</a></li>
-              <li><a href="#">Тормозные жидкости</a></li>
-              <li><a href="#">Охлаждающие жидкости</a></li>
-              <li><a href="#">Присадки</a></li>
+              <li><a href="#" data-category="oils">Моторные масла</a></li>
+              <li><a href="#" data-category="oils">Трансмиссионные масла</a></li>
+              <li><a href="#" data-category="oils">Тормозные жидкости</a></li>
+              <li><a href="#" data-category="oils">Охлаждающие жидкости</a></li>
+              <li><a href="#" data-category="oils">Присадки</a></li>
             </ul>
           </li>
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link">Детали двигателя</a>
+              <a href="#" class="category-link" data-category="brakes">Тормозная система</a>
               <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
             </div>
             <ul class="subcategory-list">
-              <li><a href="#">Поршни и кольца</a></li>
-              <li><a href="#">Коленвалы</a></li>
-              <li><a href="#">Распредвалы</a></li>
-              <li><a href="#">Клапаны</a></li>
-              <li><a href="#">Прокладки</a></li>
+              <li><a href="#" data-category="brakes">Тормозные колодки</a></li>
+              <li><a href="#" data-category="brakes">Тормозные диски</a></li>
+              <li><a href="#" data-category="brakes">Суппорты</a></li>
+              <li><a href="#" data-category="brakes">Шланги и трубки</a></li>
             </ul>
           </li>
           <li class="category-item">
             <div class="category-header">
-              <a href="#" class="category-link">Тормозная система</a>
-              <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
+              <a href="#" class="category-link" data-category="all">Все товары</a>
             </div>
-            <ul class="subcategory-list">
-              <li><a href="#">Тормозные колодки</a></li>
-              <li><a href="#">Тормозные диски</a></li>
-              <li><a href="#">Суппорты</a></li>
-              <li><a href="#">Шланги и трубки</a></li>
-            </ul>
-          </li>
-          <li class="category-item">
-            <div class="category-header">
-              <a href="#" class="category-link">Электрооборудование</a>
-              <div class="toggle-icon"><i class="fas fa-chevron-down"></i></div>
-            </div>
-            <ul class="subcategory-list">
-              <li><a href="#">Аккумуляторы</a></li>
-              <li><a href="#">Стартеры</a></li>
-              <li><a href="#">Генераторы</a></li>
-              <li><a href="#">Свечи зажигания</a></li>
-              <li><a href="#">Лампы и фары</a></li>
-            </ul>
           </li>
         </ul>
       </aside>
@@ -119,31 +98,31 @@
           <button><i class="fas fa-search"></i></button>
         </div>
 
-        <div class="category-section">
+        <div class="category-section" id="tires-section">
           <h3>Шины и диски</h3>
           <div class="product-grid">
-            <div class="product-card fade-in" data-id="product1" data-category="Шины">
+            <div class="product-card fade-in" data-id="product1" data-category="tires">
               <img src="images/Continental-VancoFourSeason-500.png" alt="Шина Continental" />
               <h3>Летние шины Continental</h3>
               <p>Высококачественные шины для легковых автомобилей, размер 205/55 R16</p>
               <div class="product-price">150.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product5" data-category="Шины">
+            <div class="product-card fade-in" data-id="product5" data-category="tires">
               <img src="images/Continental-VancoFourSeason-500.png" alt="Шина Michelin" />
               <h3>Зимние шины Michelin</h3>
               <p>Надежные зимние шины для безопасного вождения, размер 205/55 R16</p>
               <div class="product-price">180.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product6" data-category="Шины">
+            <div class="product-card fade-in" data-id="product6" data-category="tires">
               <img src="images/Continental-VancoFourSeason-500.png" alt="Шина Pirelli" />
               <h3>Всесезонные шины Pirelli</h3>
               <p>Универсальные шины для внедорожников, размер 215/65 R16</p>
               <div class="product-price">165.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product7" data-category="Шины">
+            <div class="product-card fade-in" data-id="product7" data-category="tires">
               <img src="images/Continental-VancoFourSeason-500.png" alt="Шина Bridgestone" />
               <h3>Летние шины Bridgestone</h3>
               <p>Спортивные шины с улучшенным сцеплением, размер 225/45 R17</p>
@@ -153,31 +132,31 @@
           </div>
         </div>
 
-        <div class="category-section">
+        <div class="category-section" id="oils-section">
           <h3>Масла и жидкости</h3>
           <div class="product-grid">
-            <div class="product-card fade-in" data-id="product2" data-category="Масла">
+            <div class="product-card fade-in" data-id="product2" data-category="oils">
               <img src="images/optimize.jpg" alt="Масло моторное" />
               <h3>Моторное масло Castrol Edge</h3>
               <p>Синтетическое моторное масло, 5W-30, 4 литра</p>
               <div class="product-price">85.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product8" data-category="Масла">
+            <div class="product-card fade-in" data-id="product8" data-category="oils">
               <img src="images/optimize.jpg" alt="Масло Shell" />
               <h3>Моторное масло Shell Helix</h3>
               <p>Полностью синтетическое масло, 5W-40, 4 литра</p>
               <div class="product-price">95.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product9" data-category="Масла">
+            <div class="product-card fade-in" data-id="product9" data-category="oils">
               <img src="images/optimize.jpg" alt="Масло Mobil" />
               <h3>Моторное масло Mobil 1</h3>
               <p>Синтетическое масло для экстремальных температур, 0W-40, 4 литра</p>
               <div class="product-price">110.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product10" data-category="Масла">
+            <div class="product-card fade-in" data-id="product10" data-category="oils">
               <img src="images/optimize.jpg" alt="Трансмиссионное масло" />
               <h3>Трансмиссионное масло ZIC</h3>
               <p>Масло для МКПП, 75W-90, 1 литр</p>
@@ -187,31 +166,31 @@
           </div>
         </div>
 
-        <div class="category-section">
+        <div class="category-section" id="brakes-section">
           <h3>Тормозная система</h3>
           <div class="product-grid">
-            <div class="product-card fade-in" data-id="product3" data-category="Тормоза">
+            <div class="product-card fade-in" data-id="product3" data-category="brakes">
               <img src="images/optimize (1).webp" alt="Тормозные колодки" />
               <h3>Тормозные колодки Bosch</h3>
               <p>Комплект передних тормозных колодок для Toyota Camry</p>
               <div class="product-price">65.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product11" data-category="Тормоза">
+            <div class="product-card fade-in" data-id="product11" data-category="brakes">
               <img src="images/optimize (1).webp" alt="Тормозные колодки TRW" />
               <h3>Тормозные колодки TRW</h3>
               <p>Комплект задних тормозных колодок для Volkswagen Passat</p>
               <div class="product-price">75.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product12" data-category="Тормоза">
+            <div class="product-card fade-in" data-id="product12" data-category="brakes">
               <img src="images/optimize (1).webp" alt="Тормозные диски ATE" />
               <h3>Тормозные диски ATE</h3>
               <p>Пара передних тормозных дисков для BMW 3-серии</p>
               <div class="product-price">120.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product13" data-category="Тормоза">
+            <div class="product-card fade-in" data-id="product13" data-category="brakes">
               <img src="images/optimize (1).webp" alt="Тормозные колодки Brembo" />
               <h3>Тормозные колодки Brembo</h3>
               <p>Керамические тормозные колодки для Mercedes-Benz E-класса</p>
@@ -221,31 +200,31 @@
           </div>
         </div>
 
-        <div class="category-section">
+        <div class="category-section" id="popular-section">
           <h3>Популярные товары</h3>
           <div class="product-grid">
-            <div class="product-card fade-in" data-id="product1" data-category="Шины">
+            <div class="product-card fade-in" data-id="product1" data-category="tires">
               <img src="images/Continental-VancoFourSeason-500.png" alt="Шина Continental" />
               <h3>Летние шины Continental</h3>
               <p>Высококачественные шины для легковых автомобилей, размер 205/55 R16</p>
               <div class="product-price">150.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product2" data-category="Масла">
+            <div class="product-card fade-in" data-id="product2" data-category="oils">
               <img src="images/optimize.jpg" alt="Масло моторное" />
               <h3>Моторное масло Castrol Edge</h3>
               <p>Синтетическое моторное масло, 5W-30, 4 литра</p>
               <div class="product-price">85.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product3" data-category="Тормоза">
+            <div class="product-card fade-in" data-id="product3" data-category="brakes">
               <img src="images/optimize (1).webp" alt="Тормозные колодки" />
               <h3>Тормозные колодки Bosch</h3>
               <p>Комплект передних тормозных колодок для Toyota Camry</p>
               <div class="product-price">65.00 BYN</div>
               <button class="add-to-cart-btn">Добавить в корзину</button>
             </div>
-            <div class="product-card fade-in" data-id="product4" data-category="Электрика">
+            <div class="product-card fade-in" data-id="product4" data-category="electrics">
               <img src="images/optimize.jpg" alt="Аккумулятор" />
               <h3>Аккумулятор Varta Blue Dynamic</h3>
               <p>60 Ah, 540A, правый плюс</p>
