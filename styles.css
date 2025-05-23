@@ -24,6 +24,13 @@ body {
     overflow-x: hidden;
 }
 
+/* Класс для скрытия элементов на мобильных устройствах */
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none;
+    }
+}
+
 /* Шапка сайта */
 header {
     background-color: var(--bg-color);
