@@ -93,7 +93,7 @@ header {
 }
 
 .contact-info a:hover {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 body.dark-theme .contact-info a {
@@ -101,7 +101,7 @@ body.dark-theme .contact-info a {
 }
 
 body.dark-theme .contact-info a:hover {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 .main-nav {
@@ -114,7 +114,7 @@ body.dark-theme .contact-info a:hover {
 }
 
 .logo h1 {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     font-size: 24px;
 }
 
@@ -131,7 +131,7 @@ body.dark-theme .contact-info a:hover {
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 .nav-links a::after {
@@ -141,7 +141,7 @@ body.dark-theme .contact-info a:hover {
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-color);
     transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -331,7 +331,7 @@ body.dark-theme .contact-info a:hover {
 
 .category-list a:hover {
     background-color: rgba(0, 206, 209, 0.1);
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     transform: translateX(5px);
 }
 
@@ -364,7 +364,7 @@ body.dark-theme .contact-info a:hover {
 }
 
 .search-bar input:focus {
-    border-color: var(--primary-color) !important;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.2);
     outline: none;
 }
@@ -430,7 +430,7 @@ body.dark-theme .contact-info a:hover {
 
 .contact-card i {
     font-size: 40px;
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     margin-bottom: 20px;
     transition: all var(--transition-fast);
 }
@@ -477,7 +477,7 @@ body.dark-theme .contact-info a:hover {
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: var(--primary-color) !important;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.2);
     outline: none;
     transform: translateY(-2px);
@@ -613,7 +613,7 @@ body.dark-theme .contact-info a:hover {
 
 .advantage-card i {
     font-size: 44px;
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     margin-bottom: 25px;
     transition: all var(--transition-fast);
 }
@@ -651,7 +651,7 @@ body.dark-theme .contact-info a:hover {
 }
 
 .team-member:hover img {
-    border-color: var(--primary-color) !important;
+    border-color: var(--primary-color);
     transform: scale(1.05);
 }
 
@@ -679,7 +679,7 @@ body.dark-theme .contact-info a:hover {
 .achievement-card .number {
     font-size: 48px;
     font-weight: bold;
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     display: block;
     margin-bottom: 15px;
     transition: all var(--transition-fast);
@@ -730,7 +730,7 @@ footer::before {
     left: 0;
     width: 40px;
     height: 3px;
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-color);
 }
 
 .footer-section p {
@@ -746,7 +746,7 @@ footer::before {
 }
 
 .footer-section a:hover {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     opacity: 1;
 }
 
@@ -769,7 +769,7 @@ footer::before {
     left: 0;
     width: 40px;
     height: 3px;
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-color);
 }
 
 .footer-col p {
@@ -785,7 +785,7 @@ footer::before {
 }
 
 .footer-col a:hover {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     opacity: 1;
 }
 
@@ -802,7 +802,7 @@ footer::before {
 }
 
 .social-links a:hover {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     transform: translateY(-5px) scale(1.1);
     opacity: 1;
 }
@@ -1030,6 +1030,15 @@ footer::before {
         display: none; /* Скрываем заголовок, т.к. он уже есть в mobile-toggle */
     }
 
+    /* Стили для мобильной корзины - теперь не нужны, так как используем другой подход */
+    .cart-table {
+        /* Уже не нужно */
+        /*display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;*/
+    }
 }
 
 @media (max-width: 576px) {
@@ -1360,7 +1369,7 @@ button:active, .submit-button:active {
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-color);
     transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -1411,7 +1420,7 @@ button:active, .submit-button:active {
 
 .social-links a:hover {
     transform: translateY(-5px) scale(1.1);
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 /* Стили для модальных окон */
@@ -1490,7 +1499,7 @@ button:active, .submit-button:active {
     font-size: 24px;
     margin-bottom: 30px;
     text-align: center;
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     position: relative;
     padding-bottom: 10px;
 }
@@ -1572,7 +1581,7 @@ body.dark-theme .nav-links a {
 
 body.dark-theme .nav-links a:hover,
 body.dark-theme .nav-links a.active {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 body.dark-theme .product-card,
@@ -1649,7 +1658,7 @@ body.dark-theme .category-list a {
 
 body.dark-theme .category-list a:hover {
     background-color: rgba(0, 206, 209, 0.1);
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 body.dark-theme .footer {
@@ -1719,11 +1728,11 @@ body.dark-theme .no-results {
 }
 
 .notification.success .notification-content i {
-    color: var(--primary-color) !important;
+    color: #28a745;
 }
 
 .notification.info .notification-content i {
-    color: var(--primary-color) !important;
+    color: #007bff;
 }
 
 .notification.error .notification-content i {
@@ -1781,7 +1790,7 @@ body.dark-theme .no-results {
 
 .success-icon {
     font-size: 80px;
-    color: var(--primary-color) !important;
+    color: #28a745;
     margin-bottom: 25px;
     display: block;
     animation: scaleInPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -1856,7 +1865,7 @@ body.dark-theme .redirect-notice {
 }
 
 .cart-icon:hover {
-  color: var(--primary-color) !important;
+  color: #007bff;
 }
 
 .cart-count {
@@ -1889,7 +1898,7 @@ body.dark-theme .redirect-notice {
 }
 
 .add-to-cart-btn {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
@@ -1901,7 +1910,7 @@ body.dark-theme .redirect-notice {
 }
 
 .add-to-cart-btn:hover {
-  background: linear-gradient(135deg, var(--primary-color), #009ea6);
+  background-color: #0056b3;
   transform: translateY(-2px);
 }
 
@@ -1982,7 +1991,7 @@ body.dark-theme .redirect-notice {
 
 .cart-empty .btn {
   display: inline-block;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background-color: #007bff;
   color: white;
   padding: 10px 20px;
   border-radius: 4px;
@@ -1991,7 +2000,7 @@ body.dark-theme .redirect-notice {
 }
 
 .cart-empty .btn:hover {
-  background: linear-gradient(135deg, var(--primary-color), #009ea6);
+  background-color: #0056b3;
   transform: translateY(-2px);
 }
 
@@ -2126,7 +2135,7 @@ body.dark-theme .redirect-notice {
 }
 
 .checkout-btn {
-  background-color: var(--primary-color) !important;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 4px;
@@ -2140,7 +2149,7 @@ body.dark-theme .redirect-notice {
 }
 
 .checkout-btn:hover {
-  background-color: var(--secondary-color);
+  background-color: #218838;
   transform: translateY(-2px);
 }
 
@@ -2152,7 +2161,7 @@ body.dark-theme .redirect-notice {
   display: block;
   text-align: center;
   margin-top: 15px;
-  color: var(--primary-color) !important;
+  color: #007bff;
   text-decoration: none;
 }
 
@@ -2238,7 +2247,7 @@ body.dark-theme .redirect-notice {
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: var(--primary-color) !important;
+  border-color: #007bff;
   outline: none;
 }
 
@@ -2319,7 +2328,7 @@ body.dark-theme .redirect-notice {
 }
 
 .place-order-btn {
-  background-color: var(--primary-color) !important;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 4px;
@@ -2333,7 +2342,7 @@ body.dark-theme .redirect-notice {
 }
 
 .place-order-btn:hover {
-  background-color: var(--secondary-color);
+  background-color: #218838;
   transform: translateY(-2px);
 }
 
@@ -2362,7 +2371,7 @@ body.dark-theme .redirect-notice {
 
 .confirmation-icon i {
   font-size: 5rem;
-  color: var(--primary-color) !important;
+  color: #28a745;
   animation: pulse 2s infinite;
 }
 
@@ -2428,12 +2437,12 @@ body.dark-theme .redirect-notice {
 }
 
 .confirmation-actions .btn:first-child {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background-color: #007bff;
   color: white;
 }
 
 .confirmation-actions .btn:first-child:hover {
-  background: linear-gradient(135deg, var(--primary-color), #009ea6);
+  background-color: #0056b3;
   transform: translateY(-2px);
 }
 
@@ -2456,7 +2465,7 @@ body.dark-theme .redirect-notice {
 
 .redirect-message #countdown {
   font-weight: bold;
-  color: var(--primary-color) !important;
+  color: #007bff;
 }
 
 /* Стили для категорий в каталоге */
@@ -2480,7 +2489,7 @@ body.dark-theme .redirect-notice {
   font-size: 16px;
   cursor: pointer;
   padding: 10px 15px;
-  background-color: var(--primary-color) !important;
+  background-color: var(--primary-color);
   color: white;
   border-radius: 8px;
   margin-bottom: 15px;
@@ -2537,7 +2546,7 @@ body.dark-theme .redirect-notice {
 
 .category-link:hover, 
 .category-link.active {
-  color: var(--primary-color) !important;
+  color: var(--primary-color);
 }
 
 .toggle-icon {
@@ -2562,7 +2571,7 @@ body.dark-theme .redirect-notice {
 
 .toggle-icon.open i {
   transform: rotate(180deg);
-  color: var(--primary-color) !important;
+  color: var(--primary-color);
 }
 
 .toggle-icon:hover {
@@ -2596,7 +2605,7 @@ body.dark-theme .redirect-notice {
 }
 
 .subcategory-list a:hover {
-  color: var(--primary-color) !important;
+  color: var(--primary-color);
 }
 
 /* Темная тема для категорий */
@@ -2617,7 +2626,7 @@ body.dark-theme .subcategory-list a {
 }
 
 body.dark-theme .subcategory-list a:hover {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 /* Адаптивность для мобильных устройств */
@@ -2697,7 +2706,7 @@ body.dark-theme .subcategory-list a:hover {
 /* Дополнительные стили для активной категории */
 .category-link.active,
 .subcategory-list a.active {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
     font-weight: 600;
 }
 
@@ -2708,7 +2717,7 @@ body.dark-theme .subcategory-list a:hover {
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-color);
 }
 
 /* Стили для плавных переходов при фильтрации */
@@ -2748,4 +2757,3 @@ body.dark-theme .subcategory-list a:hover {
         transform: translateX(5px);
     }
 } 
-
