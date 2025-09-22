@@ -247,7 +247,7 @@ body.dark-theme .contact-info a:hover {
     border-radius: var(--border-radius);
     box-shadow: var(--card-shadow);
     overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
                 box-shadow var(--transition-fast);
     border: 1px solid rgba(0, 0, 0, 0.05);
     animation: fadeInProduct 0.5s ease forwards;
@@ -280,11 +280,34 @@ body.dark-theme .contact-info a:hover {
     font-size: 1.1rem;
 }
 
-.product-card p {
-    padding: 0 20px 20px;
-    color: #666;
+/* Основной блок описания */
+.product-description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* ограничение до 3 строк */
+    -webkit-box-orient: vertical;
+    line-height: 1.5em;
+    max-height: calc(1.5em * 3);
+    margin: 0 20px 5px;
     font-size: 0.95rem;
-    line-height: 1.5;
+    color: #666;
+}
+
+/* Раскрытое описание */
+.product-description.expanded {
+    -webkit-line-clamp: unset;
+    max-height: none;
+}
+
+/* Кнопка "Показать больше" */
+.toggle-description {
+    border: none;
+    background: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin: 0 20px 10px;
+    text-align: left;
 }
 
 /* Каталог */

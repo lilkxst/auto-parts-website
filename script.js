@@ -340,69 +340,66 @@ themeSwitch.addEventListener('click', () => {
     themeSwitch.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
 });
 
-// Функционал поиска товаров
-const searchInput = document.querySelector('.search-bar input');
-const productCards = document.querySelectorAll('.product-card');
+document.addEventListener("DOMContentLoaded", function () {
+  fetch('products.json')
+    .then(response => response.json())
+    .then(products => {
+      const container = document.getElementById('product-container');
+      if (!container) return;
 
-if (searchInput) {
-    // Проверяем, существует ли элемент для сообщения о ненайденных товарах
-    let noResultsElement = document.querySelector('.no-results');
-    
-    // Если элемент не существует, создаем его
-    if (!noResultsElement) {
-        noResultsElement = document.createElement('div');
-        noResultsElement.className = 'no-results';
-        noResultsElement.innerHTML = '<p>Товары не найдены</p>';
-        const productGrid = document.querySelector('.product-grid');
-        if (productGrid) {
-            productGrid.parentNode.insertBefore(noResultsElement, productGrid.nextSibling);
-        }
-    }
-    
-    // Функция для обновления отображения товаров
-    const updateProductDisplay = () => {
+      container.innerHTML = products.map(product => `
+        <div class="product-card fade-in" data-id="${product.id}" data-category="${product.category}">
+          <img src="${product.image}" alt="${product.title}" />
+          <h3>${product.title}</h3>
+          <p>${product.description}</p>
+          <div class="product-price">${product.price.toFixed(2)} BYN</div>
+          <button class="add-to-cart-btn">Добавить в корзину</button>
+        </div>
+      `).join('');
+
+      // --- Поиск товаров ---
+      const searchInput = document.querySelector('.search-bar input');
+
+      const updateProductDisplay = () => {
         const searchTerm = searchInput.value.toLowerCase().trim();
+        const productCards = document.querySelectorAll('.product-card');
         let hasVisibleCards = false;
-        
+
         productCards.forEach(card => {
-            const title = card.querySelector('h3').textContent.toLowerCase();
-            const description = card.querySelector('p').textContent.toLowerCase();
-            
-            if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                card.style.display = 'block';
-                hasVisibleCards = true;
-            } else {
-                card.style.display = 'none';
-            }
+          const title = card.querySelector('h3').textContent.toLowerCase();
+          const description = card.querySelector('p').textContent.toLowerCase();
+
+          if (title.includes(searchTerm) || description.includes(searchTerm)) {
+            card.style.display = 'block';
+            hasVisibleCards = true;
+          } else {
+            card.style.display = 'none';
+          }
         });
-        
-        // Показываем сообщение, если ничего не найдено
-        if (hasVisibleCards) {
-            noResultsElement.style.display = 'none';
-        } else if (searchTerm !== '') {
-            noResultsElement.style.display = 'block';
-        } else {
-            // Если поле поиска пустое, скрываем сообщение
-            noResultsElement.style.display = 'none';
-            // И показываем все карточки
-            productCards.forEach(card => {
-                card.style.display = 'block';
-            });
+
+        let noResultsElement = document.querySelector('.no-results');
+        if (!noResultsElement) {
+          noResultsElement = document.createElement('div');
+          noResultsElement.className = 'no-results';
+          noResultsElement.innerHTML = '<p>Товары не найдены</p>';
+          container.parentNode.insertBefore(noResultsElement, container.nextSibling);
         }
-    };
-    
-    // Слушаем изменения в поле поиска
-    searchInput.addEventListener('input', updateProductDisplay);
-    
-    // Добавляем кнопку очистки
-    const searchButton = document.querySelector('.search-bar button');
-    if (searchButton) {
+
+        noResultsElement.style.display = hasVisibleCards || searchTerm === '' ? 'none' : 'block';
+      };
+
+      searchInput.addEventListener('input', updateProductDisplay);
+
+      const searchButton = document.querySelector('.search-bar button');
+      if (searchButton) {
         searchButton.addEventListener('click', function() {
-            searchInput.value = '';
-            updateProductDisplay();
+          searchInput.value = '';
+          updateProductDisplay();
         });
-    }
-}
+      }
+    })
+    .catch(error => console.error('Ошибка при загрузке товаров:', error));
+});
 
 // Обработка формы обратной связи
 const contactForm = document.getElementById('contactForm');
@@ -993,115 +990,76 @@ function placeOrder() {
   });
 }
 
-// Функционал фильтрации товаров по категориям
-document.addEventListener('DOMContentLoaded', function() {
-    // Находим все ссылки категорий, включая подкатегории
-    const categoryLinks = document.querySelectorAll('.category-link, .subcategory-list a');
-    
-    // Функция для отображения товаров выбранной категории
-    function filterProductsByCategory(category) {
-        // Находим все секции категорий
-        const categorySections = document.querySelectorAll('.category-section');
-        
-        // Если выбраны все товары, показываем все секции
-        if (category === 'all') {
-            categorySections.forEach(section => {
-                section.style.display = 'block';
-                // Анимация появления
-                setTimeout(() => {
-                    section.style.opacity = '1';
-                }, 50);
-            });
-            return;
-        }
-        
-        // Иначе скрываем все секции кроме выбранной и популярных товаров
-        categorySections.forEach(section => {
-            const sectionId = section.id;
-            
-            if (sectionId === category + '-section' || sectionId === 'popular-section') {
-                section.style.display = 'block';
-                // Плавное появление
-                section.style.opacity = '0';
-                setTimeout(() => {
-                    section.style.opacity = '1';
-                }, 50);
-            } else {
-                // Плавное скрытие
-                section.style.opacity = '0';
-                setTimeout(() => {
-                    section.style.display = 'none';
-                }, 300);
-            }
-        });
-        
-        // Подсвечиваем активную категорию
-        categoryLinks.forEach(link => {
-            if (link.getAttribute('data-category') === category) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
-        
-        // Сохраняем выбранную категорию в localStorage для сохранения между посещениями
-        localStorage.setItem('selectedCategory', category);
-    }
-    
-    // Назначаем обработчики клика для всех ссылок категорий
-    categoryLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Получаем категорию из атрибута data-category
-            const category = this.getAttribute('data-category');
-            
-            // Фильтруем товары
-            filterProductsByCategory(category);
-            
-            // На мобильных устройствах закрываем меню категорий после выбора
-            if (window.innerWidth <= 768) {
-                const mobileToggle = document.querySelector('.mobile-toggle');
-                const categoryList = document.querySelector('.category-list');
-                
-                if (mobileToggle && categoryList) {
-                    // Не закрываем список категорий при выборе категории на мобильных
-                    // для лучшего UX
-                }
-            }
-        });
-    });
-    
-    // При загрузке страницы проверяем, есть ли сохраненная категория
-    const savedCategory = localStorage.getItem('selectedCategory');
-    if (savedCategory) {
-        filterProductsByCategory(savedCategory);
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.getElementById('product-container');
+  const categoryLinks = document.querySelectorAll('.category-link, .subcategory-list a');
+  let products = [];
+
+  // 1️⃣ Загружаем товары из JSON
+  fetch('products.json')
+    .then(response => response.json())
+    .then(data => {
+      products = data;
+      renderProducts(products); // выводим все товары при загрузке
+    })
+    .catch(error => console.error('Ошибка при загрузке товаров:', error));
+
+  // 2️⃣ Функция для отображения товаров
+  function renderProducts(items) {
+  if (!container) return;
+  container.innerHTML = items.map(product => `
+    <div class="product-card fade-in" data-id="${product.id}" data-category="${product.category}">
+      <img src="${product.image}" alt="${product.title}" />
+      <h3>${product.title}</h3>
+      <p class="product-description">${product.description.replace(/\n/g, '<br>')}</p>
+      <button class="toggle-description">Показать больше</button>
+      <div class="product-price">${product.price.toFixed(2)} BYN</div>
+      <button class="add-to-cart-btn">Добавить в корзину</button>
+    </div>
+  `).join('');
+}
+
+  // 3️⃣ Фильтрация по категориям
+  function filterProductsByCategory(category) {
+    if (category === 'all') {
+      renderProducts(products);
     } else {
-        // По умолчанию показываем все товары
-        filterProductsByCategory('all');
+      renderProducts(products.filter(p => p.category === category));
     }
-    
-    // Очистка фильтра при нажатии на логотип или ссылку "Каталог"
-    const logoLink = document.querySelector('.logo a');
-    const catalogNavLink = document.querySelector('.nav-links a[href="catalog.html"]');
-    
-    if (logoLink) {
-        logoLink.addEventListener('click', function(e) {
-            // Не блокируем переход по ссылке на главную
-            if (window.location.pathname.includes('catalog.html')) {
-                e.preventDefault();
-                filterProductsByCategory('all');
-            }
-        });
+
+    // Подсветка активной категории
+    categoryLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('data-category') === category);
+    });
+
+    // Сохраняем выбор пользователя
+    localStorage.setItem('selectedCategory', category);
+  }
+
+  // 4️⃣ Обработчики клика по категориям
+  categoryLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const category = this.getAttribute('data-category');
+      filterProductsByCategory(category);
+    });
+  });
+
+  // 5️⃣ Загружаем выбранную ранее категорию
+  const savedCategory = localStorage.getItem('selectedCategory') || 'all';
+  filterProductsByCategory(savedCategory);
+
+  // 6️⃣ Слушатель для кнопок "Показать больше / Скрыть"
+  document.body.addEventListener("click", function (e) {
+    if (e.target.classList.contains("toggle-description")) {
+      const description = e.target.previousElementSibling;
+      description.classList.toggle("expanded");
+
+      if (description.classList.contains("expanded")) {
+        e.target.textContent = "Скрыть";
+      } else {
+        e.target.textContent = "Показать больше";
+      }
     }
-    
-    if (catalogNavLink) {
-        catalogNavLink.addEventListener('click', function(e) {
-            // Если мы уже на странице каталога, просто сбрасываем фильтр
-            if (window.location.pathname.includes('catalog.html')) {
-                e.preventDefault();
-                filterProductsByCategory('all');
-            }
-        });
-    }
-}); 
+  });
+});
