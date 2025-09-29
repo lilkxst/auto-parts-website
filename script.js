@@ -347,15 +347,23 @@ document.addEventListener("DOMContentLoaded", function () {
       const container = document.getElementById('product-container');
       if (!container) return;
 
-      container.innerHTML = products.map(product => `
-        <div class="product-card fade-in" data-id="${product.id}" data-category="${product.category}">
-          <img src="${product.image}" alt="${product.title}" />
-          <h3>${product.title}</h3>
-          <p>${product.description}</p>
-          <div class="product-price">${product.price.toFixed(2)} BYN</div>
-          <button class="add-to-cart-btn">Добавить в корзину</button>
-        </div>
-      `).join('');
+      container.innerHTML = products.map(product => {
+        const isInStock = product.stock && product.stock > 0;
+        return `
+          <div class="product-card fade-in" data-id="${product.id}" data-category="${product.category}">
+            <img src="${product.image}" alt="${product.title}" />
+            <h3>${product.title}</h3>
+            <p>${product.description}</p>
+            <div class="product-price">${product.price.toFixed(2)} BYN</div>
+            <div class="product-stock">В наличии: ${product.stock ?? 0} шт.</div>
+            ${
+              isInStock
+                ? `<button class="add-to-cart-btn">Добавить в корзину</button>`
+                : `<div class="out-of-stock">Нет в наличии</div>`
+            }
+          </div>
+        `;
+      }).join('');
 
       // --- Поиск товаров ---
       const searchInput = document.querySelector('.search-bar input');
@@ -519,49 +527,34 @@ document.addEventListener('DOMContentLoaded', function() {
   // Инициализация корзины
   initCart();
   
-  // Функция для добавления обработчиков на кнопки "Добавить в корзину"
-  function addCartButtonHandlers() {
-    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-    
-    // Сначала удаляем существующие обработчики, чтобы избежать дублирования
-    addToCartButtons.forEach(button => {
-      // Клонируем кнопку, чтобы удалить все обработчики событий
-      const newButton = button.cloneNode(true);
-      button.parentNode.replaceChild(newButton, button);
-    });
-    
-    // Теперь добавляем новые обработчики
-    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-      button.addEventListener('click', function(e) {
-        // Предотвращаем всплытие события, чтобы не срабатывал клик по карточке товара
-        e.stopPropagation();
-        
-        const productCard = this.closest('.product-card');
-        // Генерируем уникальный ID, если его нет
-        const productId = productCard.getAttribute('data-id') || `product_${Date.now()}`;
-        const productName = productCard.querySelector('h3').textContent;
-        // Извлекаем цену, убираем "BYN" и пробелы
-        const priceText = productCard.querySelector('.product-price').textContent;
-        const productPrice = parseFloat(priceText.replace(/[^\d.]/g, ''));
-        const productImage = productCard.querySelector('img').getAttribute('src');
-        const productCategory = productCard.getAttribute('data-category') || 'unknown';
-        
-        addToCart({
-          id: productId,
-          name: productName,
-          price: productPrice,
-          image: productImage,
-          category: productCategory,
-          quantity: 1
-        });
-        
-        showNotification(`${productName} добавлен в корзину`, 'success');
-      });
-    });
-  }
-  
-  // Добавляем обработчики для кнопок добавления в корзину на основной странице
-  addCartButtonHandlers();
+  // Делегирование клика на кнопки "Добавить в корзину"
+document.addEventListener('click', function(e) {
+  const button = e.target.closest('.add-to-cart-btn');
+  if (!button) return; // клик не на кнопке
+
+  e.stopPropagation();
+
+  const productCard = button.closest('.product-card');
+  if (!productCard) return;
+
+  const productId = productCard.getAttribute('data-id') || `product_${Date.now()}`;
+  const productName = productCard.querySelector('h3')?.textContent || 'Товар';
+  const priceText = productCard.querySelector('.product-price')?.textContent || '0';
+  const productPrice = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
+  const productImage = productCard.querySelector('img')?.getAttribute('src') || '';
+  const productCategory = productCard.getAttribute('data-category') || 'unknown';
+
+  addToCart({
+    id: productId,
+    name: productName,
+    price: productPrice,
+    image: productImage,
+    category: productCategory,
+    quantity: 1
+  });
+
+  showNotification(`${productName} добавлен в корзину`, 'success');
+});
   
   // Добавляем обработчики для кнопок в модальных окнах категорий
   document.querySelectorAll('.modal').forEach(modal => {
@@ -995,7 +988,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoryLinks = document.querySelectorAll('.category-link, .subcategory-list a');
   let products = [];
 
-  // 1️⃣ Загружаем товары из JSON
+  // Загружаем товары из JSON
   fetch('products.json')
     .then(response => response.json())
     .then(data => {
@@ -1004,22 +997,32 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch(error => console.error('Ошибка при загрузке товаров:', error));
 
-  // 2️⃣ Функция для отображения товаров
+  // Функция для отображения товаров
   function renderProducts(items) {
   if (!container) return;
-  container.innerHTML = items.map(product => `
-    <div class="product-card fade-in" data-id="${product.id}" data-category="${product.category}">
-      <img src="${product.image}" alt="${product.title}" />
-      <h3>${product.title}</h3>
-      <p class="product-description">${product.description.replace(/\n/g, '<br>')}</p>
-      <button class="toggle-description">Показать больше</button>
-      <div class="product-price">${product.price.toFixed(2)} BYN</div>
-      <button class="add-to-cart-btn">Добавить в корзину</button>
-    </div>
-  `).join('');
+  
+  container.innerHTML = items.map(product => {
+    const isInStock = product.stock && product.stock > 0;
+    
+    return `
+      <div class="product-card fade-in" data-id="${product.id}" data-category="${product.category}">
+        <img src="${product.image}" alt="${product.title}" />
+        <h3>${product.title}</h3>
+        <p class="product-description">${product.description.replace(/\n/g, '<br>')}</p>
+        <button class="toggle-description">Показать больше</button>
+        <div class="product-price">${product.price.toFixed(2)} BYN</div>
+        <div class="product-stock">В наличии: ${product.stock ?? 0} шт.</div>
+        ${
+          isInStock
+            ? `<button class="add-to-cart-btn">Добавить в корзину</button>`
+            : `<div class="out-of-stock">Нет в наличии</div>`
+        }
+      </div>
+    `;
+  }).join('');
 }
 
-  // 3️⃣ Фильтрация по категориям
+  // Фильтрация по категориям
   function filterProductsByCategory(category) {
     if (category === 'all') {
       renderProducts(products);
@@ -1036,7 +1039,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem('selectedCategory', category);
   }
 
-  // 4️⃣ Обработчики клика по категориям
+  // Обработчики клика по категориям
   categoryLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -1045,11 +1048,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 5️⃣ Загружаем выбранную ранее категорию
+  // Загружаем выбранную ранее категорию
   const savedCategory = localStorage.getItem('selectedCategory') || 'all';
   filterProductsByCategory(savedCategory);
 
-  // 6️⃣ Слушатель для кнопок "Показать больше / Скрыть"
+  // Слушатель для кнопок "Показать больше / Скрыть"
   document.body.addEventListener("click", function (e) {
     if (e.target.classList.contains("toggle-description")) {
       const description = e.target.previousElementSibling;
@@ -1062,4 +1065,26 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+});
+
+// Модальное окно для увеличения картинки
+const modal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImage');
+const closeModal = document.querySelector('.close-modal');
+
+// Делегируем клик на любую картинку внутри .product-card
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.product-card');
+  if (!card) return;
+
+  if (e.target.matches('img')) {
+    modalImg.src = e.target.src;
+    modal.style.display = 'block';
+  }
+});
+
+// закрытие
+closeModal.addEventListener('click', () => modal.style.display = 'none');
+modal.addEventListener('click', e => {
+  if (e.target === modal) modal.style.display = 'none';
 });

@@ -39,7 +39,7 @@ header {
     top: 0;
     z-index: 1000;
     width: 100%;
-    padding: 0 20px;
+    padding: 0 0px;
     transition: all var(--transition-fast);
 }
 
@@ -60,8 +60,8 @@ header {
 }
 
 .logo-img {
-    width: 80px;
-    height: 80px;
+    width: 300px;
+    height: 140px;
     object-fit: contain;
     transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
@@ -83,6 +83,7 @@ header {
     gap: 10px;
     flex: 1;
     text-align: right;
+    padding-right: 16px;
 }
 
 .contact-info a {
@@ -188,7 +189,7 @@ body.dark-theme .contact-info a:hover {
     font-size: 3.5rem;
     margin-bottom: 25px;
     text-shadow: 2px 2px 15px rgba(0,0,0,0.3);
-    max-width: 800px;
+    max-width: 900px;
     animation: fadeInUp 1.2s ease-out;
 }
 
@@ -284,7 +285,7 @@ body.dark-theme .contact-info a:hover {
 .product-description {
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* ограничение до 3 строк */
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     line-height: 1.5em;
     max-height: calc(1.5em * 3);
@@ -303,11 +304,18 @@ body.dark-theme .contact-info a:hover {
 .toggle-description {
     border: none;
     background: none;
-    color: #007bff;
+    color: var(--primary-color);
     cursor: pointer;
     font-size: 0.9rem;
     margin: 0 20px 10px;
     text-align: left;
+    padding: 0;
+    transition: color var(--transition-fast);
+}
+
+.toggle-description:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
 }
 
 /* Каталог */
@@ -327,6 +335,9 @@ body.dark-theme .contact-info a:hover {
     height: calc(100vh - 200px);
     position: sticky;
     top: 100px;
+    overflow-y: auto;
+    padding-right: 10px;
+    box-sizing: border-box;
 }
 
 .sidebar-content {
@@ -336,6 +347,7 @@ body.dark-theme .contact-info a:hover {
 .category-list {
     list-style: none;
     margin-top: 20px;
+    padding: 0;
 }
 
 .category-list li {
@@ -611,6 +623,37 @@ body.dark-theme .contact-info a:hover {
 
 .about-section {
     margin-bottom: 80px;
+}
+
+/* Добавляем стиль для текста внутри about-section */
+.about-section p,
+.about-history p {
+    font-family: 'Roboto', 'Arial', sans-serif; 
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    text-align: justify;
+    word-wrap: break-word; 
+    white-space: normal;
+    margin-bottom: 1.2em;
+    text-indent: 2em;
+}
+
+/* Ограничиваем ширину текста, чтобы строки не были слишком длинными */
+.about-history,
+.about-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Для мобильных устройств делаем шрифт чуть меньше */
+@media (max-width: 768px) {
+    .about-section p,
+    .about-history p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
 }
 
 .advantages-grid {
@@ -1911,6 +1954,12 @@ body.dark-theme .redirect-notice {
   margin: 10px 0;
 }
 
+.product-stock {
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  margin: 8px 15px;
+}
+
 .add-to-cart-btn {
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
@@ -1954,7 +2003,7 @@ body.dark-theme .redirect-notice {
   margin: 0 15px 10px;
   font-size: 0.9rem;
   color: #666;
-  flex-grow: 1;
+  /*flex-grow: 1;*/
 }
 
 .product-card img {
@@ -1966,6 +2015,7 @@ body.dark-theme .redirect-notice {
 }
 
 .product-card .product-price,
+.product-card .product-stock,
 .product-card .add-to-cart-btn {
   margin: 0 15px;
 }
@@ -2771,4 +2821,46 @@ body.dark-theme .subcategory-list a:hover {
         transform: translateX(5px);
     }
 } 
+
+/* Модальное окно для картинки */
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.8);
+  text-align: center;
+  opacity: 1;
+}
+
+.image-modal .modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  margin: 5% auto; 
+  display: block;
+  border-radius: 8px;
+  opacity: 1;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+}
+
+.image-modal .close-modal {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.out-of-stock {
+  margin: 10px 15px;
+  color: #b00;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
 

@@ -78,16 +78,16 @@ const sendOrderConfirmation = async (order) => {
 
     // Формируем куда отправлять письмо: на адрес из настроек и копию клиенту
     const clientEmail = order.customer.email;
-    const shopEmail = process.env.EMAIL_USER || 'sos2223kj@gmail.com';
+    const shopEmail = process.env.EMAIL_USER || 'selenurtrade@gmail.com';
     
     console.log('Preparing email with client address:', clientEmail);
     
     // Подготовка текста письма
     const mailOptions = {
-      from: process.env.EMAIL_FROM || 'АвтоЗапчасти <sos2223kj@gmail.com>',
+      from: process.env.EMAIL_FROM || 'АвтоЗапчасти <selenurtrade@gmail.com>',
       to: shopEmail,
       cc: clientEmail, // Отправляем копию клиенту
-      subject: 'Новый заказ на сайте АвтоЗапчасти',
+      subject: 'Новый заказ на сайте СеленЮр-Трейд',
       html: `
         <h2>Поступил новый заказ!</h2>
         

@@ -121,31 +121,14 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 АвтоЗапчасти. Все права защищены.</p>
+        <p>&copy; 2025 СеленЮР-трейд. Все права защищены.</p>
       </div>
     </footer>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        fetch('products.json')
-          .then(response => response.json())
-          .then(products => {
-            const container = document.getElementById('product-container');
-            if (!container) return;
-
-            container.innerHTML = products.map(product => `
-              <div class="product-card fade-in" data-id="${product.id}" data-category="${product.category}">
-                <img src="${product.image}" alt="${product.title}" />
-                <h3>${product.title}</h3>
-                <p>${product.description}</p>
-                <div class="product-price">${product.price.toFixed(2)} BYN</div>
-                <button class="add-to-cart-btn">Добавить в корзину</button>
-              </div>
-            `).join('');
-          })
-          .catch(error => console.error('Ошибка при загрузке товаров:', error));
-      });
-    </script>
+    <div id="imageModal" class="image-modal" style="display:none;">
+  <span class="close-modal">&times;</span>
+  <img class="modal-content" id="modalImage">
+    </div>
 
     <script src="script.js"></script>
   </body>
