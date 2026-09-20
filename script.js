@@ -354,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="${product.image}" alt="${product.title}" />
             <h3>${product.title}</h3>
             <p>${product.description}</p>
-            <div class="product-price">${product.price.toFixed(2)} BYN</div>
+            <div class="product-price">Наличие и цену товара уточняйте у менеджера</div>
             <div class="product-stock">В наличии: ${product.stock ?? 0} шт.</div>
             ${
               isInStock
@@ -540,7 +540,7 @@ document.addEventListener('click', function(e) {
   const productId = productCard.getAttribute('data-id') || `product_${Date.now()}`;
   const productName = productCard.querySelector('h3')?.textContent || 'Товар';
   const priceText = productCard.querySelector('.product-price')?.textContent || '0';
-  const productPrice = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
+  const productPrice = null;
   const productImage = productCard.querySelector('img')?.getAttribute('src') || '';
   const productCategory = productCard.getAttribute('data-category') || 'unknown';
 
@@ -734,7 +734,7 @@ function renderCart() {
           </div>
         </div>
       </td>
-      <td>${item.price.toFixed(2)} BYN</td>
+      <td>Наличие и цену товара уточняйте у менеджера</td>
       <td>
         <div class="cart-quantity">
           <button type="button" class="decrease-qty" data-id="${item.id}">-</button>
@@ -742,7 +742,7 @@ function renderCart() {
           <button type="button" class="increase-qty" data-id="${item.id}">+</button>
         </div>
       </td>
-      <td>${itemTotal.toFixed(2)} BYN</td>
+      <td>Наличие и цену товара уточняйте у менеджера</td>
       <td>
         <div class="cart-actions">
           <button type="button" class="remove-item" data-id="${item.id}">
@@ -820,7 +820,7 @@ function renderCheckoutSummary() {
       <img src="${item.image}" alt="${item.name}" class="checkout-product-img">
       <div class="checkout-product-info">
         <h4>${item.name}</h4>
-        <div class="checkout-product-price">${item.price.toFixed(2)} BYN</div>
+        <div class="checkout-product-price">Наличие и цену товара уточняйте у менеджера</div>
         <div class="checkout-product-quantity">Количество: ${item.quantity}</div>
       </div>
     `;
@@ -1010,7 +1010,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <h3>${product.title}</h3>
         <p class="product-description">${product.description.replace(/\n/g, '<br>')}</p>
         <button class="toggle-description">Показать больше</button>
-        <div class="product-price">${product.price.toFixed(2)} BYN</div>
+        <div class="product-price">Наличие и цену товара уточняйте у менеджера</div>
         <div class="product-stock">В наличии: ${product.stock ?? 0} шт.</div>
         ${
           isInStock
